@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>B8-CINEMA</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+		<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+		<link rel="stylesheet" type= "text/css" href="addMovies.css">
+	</head>
+	
+	<body>
+		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+			<a href="AdminMainPage.html" class="navbar-brand">B8-CINEMA</a>
+			<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarMenu">
+				<form class="form-inline ml-lg-5">
+					<input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
+					<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
+				</form>
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a href="#" class="nav-link" style = "margin-left: 35px">USERS</a>
+					</li>
+					<li class="nav-item">
+						<a href="managemovies.html" class="nav-link">MANAGE MOVIES</a>
+					</li>
+					<li class="nav-item">
+						<a href="promotions.html" class="nav-link">PROMOTIONS</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a href="#" class="nav-link">ADMIN ACCOUNT</a>
+					</li>
+					<li class="nav-item">
+						<a href="Cinema.html" class="nav-link">LOGOUT</a>
+					</li>
+				</ul>
+			</div>         
+		</nav>
+		
+		<div class="container-fluid my-container">
+			<div class="addmovies"><br>ADD MOVIE</div>
+			<br><hr><br>
+		</div>
+		<div class="container my-container">
+			<form class = "movieForm" action="managemovies.html">
+				<table>
+					<tr>
+						<td><label class ="formLabel" for="mname">Movie Title:</label></td>
+						<td><input type="text" id="mname" placeholder= "Enter Movie Title" name="mname" value=""></td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="genre">Genre:</label></td>
+						<td><input type="text" id="genre" placeholder= "Enter Genre" name="genre" value=""></td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="duration">Duration:</label></td>
+						<td><input type="number" id="duration" placeholder= "Enter Duration(mins)" name="duration" value=""></td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="date">Release Date:</label></td>
+						<td><input type="date" id="date" placeholder= "Enter Release Date" name="date" value=""></td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="cast">Cast:</label></td>
+						<td><input type="text" id="cast" placeholder= "Enter Cast" name="cast" value=""></td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="director">Director:</label></td>
+						<td><input type="text" id="director" placeholder= "Enter Director" name="director" value=""></td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="producer">Producer:</label></td>
+						<td><input type="text" id="producer" placeholder= "Enter Producer" name="producer" value=""></td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="description">Description:</label></td>
+						<td><input type="text" id="description" placeholder= "Enter Description" name="description" value=""></td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="review">Review:</label></td>
+						<td><input type="text" id="review" placeholder= "Add Review" name="review" value=""></td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="rating">Rating:</label></td>
+						<td><input type="text" id="rating" placeholder= "Add Rating" name="rating" value=""></td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="trailer">Trailer:</label></td>
+						<td><input type="text" id="trailer" placeholder= "Add Trailer" name="trailer" value=""></td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="image">Poster Image:</label></td>
+						<td><input type="text" id="image" placeholder= "Add Movie Poster" name="image" value=""></td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="category">Category:</label></td>
+						<td><select type="drop" id="category" placeholder= "Select Category" name="category" value="">
+							<option id="select...">select...</option>
+							<option id="select...">Now Showing Movie</option>
+							<option id="select...">Coming Soon Movie</option>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<div class="container my-container btn">
+				<button class = "submitButton"><a style = "text-decoration: none; color: white;" href="managemovies.html">Cancel</a></button>	
+				<button class = "submitButton"><a style = "text-decoration: none; color: white;" href = "managemovies.html">Add</a></button>
+			</div>
+<!-- 					<tr>
+						<td><button class = "button" type="submit" value="Cancel"></td>
+						<td style = "text-align: center; justify-content: center; display:flex;"><input class = "button" type="submit" value="Add"></td>
+					</tr> -->			
+		</div>
+		<div class="container-fluid my-container">
+			<br><hr><br>
+		</div>
+		
+		
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+			crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+			crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+			crossorigin="anonymous"></script>
+		<script src="myScript.js"></script>
+	</body>
+</html>

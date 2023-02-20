@@ -1,0 +1,70 @@
+body{
+	/* background-image: url("background.jpg"); */
+	background-color: #242333 !important;
+}
+.navbar-brand{
+	background-image: linear-gradient(to right, #483D8B, #8FBC8F); 
+	-webkit-background-clip: text;  
+	font-stretch: ultra-expanded; 
+	font-family:impact;
+	font-size: 40px;
+	color: transparent !important;
+}
+.navbar-brand:hover{
+	opacity: 0.7;
+}
+.bg-dark{
+	background-color: #222222 !important;
+}
+hr {
+  background: linear-gradient(to right, #483D8B, #8FBC8F);
+  height: 5px;
+  width: 80%;
+  border-radius: 50%;
+}
+.addmovies{
+	color: white;
+	font-family: verdana;
+	font-size: 25px;
+	text-align: center;
+	letter-spacing: 1.2px;
+	font-weight: bold;
+}
+.movieForm{
+	/* display:flex;
+	justify-content: center;
+	margin: auto; */
+}
+.formLabel{
+	color:white;
+}
+table{
+	justify-content: center;
+	display: flex;
+	margin:auto;
+}
+td:not(.submitButton){
+	padding: 10px 100px;
+}
+.button{
+	color:white;
+	background: #8FBC8F;
+	padding: 5px 20px;
+	border-radius: 5px;
+	border: 0.5px solid #8FBC8F;
+}
+.submitButton{
+	border: 0.5px solid #008080;
+	background: #008080;
+	font-size: 1px;
+    padding: 10px 50px;
+    border-radius: 10px;
+    color: white;   
+    font-weight: bold;
+    letter-spacing: 1.2px;
+}
+.submitButton:hover{
+	border: 0.5px solid #8FBC8F;
+	background: #8FBC8F;	
+}
+
