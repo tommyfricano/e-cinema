@@ -2,19 +2,14 @@ package com.ecinema.users;
 
 import com.ecinema.users.confirmation.OnRegistrationCompleteEvent;
 import com.ecinema.users.confirmation.VerificationToken;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.MessageSource;
-import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 /*
 Controller for all users
@@ -41,7 +36,7 @@ public class UserController {
     @PostMapping("/registration")
     public void registerUserAccount(
             @RequestBody User userDto,
-            HttpServletRequest request, Errors errors) {
+            HttpServletRequest request) throws MessagingException {
 
         try {
             User registered = userService.createUser(userDto);
@@ -50,13 +45,13 @@ public class UserController {
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered,
                     request.getLocale(), appUrl));
         } catch (Exception uaeEx) {
-            System.out.println(uaeEx);
+            throw uaeEx;
         }
     }
 
     @GetMapping("/confirmRegistration")
     public String confirmRegistration
-            (WebRequest request, @RequestParam("token") String token) {
+            ( @RequestParam("token") String token) {
 
         VerificationToken verificationToken = userService.getVerificationToken(token);
         if (verificationToken == null) {
