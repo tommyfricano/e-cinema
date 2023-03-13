@@ -70,6 +70,10 @@ public class User {
         this.activity = activity;
     }
 
+    public int getUserID() {
+        return userID;
+    }
+
     public int getUserType() {
         return userType;
     }
