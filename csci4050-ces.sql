@@ -313,13 +313,10 @@ CREATE TABLE `users` (
   `lastName` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `phoneNumber` int DEFAULT NULL COMMENT 'Admin users can have a null entry for a phone number',
+  `phoneNumber` varchar(255) DEFAULT NULL COMMENT 'Admin users can have a null entry for a phone number',
   `statusID` int NOT NULL,
-  PRIMARY KEY (`userID`),
-  KEY `users-userTypeID_idx` (`userTypeID`),
-  KEY `users-statusID_idx` (`statusID`),
-  CONSTRAINT `users-statusID` FOREIGN KEY (`statusID`) REFERENCES `status` (`statusID`),
-  CONSTRAINT `users-userTypeID` FOREIGN KEY (`userTypeID`) REFERENCES `usertype` (`typeID`)
+  `optInPromo` tinyint NOT NULL,
+  PRIMARY KEY (`userID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -329,7 +326,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,2,'Admin','User','admin@admin.com','password',NULL,1);
+INSERT INTO `users` VALUES (1,2,'Admin','User','admin@admin.com','password',NULL,1,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -366,4 +363,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-12 23:28:56
+-- Dump completed on 2023-03-14 16:30:48
