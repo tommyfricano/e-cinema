@@ -1,7 +1,10 @@
 package com.ecinema.users;
 
+import com.ecinema.payment.PaymentCards;
 import jakarta.persistence.*;
 import lombok.NonNull;
+
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -9,42 +12,53 @@ import lombok.NonNull;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name = "userID")
     private int userID;
 
-    @Column(nullable = false)
-    private int userType;
+    @Column(name = "usertype")
+    private UserTypes userType;
 
-    @Column(nullable = false)
+    @Column(name = "firstname")
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(name = "lastname")
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(name = "email")
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "password")
     private String password;
 
-    @Column(nullable = true)
+    @Column(name = "phonenumber")
     private String phoneNumber;
 
-    @Column(nullable = false)
+    @Column(name = "status")
     private Status activity;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_userID", referencedColumnName = "userID", insertable = true, updatable = true)
+    private List<PaymentCards> payments;
+//
+    public List<PaymentCards> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<PaymentCards> cards) {
+        this.payments = cards;
+    }
 
     public User() {
     }
 
-    public User(int userID,
-                int userType,
+    public User(UserTypes userType,
                 String firstName,
                 String lastName,
                 String email,
                 String password,
                 String phoneNumber,
                 Status activity) {
-        this.userID = userID;
         this.userType = userType;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -54,13 +68,14 @@ public class User {
         this.activity = activity;
     }
 
-    public User(int userType,
+    public User(UserTypes userType,
                 String firstName,
                 String lastName,
                 String email,
                 String password,
                 String phoneNumber,
-                Status activity) {
+                Status activity,
+                List<PaymentCards> cards) {
         this.userType = userType;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -68,17 +83,18 @@ public class User {
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.activity = activity;
+        this.payments = cards;
     }
 
     public int getUserID() {
         return userID;
     }
 
-    public int getUserType() {
+    public UserTypes getUserType() {
         return userType;
     }
 
-    public void setUserType(int userType) {
+    public void setUserType(UserTypes userType) {
         this.userType = userType;
     }
 
