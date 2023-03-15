@@ -1,5 +1,6 @@
 package com.ecinema.users;
 
+import com.ecinema.payment.PaymentCards;
 import com.ecinema.users.confirmation.OnRegistrationCompleteEvent;
 import com.ecinema.users.confirmation.VerificationToken;
 import jakarta.mail.MessagingException;
@@ -12,17 +13,15 @@ import java.util.Calendar;
 import java.util.List;
 
 /*
-Controller for all users
+Controller for users
  */
 
 @RestController
 @RequestMapping(path="/api/user")
 public class UserController {
     private final UserService userService;  // business logic object
-
     @Autowired
     ApplicationEventPublisher eventPublisher;
-
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -37,10 +36,8 @@ public class UserController {
     public void registerUserAccount(
             @RequestBody User userDto,
             HttpServletRequest request) throws MessagingException {
-
         try {
             User registered = userService.createUser(userDto);
-
             String appUrl = request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered,
                     request.getLocale(), appUrl));
@@ -52,18 +49,15 @@ public class UserController {
     @GetMapping("/confirmRegistration")
     public String confirmRegistration
             ( @RequestParam("token") String token) {
-
         VerificationToken verificationToken = userService.getVerificationToken(token);
         if (verificationToken == null) {
             return "token does not exist";
         }
-
         User user = verificationToken.getUser();
         Calendar cal = Calendar.getInstance();
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
             return "token expired";
         }
-
         user.setActivity(Status.ACTIVE);
         userService.confirmUser(user, verificationToken);
         return "User is now Active";
@@ -71,7 +65,15 @@ public class UserController {
 
 
     //todo login
-//    public User login(@RequestBody User user) {
-//
-//    }
+    @PostMapping("/login")
+    public User login(@RequestBody User user) {
+        return user;
+    }
+
+
+    @GetMapping("/payments/{id}")       // gets all cards
+    public List<PaymentCards> getPayments(@PathVariable int id) {
+        List<PaymentCards> cards = userService.getPaymentCards(id);
+        return cards;
+    }
 }
