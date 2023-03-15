@@ -1,13 +1,20 @@
 package com.ecinema.users;
 
 import com.ecinema.payment.PaymentCards;
+import com.ecinema.users.enums.OptInPromo;
+import com.ecinema.users.enums.Status;
+import com.ecinema.users.enums.UserTypes;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
 @NonNull
 public class User {
 
@@ -37,17 +44,12 @@ public class User {
     @Column(name = "status")
     private Status activity;
 
+    @Column(name = "optinpromo")
+    private OptInPromo optInPromo;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_userID", referencedColumnName = "userID", insertable = true, updatable = true)
     private List<PaymentCards> payments;
-//
-    public List<PaymentCards> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(List<PaymentCards> cards) {
-        this.payments = cards;
-    }
 
     public User() {
     }
@@ -58,24 +60,9 @@ public class User {
                 String email,
                 String password,
                 String phoneNumber,
-                Status activity) {
-        this.userType = userType;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.activity = activity;
-    }
-
-    public User(UserTypes userType,
-                String firstName,
-                String lastName,
-                String email,
-                String password,
-                String phoneNumber,
                 Status activity,
-                List<PaymentCards> cards) {
+                List<PaymentCards> cards,
+                OptInPromo optInPromo) {
         this.userType = userType;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -84,65 +71,6 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.activity = activity;
         this.payments = cards;
-    }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    public UserTypes getUserType() {
-        return userType;
-    }
-
-    public void setUserType(UserTypes userType) {
-        this.userType = userType;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Status getActivity() {
-        return activity;
-    }
-
-    public void setActivity(Status activity) {
-        this.activity = activity;
+        this.optInPromo = optInPromo;
     }
 }

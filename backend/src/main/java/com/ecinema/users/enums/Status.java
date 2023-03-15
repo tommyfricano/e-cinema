@@ -1,4 +1,4 @@
-package com.ecinema.users;
+package com.ecinema.users.enums;
 
 public enum Status {
     ACTIVE,

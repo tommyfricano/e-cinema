@@ -92,7 +92,7 @@ DROP TABLE IF EXISTS `paymentcards`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `paymentcards` (
   `paymentID` int NOT NULL AUTO_INCREMENT,
-  `userID` int NOT NULL,
+  `fk_userID` int NOT NULL,
   `firstName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL,
   `cardNumber` varchar(255) NOT NULL,
@@ -100,7 +100,7 @@ CREATE TABLE `paymentcards` (
   `securityCode` varchar(255) NOT NULL,
   PRIMARY KEY (`paymentID`),
   KEY `paymentcards-userID_idx` (`userID`),
-  CONSTRAINT `paymentcards-userID` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`)
+  CONSTRAINT `paymentcards-userID` FOREIGN KEY (`fk_userID`) REFERENCES `users` (`userID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -308,14 +308,14 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `userID` int NOT NULL AUTO_INCREMENT,
-  `userTypeID` int NOT NULL,
+  `userType` int NOT NULL,
   `firstName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `phoneNumber` varchar(255) DEFAULT NULL COMMENT 'Admin users can have a null entry for a phone number',
-  `statusID` int NOT NULL,
-  `optInPromo` tinyint NOT NULL,
+  `status` int NOT NULL,
+  `optInPromo` int NOT NULL,
   PRIMARY KEY (`userID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -3,6 +3,8 @@ package com.ecinema.users;
 import com.ecinema.payment.PaymentCards;
 import com.ecinema.users.confirmation.VerificationToken;
 import com.ecinema.users.confirmation.VerificationTokenRepository;
+import com.ecinema.users.enums.Status;
+import com.ecinema.users.enums.UserTypes;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
