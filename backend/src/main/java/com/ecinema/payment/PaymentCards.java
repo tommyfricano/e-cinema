@@ -34,12 +34,20 @@ public class PaymentCards {
     @Column(name = "securitycode")
     private String securityCode;
 
-    public PaymentCards(String firstName, String lastName, String cardNumber, String expirationDate, String securityCode) {
+    @Column(name = "billingaddress")
+    private String billingAddress;
+
+    public PaymentCards(String firstName,
+                        String lastName,
+                        String cardNumber,
+                        String expirationDate,
+                        String securityCode,
+                        String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.cardNumber = cardNumber;
         this.expirationDate = expirationDate;
         this.securityCode = securityCode;
+        this.billingAddress = address;
     }
-
 }
