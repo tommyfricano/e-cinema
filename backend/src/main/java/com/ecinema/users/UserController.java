@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 /*
 Controller for users
@@ -67,8 +68,9 @@ public class UserController {
 
     //todo login
     @PostMapping("/login")
-    public User login(@RequestBody User user) {
-        return user;
+    public int login(@RequestBody Map<String, String> json) {
+        User user = userService.findUser(json.get("email"), json.get("password"));
+        return user.getUserID();
     }
 
 
