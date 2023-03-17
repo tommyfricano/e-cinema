@@ -49,8 +49,22 @@ public class UserService {
         return userRespository.findAll();
     }
 
+
     public User getUser(int id){
         return userRespository.findOneByUserID(id);
+
+    public User findUser(String email, String password) {
+        User user = userRespository.findOneByEmail(email);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Account does not exist with this email");
+        }
+
+        String encryptedPassword = new BCryptPasswordEncoder().encode(password);
+        if (user.getPassword().equals(encryptedPassword)) {
+            return user;
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect Password");
+        }
     }
 
     public User createUser(User user) throws MessagingException {   // create and save a new user in db
