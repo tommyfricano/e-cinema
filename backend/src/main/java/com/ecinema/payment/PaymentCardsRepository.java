@@ -7,6 +7,5 @@ import java.util.ArrayList;
 
 @Repository
 public interface PaymentCardsRepository extends JpaRepository<PaymentCards, Integer> {
-
-    public ArrayList<PaymentCards> findOneBy();
+    public PaymentCards deleteByPaymentID(int id);
 }

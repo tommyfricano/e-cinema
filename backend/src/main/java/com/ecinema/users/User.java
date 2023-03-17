@@ -19,7 +19,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "userID")
     private int userID;
 
@@ -48,7 +48,7 @@ public class User {
     private OptInPromo optInPromo;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_userID", referencedColumnName = "userID", insertable = true, updatable = true)
+    @JoinColumn(name = "fk_userID", referencedColumnName = "userID", insertable = true, updatable = true, nullable = true)
     private List<PaymentCards> payments;
 
     public User() {
