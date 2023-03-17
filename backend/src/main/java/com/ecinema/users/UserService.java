@@ -50,8 +50,9 @@ public class UserService {
     }
 
 
-    public User getUser(int id){
+    public User getUser(int id) {
         return userRespository.findOneByUserID(id);
+    }
 
     public User findUser(String email, String password) {
         User user = userRespository.findOneByEmail(email);
@@ -59,8 +60,7 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Account does not exist with this email");
         }
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(password);
-        if (user.getPassword().equals(encryptedPassword)) {
+        if (new BCryptPasswordEncoder().matches(password, user.getPassword())) {
             return user;
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect Password");
