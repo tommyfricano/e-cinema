@@ -34,6 +34,11 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable int id){
+        return userService.getUser(id);
+    }
+
     @PostMapping("/registration")
     public void registerUserAccount(
             @RequestBody User userDto,
@@ -78,5 +83,15 @@ public class UserController {
     public List<PaymentCards> getPayments(@PathVariable int id) {
         List<PaymentCards> cards = userService.getPaymentCards(id);
         return cards;
+    }
+
+    @PatchMapping("/edit/{id}")
+    public void editProfile(@PathVariable int id, @RequestBody User user){
+        userService.updateProfile(id, user);
+    }
+
+    @PatchMapping("/editPassword/{id}")
+    public void editPassword(@PathVariable int id, @RequestBody Map<String, String> json){
+        userService.updatePassword(id, json.get("oldPassword"), json.get("newPassword"));
     }
 }
