@@ -123,6 +123,7 @@ public class UserService {
         }
 
         // todo encrypt card info??
+//        encryptAllCards(user.getPayments());
         userToUpdate.setPayments(user.getPayments());
         userRespository.save(userToUpdate);
 
@@ -168,6 +169,15 @@ public class UserService {
             card.setCardNumber(new BCryptPasswordEncoder().encode(card.getCardNumber()));
             card.setExpirationDate(new BCryptPasswordEncoder().encode(card.getExpirationDate()));
             card.setSecurityCode(new BCryptPasswordEncoder().encode(card.getSecurityCode()));
+    }
+
+    public void encryptAllCards(List<PaymentCards> cards) {
+
+        for(int i =0;i<cards.size();i++) {
+            cards.get(i).setCardNumber(new BCryptPasswordEncoder().encode(cards.get(i).getCardNumber()));
+            cards.get(i).setExpirationDate(new BCryptPasswordEncoder().encode(cards.get(i).getExpirationDate()));
+            cards.get(i).setSecurityCode(new BCryptPasswordEncoder().encode(cards.get(i).getSecurityCode()));
+        }
     }
 
 }
