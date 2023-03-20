@@ -8,6 +8,7 @@ import com.ecinema.users.enums.UserTypes;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,21 @@ public class UserService {
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect Password");
         }
+    }
+
+    public void forgotPassword(String email) {
+        User user = userRespository.findOneByEmail(email);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Account does not exist with this email");
+        }
+        String newPassword = user.getLastName() + user.getUserID();
+        user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        SimpleMailMessage emailToUser = new SimpleMailMessage();
+        emailToUser.setTo(email);
+        emailToUser.setSubject("New Password");
+        emailToUser.setText("Your new Password is: " + newPassword + " please update soon.");
+        mailSender.send(emailToUser);
+
     }
 
     public User createUser(User user) throws MessagingException {   // create and save a new user in db
