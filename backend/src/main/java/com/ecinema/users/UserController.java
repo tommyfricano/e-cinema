@@ -71,11 +71,15 @@ public class UserController {
     }
 
 
-    //todo login
     @PostMapping("/login")
     public int login(@RequestBody Map<String, String> json) {
         User user = userService.findUser(json.get("email"), json.get("password"));
         return user.getUserID();
+    }
+
+    @PostMapping("/forgotPassword")
+    public void forgotPassword(@RequestBody Map<String, String> json) {
+        userService.forgotPassword(json.get("email"));
     }
 
 
