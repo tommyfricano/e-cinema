@@ -123,7 +123,7 @@ public class UserService {
         tokenRepository.save(myToken);
     }
 
-    public void forgotPassword(String email) {
+    public void sendForgotPassword(String email) {
         User user = userRespository.findOneByEmail(email);
         if (user == null) {
             throw new ResponseStatusException(BAD_REQUEST, "Account does not exist with this email");

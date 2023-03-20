@@ -78,6 +78,11 @@ public class UserController {
         return user.getUserID();
     }
 
+    @PostMapping("/forgotPassword")
+    public void ForgotPassword(@RequestBody String email) {
+        userService.sendForgotPassword(email);
+    }
+
 
     @GetMapping("/payments/{id}")       // gets all cards
     public List<PaymentCards> getPayments(@PathVariable int id) {
