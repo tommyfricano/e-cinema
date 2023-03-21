@@ -70,18 +70,16 @@ public class UserController {
         return "User is now Active";
     }
 
-
     //todo login
     @PostMapping("/login")
-    public User login(@RequestBody Map<String, String> json) {
-        return userService.findUser(json.get("email"), json.get("password"));
+    public int login(@RequestBody Map<String, String> json) {
+        return userService.findUser(json.get("email"), json.get("password")).getUserID();
     }
 
     @PostMapping("/forgotPassword")
     public void ForgotPassword(@RequestBody String email) {
         userService.sendForgotPassword(email);
     }
-
 
     @GetMapping("/payments/{id}")       // gets all cards
     public List<PaymentCards> getPayments(@PathVariable int id) {
