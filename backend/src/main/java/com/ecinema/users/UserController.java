@@ -72,9 +72,8 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public int login(@RequestBody Map<String, String> json) {
-        User user = userService.findUser(json.get("email"), json.get("password"));
-        return user.getUserID();
+    public User login(@RequestBody Map<String, String> json) {
+        return userService.findUser(json.get("email"), json.get("password"));
     }
 
     @PostMapping("/forgotPassword")

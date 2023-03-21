@@ -14,6 +14,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -77,7 +78,7 @@ public class UserService {
         SimpleMailMessage emailToUser = new SimpleMailMessage();
         emailToUser.setTo(email);
         emailToUser.setSubject("New Password");
-        emailToUser.setText("Your new Password is: " + newPassword + " please update soon.");
+        emailToUser.setText("Your new Password is: " + newPassword + ". Please update this password soon.");
         mailSender.send(emailToUser);
 
     }
@@ -98,7 +99,7 @@ public class UserService {
             userRespository.save(user);     //save user in db
         }
         catch(Exception e){     // throw exception on failure
-            throw e;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error creating new user.");
         }
         return user;
     }
@@ -139,7 +140,7 @@ public class UserService {
         }
 
         // todo encrypt card info??
-//        encryptAllCards(user.getPayments());
+        encryptAllCards(user.getPayments());
         userToUpdate.setPayments(user.getPayments());
         userRespository.save(userToUpdate);
 
