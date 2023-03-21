@@ -124,6 +124,21 @@ public class UserService {
         tokenRepository.save(myToken);
     }
 
+    public void sendForgotPassword(String email) {
+        User user = userRespository.findOneByEmail(email);
+        if (user == null) {
+            throw new ResponseStatusException(BAD_REQUEST, "Account does not exist with this email");
+
+        }
+        String newPassword = user.getLastName() + user.getUserID();
+        user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        SimpleMailMessage emailToUser = new SimpleMailMessage();
+        emailToUser.setTo(email);
+        emailToUser.setSubject("New Password");
+        emailToUser.setText("Your new Password is: " + newPassword + " please update soon");
+        mailSender.send(emailToUser);
+    } // forgotPassword
+
 
     /*
     update user info
