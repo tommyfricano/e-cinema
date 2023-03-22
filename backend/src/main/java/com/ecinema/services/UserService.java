@@ -2,7 +2,9 @@ package com.ecinema.services;
 
 import com.ecinema.payment.PaymentCards;
 import com.ecinema.repositories.PaymentCardsRepository;
+import com.ecinema.repositories.RoleRepository;
 import com.ecinema.repositories.UserRespository;
+import com.ecinema.users.Role;
 import com.ecinema.users.User;
 import com.ecinema.users.confirmation.VerificationToken;
 import com.ecinema.users.confirmation.VerificationTokenRepository;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -37,14 +40,17 @@ public class UserService {
 
     private final VerificationTokenRepository tokenRepository;  //interacts with token table
 
+    private final RoleRepository roleRepository;
+
     @Autowired
     private JavaMailSender mailSender;  // used for sending confirmation emails
 
     @Autowired
-    public UserService(UserRespository userRespository, PaymentCardsRepository paymentCardsRepository, VerificationTokenRepository tokenRepository) {   //constructor needed for dependency injection of repo
+    public UserService(UserRespository userRespository, PaymentCardsRepository paymentCardsRepository, VerificationTokenRepository tokenRepository, RoleRepository roleRepository) {   //constructor needed for dependency injection of repo
         this.userRespository = userRespository;
         this.paymentCardsRepository = paymentCardsRepository;
         this.tokenRepository = tokenRepository;
+        this.roleRepository = roleRepository;
     }
 
     public List<User> getUsers() {     // get a list of all user from db
@@ -92,6 +98,8 @@ public class UserService {
 
         try {
             user.setUserType(UserTypes.CUSTOMER);
+            Role role = roleRepository.findByName("CUSTOMER");
+            user.setRoles(Arrays.asList(role));
             user.setActivity(Status.INACTIVE);  // set user status to inactive until confirmed
             user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             if(!(user.getPayments() == null)) {
@@ -147,7 +155,7 @@ public class UserService {
         User userToUpdate = getUser(id);
         userToUpdate.setFirstName(user.getFirstName());
         userToUpdate.setLastName(user.getLastName());
-        userToUpdate.setOptInPromo(user.getOptInPromo());
+        userToUpdate.setOptInPromo(user.isOptInPromo());
 
         for( int i=0; i< userToUpdate.getPayments().size();i++){
             System.out.println(userToUpdate.getPayments().get(i).getPaymentID());

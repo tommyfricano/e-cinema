@@ -13,7 +13,7 @@
 	
 	<body>
 		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-			<a href="#" class="navbar-brand">B8-CINEMA</a>
+			<a href="/" class="navbar-brand">B8-CINEMA</a>
 			<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -24,10 +24,10 @@
 				</form>
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
-						<a href="Customerlogin.html" data-toggle="tooltip" title="Login" class="nav-link"><i class="fas fa-user"></i> <span class="sr-only">LOGIN</span></a>
+						<a th:href="@{/login}" data-toggle="tooltip" title="Login" class="nav-link"><i class="fas fa-user"></i> <span class="sr-only">LOGIN</span></a>
 					</li>
 					<li class="nav-item">
-						<a href="Registration.html" class="nav-link">SIGN UP</a>
+						<a th:href="@{/registration}" class="nav-link">SIGN UP</a>
 					</li>
 				</ul>
 			</div>         
