@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>B8-CINEMA</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+		<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+		<link rel="stylesheet" type= "text/css" href="addMovies.css">
+	</head>
+	
+	<body>
+		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+			<a href="AdminMainPage.html" class="navbar-brand">B8-CINEMA</a>
+			<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarMenu">
+				<form class="form-inline ml-lg-5">
+					<input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
+					<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
+				</form>
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a href="#" class="nav-link" style = "margin-left: 35px">USERS</a>
+					</li>
+					<li class="nav-item">
+						<a href="managemovies.html" class="nav-link">MANAGE MOVIES</a>
+					</li>
+					<li class="nav-item">
+						<a href="promotions.html" class="nav-link">PROMOTIONS</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a href="#" class="nav-link">ADMIN ACCOUNT</a>
+					</li>
+					<li class="nav-item">
+						<a href="Cinema.html" class="nav-link">LOGOUT</a>
+					</li>
+				</ul>
+			</div>         
+		</nav>
+		
+		<div class="container-fluid my-container">
+			<div class="addmovies"><br>SCHEDULE MOVIE</div>
+			<br><hr><br>
+		</div>
+		<div class="container my-container">
+			<form class = "movieForm" action="managemovies.html">
+				<table>
+					<tr>
+						<td><label class ="formLabel" for="selectMovie">Select Movie</label></td>
+						<td>
+							<select id="selectMovie">
+								<option selected>Select Movie...</option>
+								<option>Uncharted</option>
+								<option>Brave</option>
+								<option>The Batman: Unmask the Truth</option>
+								<option>SpiderMan: No Way Home</option>
+								<option>Joker</option>
+								<option>The Lorax</option>
+								<option>Life of Pi</option>
+								<option>Jumanji: Welcome to the Jungle</option>
+								<option>The Meg</option>
+								<option>Avatar 2: The Way of Water</option>
+								<option>Us</option>
+								<option>Morbius</option>
+								<option>Pitch Perfect</option>
+								<option>Skyscraper</option>
+								<option>Dune</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="date">Show Date:</label></td>
+						<td><input type="date" id="date" placeholder= "Enter Show Date" name="date" value=""></td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="time">Show Time:</label></td>
+						<td><input type="time" id="time" placeholder= "Enter Show Time" name="time" value=""></td>
+					</tr>
+					
+				</table>
+			</form>
+			<br>
+			<div class="container my-container btn">
+				<button class = "submitButton"><a style = "text-decoration: none; color: white;" href="managemovies.html">Cancel</a></button>	
+				<button class = "submitButton"><a style = "text-decoration: none; color: white;" href = "managemovies.html">Add Schedule</a></button>
+			</div>			
+		</div>
+		<div class="container-fluid my-container">
+			<br><hr><br>
+		</div>
+		
+		
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+			crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+			crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+			crossorigin="anonymous"></script>
+		<script src="myScript.js"></script>
+	</body>
+</html>

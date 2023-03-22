@@ -19,13 +19,9 @@ var requestOptions = {
     redirect: 'follow'
 };
 
-btn.onclick = function() {
-
     fetch("localhost:8080/api/user/login", requestOptions)
         .then(response => response.text())
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
 
     localStorage.setItem("userID", response.body.userID);
-
-}

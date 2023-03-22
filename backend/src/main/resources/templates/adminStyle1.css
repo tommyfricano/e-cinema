@@ -1,0 +1,51 @@
+body{
+	/* background-image: url("background.jpg"); */
+	background-color: #242333 !important;
+}
+.navbar-brand{
+	background-image: linear-gradient(to right, #483D8B, #8FBC8F); 
+	-webkit-background-clip: text;  
+	font-stretch: ultra-expanded; 
+	font-family:impact;
+	font-size: 40px;
+	color: transparent !important;
+}
+.navbar-brand:hover{
+	opacity: 0.7;
+}
+.bg-dark{
+	background-color: #222222 !important;
+}
+.admin{
+	color:white;
+	font-size: 70px;
+	font-family: verdana;
+	text-align: center;
+}
+hr {
+  background: linear-gradient(to right, #483D8B, #8FBC8F);
+  height: 5px;
+  width: 80%;
+  border-radius: 50%;
+}
+table{
+	color:white;
+	font-size: 20px;
+	font-family: verdana;
+	font-weight: 600;
+	margin: auto;
+	letter-spacing: 1.2px;
+    justify-content: center;
+	display: flex;
+	border-collapse: separate;
+	border-spacing: 30px;
+}
+td{
+	border: 1px solid black;
+	border-radius: 5px;
+	padding: 50px;
+	background: black;
+}
+td:hover{
+	background: #8FBC8F;
+}

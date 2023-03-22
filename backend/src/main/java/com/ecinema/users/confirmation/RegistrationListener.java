@@ -1,7 +1,7 @@
 package com.ecinema.users.confirmation;
 
 import com.ecinema.users.User;
-import com.ecinema.users.UserService;
+import com.ecinema.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
