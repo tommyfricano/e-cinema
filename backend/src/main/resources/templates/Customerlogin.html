@@ -24,10 +24,10 @@
 				</form>
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
-						<a href="Customerlogin.html" data-toggle="tooltip" title="Login" class="nav-link"><i class="fas fa-user"></i> <span class="sr-only">LOGIN</span></a>
+						<a th:href="@{/login}" data-toggle="tooltip" title="Login" class="nav-link"><i class="fas fa-user"></i> <span class="sr-only">LOGIN</span></a>
 					</li>
 					<li class="nav-item">
-						<a href="Registration.html" class="nav-link">SIGN UP</a>
+						<a th:href="@{/registration}" class="nav-link">SIGN UP</a>
 					</li>
 				</ul>
 			</div>
@@ -46,18 +46,18 @@
           class="img-fluid" alt="Phone image">
       </div>
       <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-        <form method="post" th:action="@{/Customerlogin.html}" th:object="${user}">
+        <form method="post" th:action="@{/login}" >
           <!-- Email input -->
           <div class="form-group required mb-4">
-			  <label class="form-check-label" for="form1Example13"><b>Email Address</b></label>
-            <input type="email" id="form1Example13" class="form-control required form-control-lg" />
+			  <label class="form-check-label" for="loginEmail"><b>Email Address</b></label>
+            <input type="email" id="loginEmail" class="form-control required form-control-lg" />
 
           </div>
 
           <!-- Password input -->
           <div class="form-group required mb-4">
-			  <label class="form-check-label" for="form1Example23"><b>Password</b></label>
-            <input type="password" id="form1Example23" class="form-control required form-control-lg" />
+			  <label class="form-check-label" for="loginPassword"><b>Password</b></label>
+            <input type="password" id="loginPassword" class="form-control required form-control-lg"  />
 
           </div>
 
@@ -71,8 +71,8 @@
           </div>
 
           <!-- Submit button -->
-          <button type="submit"  class="btn btn-1 btn-primary btn-lg btn-block"><a href = "customerHomePage.html" style= "color:white; text-decoration:none;">Customer Login</a></button>
-		  <button type="submit" class="btn btn-1 btn-primary btn-lg btn-block"><a href = "AdminMainPage.html" style= "color:white; text-decoration:none;">Admin Login</a></button>
+          <button th:href="@{/Customerlogin.html}" type="submit" class="btn btn-1 btn-primary btn-lg btn-block">Customer Login</button>
+		  <button th:href="@{/AdminMainPage.html}" type="submit" class="btn btn-1 btn-primary btn-lg btn-block">Admin Login</button>
 			<br><a href="Registration.html" style= "color:white; text-decoration:underline;">Don't have an account? CREATE ACCOUNT</a>
 
         </form>

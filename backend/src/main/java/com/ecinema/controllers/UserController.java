@@ -6,12 +6,14 @@ import com.ecinema.services.UserService;
 import com.ecinema.users.confirmation.OnRegistrationCompleteEvent;
 import com.ecinema.users.confirmation.VerificationToken;
 import com.ecinema.users.enums.Status;
+import com.ecinema.users.enums.UserTypes;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
@@ -45,48 +47,15 @@ public class UserController {
         return userService.getUser(id);
     }
 
-    @PostMapping("/registration")
-    public void registerUserAccount(
-            @RequestBody User userDto,
-            HttpServletRequest request) throws MessagingException {
-        try {
-            User registered = userService.createUser(userDto);
-            String appUrl = request.getContextPath();
-            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered,
-                    request.getLocale(), appUrl));
-        } catch (Exception uaeEx) {
-            throw uaeEx;
+    @PostMapping("/login")
+    public String login(@Validated @ModelAttribute("user") User user) {
+        User cUser = userService.findUser(user.getEmail(),user.getPassword());
+        if(cUser.getUserType() == UserTypes.ADMIN){
+            return"redirect:/AdminMainPage";
         }
-    }
-
-    @GetMapping("/confirmRegistration")
-    public String confirmRegistration
-            ( @RequestParam("token") String token) {
-        VerificationToken verificationToken = userService.getVerificationToken(token);
-        if (verificationToken == null) {
-            return "token does not exist";
+        else {
+            return "redirect:/customerHomePage";
         }
-        User user = verificationToken.getUser();
-        Calendar cal = Calendar.getInstance();
-        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
-            return "token expired";
-        }
-        user.setActivity(Status.ACTIVE);
-        userService.confirmUser(user, verificationToken);
-        return "User is now Active";
-    }
-
-    //todo login
-    @GetMapping("/Customerlogin.html")
-    public String loginPage( Model model) {
-//        userService.findUser(json.get("email"), json.get("password")).getUserID();
-        return "Customerlogin";
-    }
-
-    @PostMapping("/Customerlogin.html")
-    public String login(@ModelAttribute("user") User user) {
-        userService.findUser(user.getEmail(),user.getPassword());
-        return"redirect:/Cinema.html";
     }
 
     @PostMapping("/forgotPassword")

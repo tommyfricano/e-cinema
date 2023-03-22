@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -45,11 +46,19 @@ public class User {
     private Status activity;
 
     @Column(name = "optinpromo")
-    private OptInPromo optInPromo;
+    private boolean optInPromo;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_userID", referencedColumnName = "userID", insertable = true, updatable = true, nullable = true)
     private List<PaymentCards> payments;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName ="userID" )},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "roleID")}
+    )
+    private List<Role> roles = new ArrayList<Role>();
 
     public User() {
     }
@@ -62,7 +71,7 @@ public class User {
                 String phoneNumber,
                 Status activity,
                 List<PaymentCards> cards,
-                OptInPromo optInPromo) {
+                boolean optInPromo) {
         this.userType = userType;
         this.firstName = firstName;
         this.lastName = lastName;
