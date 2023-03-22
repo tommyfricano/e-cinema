@@ -46,7 +46,7 @@
           class="img-fluid" alt="Phone image">
       </div>
       <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-        <form>
+        <form method="post" th:action="@{/Customerlogin.html}" th:object="${user}">
           <!-- Email input -->
           <div class="form-group required mb-4">
 			  <label class="form-check-label" for="form1Example13"><b>Email Address</b></label>
@@ -71,7 +71,7 @@
           </div>
 
           <!-- Submit button -->
-          <button type="submit" class="btn btn-1 btn-primary btn-lg btn-block"><a href = "customerHomePage.html" style= "color:white; text-decoration:none;">Customer Login</a></button>
+          <button type="submit"  class="btn btn-1 btn-primary btn-lg btn-block"><a href = "customerHomePage.html" style= "color:white; text-decoration:none;">Customer Login</a></button>
 		  <button type="submit" class="btn btn-1 btn-primary btn-lg btn-block"><a href = "AdminMainPage.html" style= "color:white; text-decoration:none;">Admin Login</a></button>
 			<br><a href="Registration.html" style= "color:white; text-decoration:underline;">Don't have an account? CREATE ACCOUNT</a>
 
