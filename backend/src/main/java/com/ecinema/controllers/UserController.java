@@ -26,7 +26,6 @@ Controller for users
  */
 
 @Controller
-//@RequestMapping(path="/api/user")
 public class UserController {
     private final UserService userService;  // business logic object
     @Autowired
