@@ -75,12 +75,12 @@ public class AuthController {
             HttpServletRequest request, Model model) throws MessagingException {
         try {
             List<PaymentCards> card = new ArrayList<>();
-            if(payment.getCardNumber() != null || payment.getCardNumber().equals("")) {
+            if(payment.getCardNumber() != null || !(payment.getCardNumber().equals(""))) {
                 payment.setFirstName(userDto.getFirstName());
                 payment.setLastName(userDto.getLastName());
                 card.add(payment);
+                userDto.setPayments(card);
             }
-            userDto.setPayments(card);
             User registered = userService.createUser(userDto);
             if(registered.getFirstName().equals("Registration")){
                 return "Registration-error";

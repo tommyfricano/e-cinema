@@ -2,22 +2,14 @@ package com.ecinema.controllers;
 
 import com.ecinema.payment.PaymentCards;
 import com.ecinema.security.SecurityUtil;
-import com.ecinema.users.User;
 import com.ecinema.services.UserService;
-import com.ecinema.users.confirmation.OnRegistrationCompleteEvent;
-import com.ecinema.users.confirmation.VerificationToken;
-import com.ecinema.users.enums.Status;
-import com.ecinema.users.enums.UserTypes;
-import jakarta.mail.MessagingException;
-import jakarta.servlet.http.HttpServletRequest;
+import com.ecinema.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -72,7 +64,7 @@ public class UserController {
         return "Editprofile";
     }
 
-    @PostMapping("/user/editInfo")
+    @PatchMapping("/user/editInfo")
     public String editInfo(Model model){
         String username = SecurityUtil.getSessionUser();
         User user = userService.getUserEmail(username);
@@ -81,11 +73,10 @@ public class UserController {
     }
 
 
-    @PatchMapping("/user/edit/{id}")
-    public void editProfile(@PathVariable int id, @RequestBody User user){
-
-        userService.updateProfile(id, user);
-    }
+//    @PatchMapping("/user/edit/{id}")
+//    public void editProfile(@PathVariable int id, @RequestBody User user){
+//        userService.updateProfile(id, user);
+//    }
 
     @GetMapping("/user/editInfo/editPassword")
     public String getEditPassword(Model model) {
