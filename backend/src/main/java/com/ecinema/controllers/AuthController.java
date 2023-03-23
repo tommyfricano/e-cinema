@@ -78,6 +78,7 @@ public class AuthController {
             if(payment.getCardNumber() != null || !(payment.getCardNumber().equals(""))) {
                 payment.setFirstName(userDto.getFirstName());
                 payment.setLastName(userDto.getLastName());
+                payment.setBillingAddress(userDto.getAddress());
                 card.add(payment);
                 userDto.setPayments(card);
             }

@@ -73,7 +73,7 @@
         <div th:object="${payment}">
       <div class="form-group">
         <label class="form-check-label" for="inputAddress">Address</label>
-        <input th:field="*{billingAddress}" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+        <input th:field="${user.address}" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
       </div>
 <!--      <div class="form-group">-->
 <!--        <label class="form-check-label" for="inputAddress2">Address 2</label>-->
