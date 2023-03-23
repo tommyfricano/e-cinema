@@ -32,8 +32,26 @@ public class AuthController {
 
     @GetMapping("/login")
     public String loginPage( Model model) {
-//        userService.findUser(json.get("email"), json.get("password")).getUserID();
         return "Customerlogin";
+    }
+
+    @RequestMapping("/login-error.html")
+    public String loginError(Model model) {
+        model.addAttribute("loginError", true);
+        return "Customerlogin";
+    }
+
+    @GetMapping("/forgotPassword")
+    public String getForgotPassword(Model model){
+        User user = new User();
+        model.addAttribute("user",user);
+        return "ForgotPassword";
+    }
+    @PostMapping("/forgotPassword")
+    public String ForgotPassword(@ModelAttribute("user") User user) {
+        System.out.println(user.getEmail());
+        userService.sendForgotPassword(user.getEmail());
+        return"CustomerLogin";
     }
 
     @GetMapping("/registration")
@@ -45,18 +63,28 @@ public class AuthController {
         return "Registration";
     }
 
+    @RequestMapping("/registration-error")
+    public String registrationError(Model model) {
+        model.addAttribute("registrationError", true);
+        return "Registration";
+    }
+
     @PostMapping("/registration_attempt")
     public String registerUserAccount(
             @Validated @ModelAttribute("user") User userDto, @ModelAttribute("payment") PaymentCards payment,
             HttpServletRequest request, Model model) throws MessagingException {
         try {
             List<PaymentCards> card = new ArrayList<>();
-            payment.setFirstName(userDto.getFirstName());
-            payment.setLastName(userDto.getLastName());
-            card.add(payment);
+            if(payment.getCardNumber() != null || payment.getCardNumber().equals("")) {
+                payment.setFirstName(userDto.getFirstName());
+                payment.setLastName(userDto.getLastName());
+                card.add(payment);
+            }
             userDto.setPayments(card);
-            System.out.println(userDto.getFirstName() + " ass " + userDto.getLastName() + " shit "+ userDto.getEmail() );
             User registered = userService.createUser(userDto);
+            if(registered.getFirstName().equals("Registration")){
+                return "Registration-error";
+            }
             String appUrl = request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered,
                     request.getLocale(), appUrl));

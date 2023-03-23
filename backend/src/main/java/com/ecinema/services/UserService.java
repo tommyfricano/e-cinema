@@ -61,6 +61,10 @@ public class UserService {
     public User getUser(int id) {
         return userRespository.findOneByUserID(id);
     }
+    public User getUserEmail(String email) {
+        return userRespository.findOneByEmail(email);
+    }
+
 
     public User findUser(String email, String password) {
         User user = userRespository.findOneByEmail(email);
@@ -75,25 +79,12 @@ public class UserService {
         }
     }
 
-    public void forgotPassword(String email) {
-        User user = userRespository.findOneByEmail(email);
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Account does not exist with this email");
-        }
-        String newPassword = user.getLastName() + user.getUserID();
-        user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
-        SimpleMailMessage emailToUser = new SimpleMailMessage();
-        emailToUser.setTo(email);
-        emailToUser.setSubject("New Password");
-        emailToUser.setText("Your new Password is: " + newPassword + ". Please update this password soon.");
-        mailSender.send(emailToUser);
-
-    }
-
 
     public User createUser(User user) throws MessagingException {   // create and save a new user in db
         if(!(userRespository.findOneByEmail(user.getEmail()) == null)){  // check for duplicates
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists");
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists");
+            user.setFirstName("Registration");
+            return user;
         }
 
         try {
@@ -134,6 +125,7 @@ public class UserService {
     }
 
     public void sendForgotPassword(String email) {
+        System.out.println("thug shaker "+ email);
         User user = userRespository.findOneByEmail(email);
         if (user == null) {
             throw new ResponseStatusException(BAD_REQUEST, "Account does not exist with this email");
@@ -178,7 +170,7 @@ public class UserService {
     update user password
      */
     public void updatePassword(int id, String oldPassword, String newPassword) {
-        User userToUpdate = getUser(id);
+        User userToUpdate = userRespository.findOneByUserID(id);
         System.out.println(oldPassword);
         if(!(new BCryptPasswordEncoder().matches(oldPassword, userToUpdate.getPassword()))){
             throw new ResponseStatusException(BAD_REQUEST, "current password does not match");
