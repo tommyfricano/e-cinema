@@ -91,7 +91,7 @@ public class AuthController {
         } catch (Exception uaeEx) {
             throw uaeEx;
         }
-        return "redirect:/login";
+        return "redirect:/login?success";
     }
 
 
