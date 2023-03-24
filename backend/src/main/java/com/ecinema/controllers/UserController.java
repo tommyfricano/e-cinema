@@ -5,6 +5,7 @@ import com.ecinema.security.SecurityUtil;
 import com.ecinema.users.User;
 import com.ecinema.services.UserService;
 import com.ecinema.users.User;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -88,15 +90,13 @@ public class UserController {
         return "changepassword";
     }
     @PostMapping("/user/editInfo/editPassword")
-    public String editPassword(@ModelAttribute("user")User user){
+    public String editPassword(@ModelAttribute("user")User user, HttpServletResponse httpResponse) throws IOException {
         String username = SecurityUtil.getSessionUser();
         User currentUser = userService.getUserEmail(username);
-        userService.updatePassword(currentUser.getUserID(), user.getPassword(), user.getFirstName());
-        return "Useraccount";
-    }
-    @PatchMapping("/user/editPassword/{id}")
-    public void editPassword(@PathVariable int id, @RequestBody Map<String, String> json){
-        userService.updatePassword(id, json.get("oldPassword"), json.get("newPassword"));
+        System.out.println("here " +currentUser.getEmail());
+        userService.updatePassword(currentUser.getEmail(), user.getPassword(), user.getFirstName());
+        httpResponse.sendRedirect("/user/account");
+        return null;
     }
 }
 

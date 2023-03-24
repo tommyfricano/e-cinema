@@ -4,20 +4,24 @@ import com.ecinema.payment.PaymentCards;
 import com.ecinema.services.UserService;
 import com.ecinema.users.User;
 import com.ecinema.users.confirmation.OnRegistrationCompleteEvent;
+import com.ecinema.users.confirmation.Utility;
 import com.ecinema.users.confirmation.VerificationToken;
 import com.ecinema.users.enums.Status;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+
+import java.util.*;
 
 @Controller
 public class AuthController {
@@ -43,15 +47,66 @@ public class AuthController {
 
     @GetMapping("/forgotPassword")
     public String getForgotPassword(Model model){
-        User user = new User();
-        model.addAttribute("user",user);
         return "ForgotPassword";
     }
+//    @PostMapping("/forgotPassword")
+//    public String ForgotPassword(@ModelAttribute("user") User user) {
+//        System.out.println(user.getEmail());
+//        userService.sendForgotPassword(user.getEmail());
+//        return"CustomerLogin";
+//    }
+
     @PostMapping("/forgotPassword")
-    public String ForgotPassword(@ModelAttribute("user") User user) {
-        System.out.println(user.getEmail());
-        userService.sendForgotPassword(user.getEmail());
-        return"CustomerLogin";
+    public String processForgotPassword(HttpServletRequest request, Model model) {
+        String email = request.getParameter("email");
+        String token = usingRandomUUID();
+
+        try {
+            userService.updateResetPasswordToken(token, email);
+            String resetPasswordLink = Utility.getSiteURL(request) + "/resetPassword?token=" + token;
+            userService.sendEmail(email, resetPasswordLink);
+            model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
+
+        } catch (UnsupportedEncodingException | MessagingException e) {
+            model.addAttribute("error", "Error while sending email");
+        }
+
+        return "ForgotPassword";
+    }
+
+    @GetMapping("/resetPassword")
+    public String showResetPasswordForm(@Param(value = "token") String token, Model model) {
+        User customer = userService.getByResetPasswordToken(token);
+        model.addAttribute("token", token);
+
+        if (customer == null) {
+            model.addAttribute("message", "Invalid Token");
+            return "message";
+        }
+
+        return "userResetPassword";
+    }
+
+    @PostMapping("/resetPassword")
+    public String resetPassword(HttpServletRequest request, Model model){
+        String token = request.getParameter("token");
+        String password = request.getParameter("password");
+
+        System.out.println("token "+ token + " pass "+ password);
+        User customer = userService.getByResetPasswordToken(token);
+        model.addAttribute("title", "Reset your password");
+
+        if (customer == null) {
+            model.addAttribute("message", "Invalid Token");
+            return "message";
+        } else {
+            userService.updatePassword(customer, password);
+
+            model.addAttribute("message", "You have successfully changed your password.");
+        }
+
+        return "redirect:/login";
+
     }
 
     @GetMapping("/registration")
@@ -113,4 +168,13 @@ public class AuthController {
         userService.confirmUser(user, verificationToken);
         return "User is now Active";
     }
+
+    static String usingRandomUUID() {
+
+        UUID randomUUID = UUID.randomUUID();
+
+        return randomUUID.toString().replaceAll("_", "");
+
+    }
 }
+

@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -164,15 +165,15 @@ public class UserService {
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(userToUpdate.getEmail());
         email.setSubject("Your account information has been updated!");     //todo update this link when connected
-        email.setText("Follow this link to view changes" + "\r\n" + "http://localhost:8080/api/user/"+userToUpdate.getUserID());
+        email.setText("Follow this link to view changes" + "\r\n" + "http://localhost:8080/user/"+userToUpdate.getUserID());
         mailSender.send(email);
     }
 
     /*
     update user password
      */
-    public void updatePassword(int id, String oldPassword, String newPassword) {
-        User userToUpdate = userRespository.findOneByUserID(id);
+    public void updatePassword(String email, String oldPassword, String newPassword) {
+        User userToUpdate = userRespository.findOneByEmail(email);
         System.out.println(oldPassword);
         if(!(new BCryptPasswordEncoder().matches(oldPassword, userToUpdate.getPassword()))){
             throw new ResponseStatusException(BAD_REQUEST, "current password does not match");
@@ -214,6 +215,40 @@ public class UserService {
                 cards.get(i).setSecurityCode(new BCryptPasswordEncoder().encode(cards.get(i).getSecurityCode()));
             }
         }
+    }
+
+    public void updateResetPasswordToken(String token, String email) throws ResponseStatusException {
+        User customer = userRespository.findOneByEmail(email);
+        if (customer != null) {
+            customer.setResetPasswordToken(token);
+            userRespository.save(customer);
+        } else {
+            throw new ResponseStatusException(NOT_FOUND, "User doesnt exist");
+        }
+    }
+
+    public void updatePassword(User customer, String newPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        customer.setPassword(encodedPassword);
+
+        customer.setResetPasswordToken(null);
+        userRespository.save(customer);
+    }
+
+    public User getByResetPasswordToken(String token) {
+        return userRespository.findByResetPasswordToken(token);
+    }
+
+    public void sendEmail(String recipientEmail, String link)
+            throws MessagingException, UnsupportedEncodingException {
+
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(recipientEmail);
+        email.setSubject("Forgot password!");     //todo update this link when connected
+        email.setText("Follow this link to change your password" + "\r\n" + link);
+        mailSender.send(email);
+
     }
 
 }

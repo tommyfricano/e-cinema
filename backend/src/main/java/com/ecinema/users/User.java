@@ -52,6 +52,9 @@ public class User {
     @Column(name = "address")
     private String Address;
 
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_userID", referencedColumnName = "userID", insertable = true, updatable = true, nullable = true)
     private List<PaymentCards> payments;
@@ -85,6 +88,14 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.activity = activity;
         this.payments = cards;
+        this.optInPromo = optInPromo;
+    }
+
+    public boolean isOptInPromo() {
+        return optInPromo;
+    }
+
+    public void setOptInPromo(boolean optInPromo) {
         this.optInPromo = optInPromo;
     }
 }

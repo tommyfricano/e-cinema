@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
 		<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-		<link rel="stylesheet" type= "text/css" href="Registration.css">
+		<link rel="stylesheet" type= "text/css" th:href="@{Registration.css}">
 	</head>
 	
 	<body>
@@ -38,6 +38,9 @@
 	</div>
 
     <form class="col-lg-8 off offset-lg-1 styles" method="post" th:action="@{/registration_attempt}" th:object="${user}">
+        <div th:if="${param.error}" class="alert alert-error">
+            Account with this email already exists
+        </div>
       <div class="form-row required">
         <div class="form-group required col-md-6">
           <label class="form-check-label" for="firstName">First name *</label>
@@ -48,12 +51,12 @@
           <input th:field="*{lastName}" type="text" required class="form-control" id="lastName" placeholder="LastName">
         </div>
         <div class="form-group required col-md-6">
-          <label class="form-check-label" for="phone-number">Phone number</label>
+          <label class="form-check-label" for="phone-number">Phone number *</label>
           <input  th:field="*{phoneNumber}" type="number" class="form-control" id="phone-number" placeholder="Phone">
         </div>
       </div>
 	  <div class="form-group">
-        <label class="form-check-label" for="email">Email</label>
+        <label class="form-check-label" for="email">Email *</label>
         <input th:field="*{email}" type="text" class="form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required placeholder="Email">
       </div>
       <div class="form-row">
@@ -114,14 +117,14 @@
       <br />
       <div class="form-group">
         <div class="form-check">
-          <input th:checked="*{optInPromo}"  class="form-check-input" type="checkbox" id="gridCheck">
-          <label class="form-check-label" for="gridCheck">
+          <input th:checked="${user.optInPromo}" th:field="${user.optInPromo}" name="optInPromo" class="form-check-input" type="checkbox" id="optInPromo">
+          <label class="form-check-label" for="optInPromo">
             sign me up for news letter.
           </label>
           
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">SIGN IN</button>
+      <button type="submit" class="btn btn-primary">Register</button>
       <p class="login-link">Already have an account? <a href="login.html">Login</a></p>
 
     </form>
@@ -139,7 +142,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-  <script src="myScript.js"></script>
+  <script src="assets/myScript.js"></script>
 </body>
 
 </html>
