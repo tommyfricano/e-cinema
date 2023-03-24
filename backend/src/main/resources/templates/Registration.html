@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
 		<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-		<link rel="stylesheet" type= "text/css" th:href="@{Registration.css}">
+		<link rel="stylesheet" type= "text/css" href="Registration.css">
 	</head>
 	
 	<body>
@@ -38,9 +38,6 @@
 	</div>
 
     <form class="col-lg-8 off offset-lg-1 styles" method="post" th:action="@{/registration_attempt}" th:object="${user}">
-        <div th:if="${param.error}" class="alert alert-error">
-            Account with this email already exists
-        </div>
       <div class="form-row required">
         <div class="form-group required col-md-6">
           <label class="form-check-label" for="firstName">First name *</label>
@@ -124,7 +121,7 @@
           
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Register</button>
+      <button type="submit" class="btn btn-primary">SIGN IN</button>
       <p class="login-link">Already have an account? <a href="login.html">Login</a></p>
 
     </form>

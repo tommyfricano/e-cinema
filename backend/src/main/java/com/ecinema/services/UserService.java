@@ -143,20 +143,22 @@ public class UserService {
     /*
     update user info
      */
-    public void updateProfile(int id, User user){
-        User userToUpdate = getUser(id);
+    public void updateProfile(String username, User user){ //username is email
+        User userToUpdate = userRespository.findOneByEmail(username);
+        System.out.println(userToUpdate.getFirstName());
         userToUpdate.setFirstName(user.getFirstName());
         userToUpdate.setLastName(user.getLastName());
         userToUpdate.setOptInPromo(user.isOptInPromo());
+        //if (userToUpdate.getPayments() != null) {
+            for (int i = 0; i < userToUpdate.getPayments().size(); i++) {
+                System.out.println(userToUpdate.getPayments().get(i).getPaymentID());
+                paymentCardsRepository.deleteById(userToUpdate.getPayments().get(i).getPaymentID());
+            }
 
-        for( int i=0; i< userToUpdate.getPayments().size();i++){
-            System.out.println(userToUpdate.getPayments().get(i).getPaymentID());
-            paymentCardsRepository.deleteById(userToUpdate.getPayments().get(i).getPaymentID());
-        }
-
-        // todo encrypt card info??
-        encryptAllCards(user.getPayments());
-        userToUpdate.setPayments(user.getPayments());
+            // todo encrypt card info??
+            encryptAllCards(user.getPayments());
+            userToUpdate.setPayments(user.getPayments());
+        //}
         userRespository.save(userToUpdate);
 
         SimpleMailMessage email = new SimpleMailMessage();
@@ -205,10 +207,12 @@ public class UserService {
 
     public void encryptAllCards(List<PaymentCards> cards) {
 
-        for(int i =0;i<cards.size();i++) {
-            cards.get(i).setCardNumber(new BCryptPasswordEncoder().encode(cards.get(i).getCardNumber()));
-            cards.get(i).setExpirationDate(new BCryptPasswordEncoder().encode(cards.get(i).getExpirationDate()));
-            cards.get(i).setSecurityCode(new BCryptPasswordEncoder().encode(cards.get(i).getSecurityCode()));
+        if(cards != null) {
+            for (int i = 0; i < cards.size(); i++) {
+                cards.get(i).setCardNumber(new BCryptPasswordEncoder().encode(cards.get(i).getCardNumber()));
+                cards.get(i).setExpirationDate(new BCryptPasswordEncoder().encode(cards.get(i).getExpirationDate()));
+                cards.get(i).setSecurityCode(new BCryptPasswordEncoder().encode(cards.get(i).getSecurityCode()));
+            }
         }
     }
 
