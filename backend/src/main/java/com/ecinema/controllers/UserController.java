@@ -1,10 +1,11 @@
 package com.ecinema.controllers;
 
+import com.ecinema.movie.Movie;
 import com.ecinema.payment.PaymentCards;
 import com.ecinema.security.SecurityUtil;
+import com.ecinema.services.MovieService;
 import com.ecinema.users.User;
 import com.ecinema.services.UserService;
-import com.ecinema.users.User;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -14,9 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 /*
 Controller for users
@@ -25,11 +24,15 @@ Controller for users
 @Controller
 public class UserController {
     private final UserService userService;  // business logic object
+
+    private final MovieService movieService;
+
     @Autowired
     ApplicationEventPublisher eventPublisher;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, MovieService movieService) {
         this.userService = userService;
+        this.movieService = movieService;
     }
 
 
@@ -97,6 +100,78 @@ public class UserController {
         userService.updatePassword(currentUser.getEmail(), user.getPassword(), user.getFirstName());
         httpResponse.sendRedirect("/user/account");
         return null;
+    }
+
+
+    /*
+    admin controllers
+     */
+    @GetMapping("/admin/manageMovies")
+    public String getManageMovies(Model model){
+//        List<Movie> movies = movieService.getMovies();
+        List<Movie> outNow = movieService.getMoviesOutNow();
+        List<Movie> comingSoon = movieService.getMoviesComingSoon();
+        model.addAttribute("outNow", outNow);
+        model.addAttribute("ComingSoon", comingSoon);
+
+        return "managemovies";
+    }
+
+    @GetMapping("/admin/addMovie")
+    public String getAddMovie(Model model){
+        Movie movie = new Movie();
+        model.addAttribute("movie", movie);
+        return "addmovies";
+    }
+
+    @GetMapping("/admin/addMovie-error")
+    public String getAddMovieError(Model model){
+        model.addAttribute("error", true);
+        return "addmovies";
+    }
+
+    @PostMapping("/admin/addMovie")
+    public String addMovie(@ModelAttribute("movie")Movie movie, HttpServletResponse httpResponse, Model model) throws IOException {
+        String response = movieService.saveMovie(movie);
+        if(response.equals("error")){
+            response = "/admin/addMovies?error";
+        }
+        httpResponse.sendRedirect(response);
+        return null;
+    }
+
+    @GetMapping("/admin/editMovie/{id}")
+    public String getEditMovie(@PathVariable("id") int id, Model model){
+        Movie movie = movieService.getMovie(id);
+        model.addAttribute("movie", movie);
+        return "editmovie";
+    }
+
+    @GetMapping("/admin/editMovie-error")
+    public String getEditMovieError(Model model){
+        model.addAttribute("error", true);
+        return "editmovie";
+    }
+
+    @PostMapping("/admin/editMovie/{id}")
+    public String editMovie(@PathVariable("id") int id,
+                            @ModelAttribute("movie")Movie movie,
+                            HttpServletResponse httpResponse,
+                            Model model) throws IOException {
+        String response = movieService.editMovie(id, movie);
+        if(response.equals("error")){
+            response = "/admin/editMovie?error";
+        }
+        httpResponse.sendRedirect(response);
+        return null;
+    }
+
+    @PostMapping("/admin/deleteMovie/{id}")
+    public void deleteMovie(@PathVariable("id") int id,
+                            HttpServletResponse httpResponse,
+                            Model model) throws IOException {
+        movieService.deleteMovie(id);
+        httpResponse.sendRedirect("/admin/manageMovies");
     }
 }
 

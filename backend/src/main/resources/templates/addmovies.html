@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@
 	
 	<body>
 		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-			<a href="../../../../../Deliverable3_Team_B8/CES/AdminMainPage.html" class="navbar-brand">B8-CINEMA</a>
+			<a th:href="@{/admin/adminPage}" class="navbar-brand">B8-CINEMA</a>
 			<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -27,7 +27,7 @@
 						<a href="#" class="nav-link" style = "margin-left: 35px">USERS</a>
 					</li>
 					<li class="nav-item">
-						<a href="../../../../../Deliverable3_Team_B8/CES/managemovies.html" class="nav-link">MANAGE MOVIES</a>
+						<a th:href="@{/admin/manageMovies}"  class="nav-link">MANAGE MOVIES</a>
 					</li>
 					<li class="nav-item">
 						<a href="../../../../../Deliverable3_Team_B8/CES/promotions.html" class="nav-link">PROMOTIONS</a>
@@ -38,7 +38,7 @@
 						<a href="#" class="nav-link">ADMIN ACCOUNT</a>
 					</li>
 					<li class="nav-item">
-						<a href="../../../../../Deliverable3_Team_B8/CES/Cinema.html" class="nav-link">LOGOUT</a>
+						<a th:href="@{/logout}" class="nav-link">LOGOUT</a>
 					</li>
 				</ul>
 			</div>         
@@ -49,75 +49,67 @@
 			<br><hr><br>
 		</div>
 		<div class="container my-container">
-			<form class = "movieForm" action="../../../../../Deliverable3_Team_B8/CES/managemovies.html">
+			<form method="post" th:action="@{/admin/addMovie}" th:object="${movie}" class = "movieForm" >
+				<div th:if="${param.error}" class="alert alert-success">
+					Failed to add movie.
+				</div>
 				<table>
 					<tr>
-						<td><label class ="formLabel" for="mname">Movie Title:</label></td>
-						<td><input type="text" id="mname" placeholder= "Enter Movie Title" name="mname" value=""></td>
-					</tr>
-					<tr>
-						<td><label class ="formLabel" for="genre">Genre:</label></td>
-						<td><input type="text" id="genre" placeholder= "Enter Genre" name="genre" value=""></td>
-					</tr>
-					<tr>
-						<td><label class ="formLabel" for="duration">Duration:</label></td>
-						<td><input type="number" id="duration" placeholder= "Enter Duration(mins)" name="duration" value=""></td>
-					</tr>
-					<tr>
-						<td><label class ="formLabel" for="date">Release Date:</label></td>
-						<td><input type="date" id="date" placeholder= "Enter Release Date" name="date" value=""></td>
+						<td><label class ="formLabel" for="title">Movie Title:</label></td>
+						<td><input required type="text" th:name="title" th:field="*{title}" id="title" placeholder= "Enter Movie Title" name="mname" value=""></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="cast">Cast:</label></td>
-						<td><input type="text" id="cast" placeholder= "Enter Cast" name="cast" value=""></td>
+						<td><input required type="text" th:name="cast" th:field="*{cast}" id="cast" placeholder= "Enter Cast" name="cast" value=""></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="director">Director:</label></td>
-						<td><input type="text" id="director" placeholder= "Enter Director" name="director" value=""></td>
+						<td><input required type="text" th:name="director" th:field="*{director}" id="director" placeholder= "Enter Director" name="director" value=""></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="producer">Producer:</label></td>
-						<td><input type="text" id="producer" placeholder= "Enter Producer" name="producer" value=""></td>
+						<td><input required type="text" th:name="producer" th:field="*{producer}" id="producer" placeholder= "Enter Producer" name="producer" value=""></td>
 					</tr>
 					<tr>
-						<td><label class ="formLabel" for="description">Description:</label></td>
-						<td><input type="text" id="description" placeholder= "Enter Description" name="description" value=""></td>
+						<td><label class ="formLabel" for="synopsis">Description:</label></td>
+						<td><input required type="text" th:name="synopsis" th:field="*{synopsis}" id="synopsis" placeholder= "Enter Description" name="description" value=""></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="review">Review:</label></td>
-						<td><input type="text" id="review" placeholder= "Add Review" name="review" value=""></td>
+						<td><input required type="text" th:field="*{review}" th:name="review" id="review" placeholder= "Add Review" name="review" value=""></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="rating">Rating:</label></td>
-						<td><input type="text" id="rating" placeholder= "Add Rating" name="rating" value=""></td>
+						<td><input required type="text" th:field="*{rating}" id="rating" placeholder= "Add Rating" name="rating" value=""></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="trailer">Trailer:</label></td>
-						<td><input type="text" id="trailer" placeholder= "Add Trailer" name="trailer" value=""></td>
+						<td><input required type="text" th:name="trailerVideo" th:field="*{trailerVideo}" id="trailer" placeholder= "Add Trailer" name="trailer" value=""></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="image">Poster Image:</label></td>
-						<td><input type="text" id="image" placeholder= "Add Movie Poster" name="image" value=""></td>
+						<td><input required type="text" th:name="movieImage" th:field="*{movieImage}" id="image" placeholder= "Add Movie Poster" name="image" value=""></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="category">Category:</label></td>
-						<td><select type="drop" id="category" placeholder= "Select Category" name="category" value="">
+						<td><select required th:selected="*{category}" type="drop" id="category" placeholder= "Select Category" name="category" value="">
 							<option id="select.">select...</option>
-							<option id="select..">Now Showing Movie</option>
-							<option id="select...">Coming Soon Movie</option>
+							<option th:value="Now-Showing" id="Now-Showing">Now Showing Movie</option>
+							<option th:value="Coming-Soon" id="Coming-Soon">Coming Soon Movie</option>
 						</td>
 					</tr>
 				</table>
-			</form>
 			<br>
 			<div class="container my-container btn">
-				<button class = "submitButton"><a style = "text-decoration: none; color: white;" href="../../../../../Deliverable3_Team_B8/CES/managemovies.html">Cancel</a></button>
-				<button class = "submitButton"><a style = "text-decoration: none; color: white;" href = "../../../../../Deliverable3_Team_B8/CES/managemovies.html">Add</a></button>
+				<button class = "submitButton"><a style = "text-decoration: none; color: white;" th:href="@{/admin/manageMovies}">Cancel</a></button>
+				<button  type="submit" class = "submitButton"><a style = "text-decoration: none; color: white;" >Add</a></button>
 			</div>
-<!-- 					<tr>
-						<td><button class = "button" type="submit" value="Cancel"></td>
-						<td style = "text-align: center; justify-content: center; display:flex;"><input class = "button" type="submit" value="Add"></td>
-					</tr> -->			
+			</form>
+
+			<!-- 					<tr>
+                                    <td><button class = "button" type="submit" value="Cancel"></td>
+                                    <td style = "text-align: center; justify-content: center; display:flex;"><input class = "button" type="submit" value="Add"></td>
+                                </tr> -->
 		</div>
 		<div class="container-fluid my-container">
 			<br><hr><br>
@@ -130,6 +122,6 @@
 			crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 			crossorigin="anonymous"></script>
-		<script src="../../../../../Deliverable3_Team_B8/CES/myScript.js"></script>
+		<script th:src="@{myScript.js}"></script>
 	</body>
 </html>
