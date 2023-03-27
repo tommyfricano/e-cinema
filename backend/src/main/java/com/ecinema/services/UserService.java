@@ -84,7 +84,7 @@ public class UserService {
     public User createUser(User user) throws MessagingException {   // create and save a new user in db
         if(!(userRespository.findOneByEmail(user.getEmail()) == null)){  // check for duplicates
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists");
-            user.setFirstName("Registration");
+            user.setPassword("error");
             return user;
         }
 

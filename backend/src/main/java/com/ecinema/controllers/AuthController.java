@@ -119,9 +119,12 @@ public class AuthController {
     }
 
     @RequestMapping("/registration-error")
-    public String registrationError(Model model) {
+    public String registrationError(@ModelAttribute("user") User user, Model model) {
+        PaymentCards payment = new PaymentCards();
         model.addAttribute("registrationError", true);
-        return "Registration";
+        model.addAttribute("user", user);
+        model.addAttribute("payment", payment);
+        return "redirect:/registration?error";
     }
 
     @PostMapping("/registration_attempt")
@@ -138,8 +141,9 @@ public class AuthController {
                 userDto.setPayments(card);
             }
             User registered = userService.createUser(userDto);
-            if(registered.getFirstName().equals("Registration")){
-                return "Registration-error";
+            if(registered.getPassword().equals("error")){
+                System.out.println("here************");
+                return "redirect:/registration-error";
             }
             String appUrl = request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered,
