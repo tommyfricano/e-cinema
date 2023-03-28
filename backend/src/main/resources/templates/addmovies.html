@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
 		<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-		<link rel="stylesheet" type= "text/css" href="assets/css/addMovies.css">
+		<link rel="stylesheet" type= "text/css" href="../static/css/addMovies.css">
 	</head>
 	
 	<body>
@@ -24,13 +24,13 @@
 				</form>
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
-						<a href="#" class="nav-link" style = "margin-left: 35px">USERS</a>
+						<a th:href="@{/admin/users}" class="nav-link" style = "margin-left: 35px">USERS</a>
 					</li>
 					<li class="nav-item">
 						<a th:href="@{/admin/manageMovies}"  class="nav-link">MANAGE MOVIES</a>
 					</li>
 					<li class="nav-item">
-						<a href="../../../../../Deliverable3_Team_B8/CES/promotions.html" class="nav-link">PROMOTIONS</a>
+						<a th:href="@{/admin/promotions}" class="nav-link">PROMOTIONS</a>
 					</li>
 				</ul>
 				<ul class="navbar-nav ml-auto">
@@ -101,8 +101,8 @@
 				</table>
 			<br>
 			<div class="container my-container btn">
-				<button class = "submitButton"><a style = "text-decoration: none; color: white;" th:href="@{/admin/manageMovies}">Cancel</a></button>
-				<button  type="submit" class = "submitButton"><a style = "text-decoration: none; color: white;" >Add</a></button>
+				<a style = "text-decoration: none; color: white;" href="/admin/manageMovies" th:href="@{/admin/manageMovies}">Cancel</a>
+				<button  type="submit" class = "submitButton"><a style = "text-decoration: none; font-size: 13px; color: white;" >Add</a></button>
 			</div>
 			</form>
 
@@ -122,6 +122,6 @@
 			crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 			crossorigin="anonymous"></script>
-		<script th:src="@{myScript.js}"></script>
+		<script th:src="@{/static/js/myScript.js}"></script>
 	</body>
 </html>

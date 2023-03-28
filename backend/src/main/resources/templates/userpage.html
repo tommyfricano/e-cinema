@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,12 +8,12 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
 		<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-		<link rel="stylesheet" type= "text/css" href="assets/css/userpa.css">
+		<link rel="stylesheet" type= "text/css" href="../static/css/userpa.css">
 	</head>
 	
 	<body>
 		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-			<a href="AdminMainPage.html" class="navbar-brand">B8-CINEMA</a>
+			<a th:href="@{/admin/adminPage}" class="navbar-brand">B8-CINEMA</a>
 			<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -24,13 +24,13 @@
 				</form>
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
-						<a href="#" class="nav-link" style = "margin-left: 35px">USERS</a>
+						<a th:href="@{/admin/users}" class="nav-link" style = "margin-left: 35px">USERS</a>
 					</li>
 					<li class="nav-item">
-						<a href="managemovies.html" class="nav-link">MANAGE MOVIES</a>
+						<a th:href="@{/admin/manageMovies}" class="nav-link">MANAGE MOVIES</a>
 					</li>
 					<li class="nav-item">
-						<a href="promotions.html" class="nav-link">PROMOTIONS</a>
+						<a th:href="@{/admin/promotions}" class="nav-link">PROMOTIONS</a>
 					</li>
 				</ul>
 				<ul class="navbar-nav ml-auto">
@@ -38,7 +38,7 @@
 						<a href="#" class="nav-link">ADMIN ACCOUNT</a>
 					</li>
 					<li class="nav-item">
-						<a href="Cinema.html" class="nav-link">LOGOUT</a>
+						<a th:href="@{/logout}" class="nav-link">LOGOUT</a>
 					</li>
 				</ul>
 			</div>         
@@ -54,63 +54,47 @@
 	<title>Manage Users | Admin Panel</title>
 </head>
 <body>
+	<div th:if="${param.error}" class="alert alert-success">
+		Failed to save user.
+	</div>
+	<div th:if="${param.success}" class="alert alert-success">
+		User saved successfully!
+	</div>
 		<table>
 		<thead>
 			<tr>
 				<th>User ID</th>
+				<th>Role</th>
 				<th>First Name</th>
 				<th>Last Name</th>
-				<th>Username</th>
 				<th>Email</th>
-				<th>Date of Birth</th>
 				<th>Address</th>
-				<th>City</th>
-				<th>State</th>
-				<th>Zip</th>
-				<th>Card Details</th>
+				<th>Phone Number</th>
+				<th>Promo Opt-in</th>
 				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td>1</td>
-				<td>John</td>
-				<td>Doe</td>
-				<td>JohnDoe</td>
-				<td>johndoe@example.com</td>
-				<td>01/01/1990</td>
-				<td>123 Main St</td>
-				<td>Anytown</td>
-				<td>CA</td>
-				<td>12345</td>
-				<td>**** **** **** 1234</td>
+			<tr th:each="user : ${users}">
+				<td th:text="${user.userID}"></td>
+				<td th:text="${user.userType}"></td>
+				<td th:text="${user.firstName}"></td>
+				<td th:text="${user.lastName}"></td>
+				<td th:text="${user.email}"></td>
+				<td th:text="${user.address}"></td>
+				<td th:text="${user.phoneNumber}"></td>
+				<td th:text="${user.optInPromo}"></td>
 				<td>
-					<button class="editbutton posterbutton">EDIT</a></button>
-					<button class="deletebutton posterbutton">DELETE</a></button>
-				</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>Jane</td>
-				<td>Doe</td>
-				<td>JaneDoe</td>
-				<td>janedoe@example.com</td>
-				<td>02/02/1992</td>
-				<td>456 Oak Ave</td>
-				<td>Anytown</td>
-				<td>CA</td>
-				<td>12345</td>
-				<td>**** **** **** 5678</td>
-				<td>
-					<button class="editbutton posterbutton">EDIT</a></button>
-					<button class="deletebutton posterbutton">DELETE</a></button>
+					<button class="editbutton posterbutton"><a th:href="@{'/admin/editUser/'+${user.userID}}">EDIT</a></button>
+					<form method="post" th:action="@{'/admin/deleteUser/'+${user.userID}}">
+						<button type="submit" class="deletebutton posterbutton">DELETE</button>
+					</form>
 				</td>
 			</tr>
 			<!-- more rows for additional users -->
 		</tbody>
 	</table>
-	
-	<button>Add User</button>
+	<button><a th:href="@{/admin/addAdmin}" >Add Admin</a></button>
 			<table>
 				<tr>
 					<!--td>USERS</td-->
@@ -127,6 +111,6 @@
 			crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 			crossorigin="anonymous"></script>
-		<script src="assets/myScript.js"></script>
+		<script th:src="@{/static/js/myScript.js}"></script>
 	</body>
 </html>

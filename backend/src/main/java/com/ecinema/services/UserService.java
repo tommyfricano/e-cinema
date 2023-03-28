@@ -7,10 +7,12 @@ import com.ecinema.repositories.UserRespository;
 import com.ecinema.users.Role;
 import com.ecinema.users.User;
 import com.ecinema.users.confirmation.VerificationToken;
-import com.ecinema.users.confirmation.VerificationTokenRepository;
+import com.ecinema.repositories.VerificationTokenRepository;
 import com.ecinema.users.enums.Status;
 import com.ecinema.users.enums.UserTypes;
 import jakarta.mail.MessagingException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +37,8 @@ contains all business logic for controllers
 @Transactional
 public class UserService {
 
+    private final VerificationTokenRepository verificationTokenRepository;
+
     private final UserRespository userRespository;  //interacts with users table
 
     private final PaymentCardsRepository paymentCardsRepository;
@@ -43,21 +47,25 @@ public class UserService {
 
     private final RoleRepository roleRepository;
 
+    private final EntityManager em;
+
+
     @Autowired
     private JavaMailSender mailSender;  // used for sending confirmation emails
 
     @Autowired
-    public UserService(UserRespository userRespository, PaymentCardsRepository paymentCardsRepository, VerificationTokenRepository tokenRepository, RoleRepository roleRepository) {   //constructor needed for dependency injection of repo
+    public UserService(VerificationTokenRepository verificationTokenRepository, UserRespository userRespository, PaymentCardsRepository paymentCardsRepository, VerificationTokenRepository tokenRepository, RoleRepository roleRepository, EntityManager em) {
+        this.verificationTokenRepository = verificationTokenRepository;   //constructor needed for dependency injection of repo
         this.userRespository = userRespository;
         this.paymentCardsRepository = paymentCardsRepository;
         this.tokenRepository = tokenRepository;
         this.roleRepository = roleRepository;
+        this.em = em;
     }
 
     public List<User> getUsers() {     // get a list of all user from db
         return userRespository.findAll();
     }
-
 
     public User getUser(int id) {
         return userRespository.findOneByUserID(id);
@@ -66,6 +74,11 @@ public class UserService {
         return userRespository.findOneByEmail(email);
     }
 
+    public void deleteUser(int id){
+        User user = userRespository.getReferenceById(id);
+        verificationTokenRepository.deleteByUser(user);
+        userRespository.deleteById(id);
+    }
 
     public User findUser(String email, String password) {
         User user = userRespository.findOneByEmail(email);
@@ -105,6 +118,19 @@ public class UserService {
         return user;
     }
 
+    public String createAdmin(User user){
+        if(!(userRespository.findOneByEmail(user.getEmail()) == null)){  // check for duplicates
+            return "/admin/users?error";
+        }
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setActivity(Status.ACTIVE);
+        user.setUserType(UserTypes.ADMIN);
+        Role role = roleRepository.findByName("ADMIN");
+        user.setRoles(Arrays.asList(role));
+        userRespository.save(user);
+        return "/admin/users?success";
+    }
+
 
     /*
     all user activation
@@ -126,7 +152,6 @@ public class UserService {
     }
 
     public void sendForgotPassword(String email) {
-        System.out.println("thug shaker "+ email);
         User user = userRespository.findOneByEmail(email);
         if (user == null) {
             throw new ResponseStatusException(BAD_REQUEST, "Account does not exist with this email");
@@ -139,7 +164,6 @@ public class UserService {
         emailToUser.setText("Your new Password is: " + newPassword + " please update soon");
         mailSender.send(emailToUser);
     } // forgotPassword
-
 
     /*
     update user info
@@ -167,6 +191,18 @@ public class UserService {
         email.setSubject("Your account information has been updated!");     //todo update this link when connected
         email.setText("Follow this link to view changes" + "\r\n" + "http://localhost:8080/user/"+userToUpdate.getUserID());
         mailSender.send(email);
+    }
+
+    public String userUpdateByAdmin(int id, User user){
+        User userToUpdate = userRespository.findOneByUserID(id);
+        userToUpdate.setFirstName(user.getFirstName());
+        userToUpdate.setAddress(user.getAddress());
+        userToUpdate.setLastName(user.getLastName());
+        userToUpdate.setPhoneNumber(user.getPhoneNumber());
+
+        userRespository.save(userToUpdate);
+
+        return "/admin/users?success";
     }
 
     /*

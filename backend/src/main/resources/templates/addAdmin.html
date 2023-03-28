@@ -12,32 +12,43 @@
 	</head>
 	
 	<body>
-		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-			<a href="Cinema.html" class="navbar-brand">B8-CINEMA</a>
-			<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarMenu">
-				<form class="form-inline ml-lg-5">
-					<input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
-					<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
-				</form>
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-						<a th:href="@{/login}" data-toggle="tooltip" title="Login" class="nav-link"><i class="fas fa-user"></i> <span class="sr-only">LOGIN</span></a>
-					</li>
-					<li class="nav-item">
-						<a th:href="@{/registration}" class="nav-link">SIGN UP</a>
-					</li>
-				</ul>
-			</div>         
-		</nav>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <a th:href="@{/admin/adminPage}" class="navbar-brand">B8-CINEMA</a>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarMenu">
+            <form class="form-inline ml-lg-5">
+                <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a th:href="@{/admin/users}" class="nav-link" style = "margin-left: 35px">USERS</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/admin/manageMovies}" class="nav-link">MANAGE MOVIES</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/admin/promotions}" class="nav-link">PROMOTIONS</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">ADMIN ACCOUNT</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/logout}" class="nav-link">LOGOUT</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 	<div class="container-fluid my-container">
-			<div class="title"><br>REGISTRATION</div>
+			<div class="title"><br>ADD ADMIN</div>
 			<br><hr><br>
 	</div>
 
-    <form class="col-lg-8 off offset-lg-1 styles" method="post" th:action="@{/registration_attempt}" th:object="${user}">
+    <form class="col-lg-8 off offset-lg-1 styles" method="post" th:action="@{/admin/addAdmin_attempt}" th:object="${user}">
         <div th:if="${param.error}" class="alert alert-error">
             Account with this email already exists
         </div>
@@ -49,10 +60,6 @@
         <div class="form-group required col-md-6">
           <label class="form-check-label" for="lastName">Last name *</label>
           <input th:field="*{lastName}" type="text" required class="form-control" id="lastName" placeholder="LastName">
-        </div>
-        <div class="form-group required col-md-6">
-          <label class="form-check-label" for="phone-number">Phone number *</label>
-          <input  th:field="*{phoneNumber}" type="number" class="form-control" id="phone-number" placeholder="Phone">
         </div>
       </div>
 	  <div class="form-group">
@@ -70,7 +77,6 @@
             placeholder="Confirm Password">
         </div>
       </div>
-        <div th:object="${payment}">
       <div class="form-group">
         <label class="form-check-label" for="inputAddress">Address</label>
         <input th:field="${user.address}" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
@@ -95,38 +101,19 @@
 <!--          <label class="form-check-label" for="inputZip">Zip</label>-->
 <!--          <input type="text" class="form-control" id="inputZip" placeholder="00000">-->
 <!--        </div>-->
-	  <div class="form-group">
-        <label class="form-check-label" for="card">Cardholder Name</label>
-        <input  type="text" class="form-control" id="card" placeholder="Name on Card">
-      </div>
-		<div class="form-row">
-        <div class="form-group col-md-6">
-          <label class="form-check-label" for="cardNo">Card Number</label>
-          <input th:field="*{cardNumber}" type="text" class="form-control" id="cardNo" placeholder="XXXX XXXX XXXX XXXX">
-        </div>
-        <div class="form-group col-md-4">
-          <label class="form-check-label" for="expiry">Expiration Date</label>
-          <input th:field="*{expirationDate}" type="date" class="form-control" id="expiry">
-        </div>
-        <div class="form-group col-md-2">
-          <label class="form-check-label" for="cvv">CVV</label>
-          <input th:field="*{securityCode}" type="text" class="form-control" id="cvv" placeholder="XXX">
-        </div>
       </div>
         </div>
       <br />
-      <div class="form-group">
-        <div class="form-check">
-          <input th:checked="${user.optInPromo}" th:field="${user.optInPromo}" name="optInPromo" class="form-check-input" type="checkbox" id="optInPromo">
-          <label class="form-check-label" for="optInPromo">
-            sign me up for news letter.
-          </label>
-          
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary">Register</button>
-      <p class="login-link">Already have an account? <a href="login.html">Login</a></p>
-
+<!--      <div class="form-group">-->
+<!--        <div class="form-check">-->
+<!--          <input th:checked="${user.optInPromo}" th:field="${user.optInPromo}" name="optInPromo" class="form-check-input" type="checkbox" id="optInPromo">-->
+<!--          <label class="form-check-label" for="optInPromo">-->
+<!--            sign me up for news letter.-->
+<!--          </label>-->
+<!--          -->
+<!--        </div>-->
+<!--      </div>-->
+      <button type="submit" class="btn btn-primary">Add Admin</button>
     </form>
 	
 	<div class="container-fluid my-container">
