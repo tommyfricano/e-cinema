@@ -83,6 +83,16 @@ body {
   td {
     vertical-align: middle;
   }
+
+  a{
+      color: white;
+      text-decoration: none;
+  }
+
+  a:hover{
+      color:#8A2BE2;
+      text-decoration: none;
+  }
 .editbutton{
 	float: left;
 	border: 0.5px solid #8A2BE2;

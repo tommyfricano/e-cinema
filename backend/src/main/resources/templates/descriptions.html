@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>B8-CINEMA</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+		<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+		<link rel="stylesheet" type= "text/css" th:href="@{/static/css/descriptionstyle.css}">
+	</head>
+	
+	<body>
+	<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+		<a th:href="@{/admin/adminPage}" class="navbar-brand">B8-CINEMA</a>
+		<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarMenu">
+			<form class="form-inline ml-lg-5">
+				<input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
+				<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
+			</form>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a th:href="@{/admin/users}" class="nav-link" style = "margin-left: 35px">USERS</a>
+				</li>
+				<li class="nav-item">
+					<a th:href="@{/admin/manageMovies}" class="nav-link">MANAGE MOVIES</a>
+				</li>
+				<li class="nav-item">
+					<a th:href="@{/admin/promotions}" class="nav-link">PROMOTIONS</a>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a href="#" class="nav-link">ADMIN ACCOUNT</a>
+				</li>
+				<li class="nav-item">
+					<a th:href="@{/logout}" class="nav-link">LOGOUT</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<div class="container-fluid my-container" th:object="${movie}">
+		<br>
+		<h2 class = "header"><hr class = "mainHR" th:text="*{title}"><hr class = "mainHR"></h2>
+		<br>
+		<!-- <td class="badge badge-pill badge-success">Rating 9.8</td> -->
+		<table>
+			<tr>
+				<td style = "padding-right: 50px;">
+					<img width="300px" height="425px" th:src="*{movieImage}" th:alt="*{title}">
+				</td>
+				<td style = "padding-left: 50px;">
+					<iframe width="700" height="425" th:src="${movie.trailerVideo}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</td>
+			</tr>
+		</table>
+		<br><hr class = "mainHR"><br>
+	</div>
+	<div class="container my-container">
+		<table>
+			<tr>
+<!--				<td  style = "width: 35%; display: inline;" class = "movie-description"><b>GENRE: </b> Action, Adventure</td>-->
+				<td rowspan="2" style = "width: 62%" class = "movie-description" >
+					<b>DESCRIPTION:</b><br><p th:text="${movie.synopsis}"></p>
+				</td>
+			</tr>
+		  <tr>
+			<td style = "width: 35%; display: inline;" class = "movie-description">
+				<button style = "background: gold; color: black; border-radius: 5px;" ><b>RATED: </b><b th:text="${movie.rating}"></b> </button>
+			</td>
+		  </tr>
+			<tr>
+				<!--				<td  style = "width: 35%; display: inline;" class = "movie-description"><b>GENRE: </b> Action, Adventure</td>-->
+				<td rowspan="2" style = "width: 62%" class = "movie-description" >
+					<b>Genre: </b><br><p th:text="${movie.genre}"></p>
+				</td>
+			</tr>
+			<tr>
+				<!--				<td  style = "width: 35%; display: inline;" class = "movie-description"><b>GENRE: </b> Action, Adventure</td>-->
+				<td rowspan="2" style = "width: 62%" class = "movie-description" >
+					<b>Director:</b><p th:text="${movie.director}"></p>
+				</td>
+			</tr>
+			<tr>
+				<!--				<td  style = "width: 35%; display: inline;" class = "movie-description"><b>GENRE: </b> Action, Adventure</td>-->
+				<td rowspan="2" style = "width: 62%" class = "movie-description" >
+					<b>Producer:</b><p th:text="${movie.producer}"></p>
+				</td>
+			</tr>
+			<tr>
+				<!--				<td  style = "width: 35%; display: inline;" class = "movie-description"><b>GENRE: </b> Action, Adventure</td>-->
+				<td rowspan="2" style = "width: 62%" class = "movie-description" >
+					<b>Cast:</b><p th:text="${movie.cast}"></p>
+				</td>
+			</tr>
+			<tr>
+				<!--				<td  style = "width: 35%; display: inline;" class = "movie-description"><b>GENRE: </b> Action, Adventure</td>-->
+				<td rowspan="2" style = "width: 62%" class = "movie-description" >
+					<b>Review:</b><p th:text="${movie.review}"></p>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="container-fluid my-container">
+		<br><hr class = "mainHR"><br>
+	</div>
+	<div class="container my-container" th:object="${movie}">
+		<section>
+			<div style = "text-align: center;"><button class = "showTimeheader">SHOW TIMINGS</button></div>
+			<br><br>
+			<div class = "showdate">28TH FEBRUARY 2023</div>
+			<hr class = "showtimeHR">
+			<br>
+			<div class="row justify-content-between">
+				<div class="col-md-2 my-col">
+					<div class = "poster-title"><a href = "tickets/buytickets.html" style = "color: white; background: black; padding: 10px; border-radius: 5px;">1:15PM</a></div>
+				</div>
+			</div>
+			<br><br>
+			<br>
+		</section>
+	</div>
+	<div class="container-fluid my-container">
+		<br><hr class = "mainHR"><br>
+	</div>
+	
+	
+	
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+				crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+				crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+				crossorigin="anonymous"></script>
+		<script th:src="@{/static/js/myScript.js}"></script>
+
+	</body>
+</html>

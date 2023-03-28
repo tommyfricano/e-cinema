@@ -27,7 +27,7 @@
 						<a th:href="@{/admin/users}" class="nav-link" style = "margin-left: 35px">USERS</a>
 					</li>
 					<li class="nav-item">
-						<a th:href="@{/admin/adminPage}" class="nav-link">MANAGE MOVIES</a>
+						<a th:href="@{/admin/manageMovies}" class="nav-link">MANAGE MOVIES</a>
 					</li>
 					<li class="nav-item">
 						<a th:href="@{/admin/promotions}" class="nav-link">PROMOTIONS</a>
@@ -60,7 +60,7 @@
 				</tr>
 				<tr th:each="movie : ${outNow}">
 					<td th:value="${movie.title}" th:text="${movie.title}"></td>
-					<td><button class = "removeMovie"><a th:href="@{'/admin/editMovie/'+${movie.movieID}}">Edit</a></button></td>
+					<td><button class = "removeMovie"><a style = "text-decoration: none; color: white;" th:href="@{'/admin/editMovie/'+${movie.movieID}}">Edit</a></button></td>
 					<form method="post" th:action="@{'/admin/deleteMovie/'+${movie.movieID}}">
 						<td><button type="submit" class = "removeMovie" >Remove</button></td>
 					</form>
@@ -70,7 +70,7 @@
 				</tr>
 				<tr th:each="movie : ${ComingSoon}">
 					<td th:value="${movie.title}" th:text="${movie.title}"></td>
-					<td><button class = "removeMovie"><a th:href="@{'/admin/editMovie/'+${movie.movieID}}">Edit</a></button></td>
+					<td><button class = "removeMovie"><a style = "text-decoration: none; color: white;" th:href="@{'/admin/editMovie/'+${movie.movieID}}">Edit</a></button></td>
 					<form method="post" th:action="@{'/admin/deleteMovie/'+${movie.movieID}}">
 						<td><button type="submit" class = "removeMovie" >Remove</button></td>
 					</form>
@@ -78,7 +78,7 @@
 			</table>
 			<br>
 			<button class="addMovie"><a th:href="@{/admin/addMovie}">ADD MOVIE</a></button><br>
-			<button class="addMovie"><a href="../../../../../Deliverable3_Team_B8/CES/scheduleMovies.html">SCHEDULE MOVIE</a></button>
+			<button class="addMovie"><a th:href="@{/admin/scheduleMovie}">SCHEDULE MOVIE</a></button>
 		</div>
 		<div class="container-fluid my-container">
 			<br><hr><br>

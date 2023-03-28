@@ -49,6 +49,9 @@ public class Movie {
     @Column(name = "rating")
     private String rating;
 
+    @Column(name = "genre")
+    private String genre;
+
     public Movie(String title,
                  String category,
                  String cast,
@@ -57,7 +60,9 @@ public class Movie {
                  String synopsis,
                  String review,
                  String movieImage,
-                 String trailerVideo) {
+                 String trailerVideo,
+                 String rating,
+                 String genre) {
         this.title = title;
         this.category = category;
         this.cast = cast;
@@ -67,5 +72,7 @@ public class Movie {
         this.review = review;
         this.movieImage = movieImage;
         this.trailerVideo = trailerVideo;
+        this.rating = rating;
+        this.genre = genre;
     }
 }

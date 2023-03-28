@@ -67,6 +67,12 @@ public class UserService {
         return userRespository.findAll();
     }
 
+    public List<User> getPromoUsers() {     // get a list of all user from db
+
+        return userRespository.findAllByOptInPromo(true);
+    }
+
+
     public User getUser(int id) {
         return userRespository.findOneByUserID(id);
     }
@@ -281,8 +287,19 @@ public class UserService {
 
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientEmail);
-        email.setSubject("Forgot password!");     //todo update this link when connected
+        email.setSubject("Forgot password!");
         email.setText("Follow this link to change your password" + "\r\n" + link);
+        mailSender.send(email);
+
+    }
+
+    public void sendPromoEmail(String recipientEmail, String link, String promo, double discount)
+            throws MessagingException, UnsupportedEncodingException {
+
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(recipientEmail);
+        email.setSubject("Movie discount!");
+        email.setText("User promo code: " +promo +" for "+ discount+ "% off!" +"\r\n" + link);
         mailSender.send(email);
 
     }

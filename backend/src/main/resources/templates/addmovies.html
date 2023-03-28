@@ -51,12 +51,16 @@
 		<div class="container my-container">
 			<form method="post" th:action="@{/admin/addMovie}" th:object="${movie}" class = "movieForm" >
 				<div th:if="${param.error}" class="alert alert-success">
-					Failed to add movie.
+					Failed to add movie.... Movie already exists.
 				</div>
 				<table>
 					<tr>
 						<td><label class ="formLabel" for="title">Movie Title:</label></td>
 						<td><input required type="text" th:name="title" th:field="*{title}" id="title" placeholder= "Enter Movie Title" name="mname" value=""></td>
+					</tr>
+					<tr>
+						<td><label class ="formLabel" for="genre">Genre:</label></td>
+						<td><input required type="text" th:name="genre" th:field="*{genre}" id="genre" placeholder= "Enter genre" name="cast" value=""></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="cast">Cast:</label></td>

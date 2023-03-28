@@ -55,6 +55,8 @@ public class MovieService {
         movieToUpdate.setRating(movie.getRating());
         movieToUpdate.setReview(movie.getReview());
         movieToUpdate.setSynopsis(movie.getSynopsis());
+        movieToUpdate.setTrailerVideo(movie.getTrailerVideo());
+        movieToUpdate.setGenre(movie.getGenre());
         movieRepository.save(movieToUpdate);
         return "/admin/manageMovies?success";
     }

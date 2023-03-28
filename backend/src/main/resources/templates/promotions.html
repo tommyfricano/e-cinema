@@ -58,7 +58,7 @@
 			<table class = "movies">
 				<tr th:each="promotion : ${promotions}">
 					<td th:value="${promotion.code}" th:text="${promotion.code}"></td>
-					<td><button class = "editPromotion" >Edit</button></td>
+					<td><button class = "editPromotion" ><a style = "text-decoration: none; color: white;" th:href="@{'/admin/editPromotion/'+${promotion.promoID}}">Edit</a></button></td>
 					<form method="post" th:action="@{'/admin/deletePromotion/'+${promotion.promoID}}">
 						<td><button type="submit" class = "removePromotion" >Remove</button></td>
 					</form>
@@ -78,7 +78,7 @@
 				<table>
 					<tr>
 						<td><label class ="formLabel" for="code">Promotion Name</label></td>
-						<td><input type="text" th:field="*{code}" id="code" placeholder= "Enter Promo Name" name="code" value=""></td>
+						<td><input type="text" required th:field="*{code}" id="code" placeholder= "Enter Promo Name" name="code" value=""></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="start">Start date</label></td>
@@ -86,11 +86,11 @@
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="end">End date</label></td>
-						<td><input type="text" th:field="*{endDate}" id="end" name="end" placeholder="mm/dd/yyyy" value=""></td>
+						<td><input type="text" required th:field="*{endDate}" id="end" name="end" placeholder="mm/dd/yyyy" value=""></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="discount">Discount:</label></td>
-						<td><input type="number" th:field="*{discount}" id="discount" placeholder= "Enter Discount(%)" name="discount"></td>
+						<td><input type="number" required th:field="*{discount}" id="discount" placeholder= "Enter Discount(%)" name="discount"></td>
 					</tr>
 					<tr>
 <!--						<td><input class = "button" type="submit" value="Cancel"></td>-->

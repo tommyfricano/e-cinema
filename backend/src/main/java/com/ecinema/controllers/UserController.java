@@ -8,6 +8,9 @@ import com.ecinema.services.MovieService;
 import com.ecinema.services.PromotionsService;
 import com.ecinema.users.User;
 import com.ecinema.services.UserService;
+import com.ecinema.users.confirmation.Utility;
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -53,10 +56,6 @@ public class UserController {
     @GetMapping("/user/customerPage")
     public String getUserPage(){
         return "customerHomePage";
-    }
-    @GetMapping("/admin/adminPage")
-    public String getAdminPage(){
-        return "AdminMainPage";
     }
 
     @GetMapping("/user/payments/{id}")       // gets all cards
@@ -111,6 +110,22 @@ public class UserController {
     /*
     admin controllers
      */
+
+    @GetMapping("/admin/adminPage")
+    public String getAdminPage(Model model){
+        List<Movie> onMovies = movieService.getMoviesOutNow();
+        List<Movie> csMovies = movieService.getMoviesComingSoon();
+        model.addAttribute("onmovies", onMovies);
+        model.addAttribute("csmovies", csMovies);
+        return "AdminMainPage";
+    }
+
+    @GetMapping("/admin/descriptions/{id}")
+    public String getDescription(@PathVariable("id")int id, Model model){
+        Movie movie = movieService.getMovie(id);
+        model.addAttribute("movie", movie);
+        return "descriptions";
+    }
     @GetMapping("/admin/manageMovies")
     public String getManageMovies(Model model){
 //        List<Movie> movies = movieService.getMovies();
@@ -139,7 +154,7 @@ public class UserController {
     public String addMovie(@ModelAttribute("movie")Movie movie, HttpServletResponse httpResponse, Model model) throws IOException {
         String response = movieService.saveMovie(movie);
         if(response.equals("error")){
-            response = "/admin/addMovies?error";
+            response = "/admin/addMovie?error";
         }
         httpResponse.sendRedirect(response);
         return null;
@@ -179,6 +194,19 @@ public class UserController {
         httpResponse.sendRedirect("/admin/manageMovies");
     }
 
+    @GetMapping("/admin/scheduleMovie")
+    public String getScheduleMovie(Model model){
+        List<Movie> movies = movieService.getMovies();
+        model.addAttribute("movies", movies);
+        return "scheduleMovies";
+    }
+
+    @PostMapping("/admin/scheduleMovie/{id}")
+    public void scheduleMovie(@PathVariable("id") int id, HttpServletResponse httpResponse, Model model) throws IOException {
+
+        httpResponse.sendRedirect("/admin/manageMovies");
+    }
+
     @GetMapping("/admin/promotions")
     public String getPromotions(Model model){
         List<Promotions> promotions = promotionsService.getPromotions();
@@ -188,9 +216,17 @@ public class UserController {
         return "promotions";
     }
 
+    @GetMapping("/admin/editPromotion/{id}")
+    public String editPromotion(@PathVariable("id")int id, Model model){
+        Promotions promo = promotionsService.getPromotion(id);
+        model.addAttribute("promo", promo);
+        return "EditPromotion";
+    }
+
     @PostMapping("/admin/promotions")
-    public String addPromotion(@ModelAttribute("promotion")Promotions promo, HttpServletResponse httpResponse, Model model) throws IOException {
-        String response = promotionsService.savePromotion(promo);
+    public String addPromotion(@ModelAttribute("promotion")Promotions promo, HttpServletRequest request, HttpServletResponse httpResponse, Model model) throws IOException, MessagingException {
+        String link = Utility.getSiteURL(request) + "/login";
+        String response = promotionsService.savePromotion(promo, link);
         if(response.equals("error")){
             response = "/admin/promotions?error";
         }
