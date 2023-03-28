@@ -2,8 +2,10 @@ package com.ecinema.controllers;
 
 import com.ecinema.movie.Movie;
 import com.ecinema.payment.PaymentCards;
+import com.ecinema.promotion.Promotions;
 import com.ecinema.security.SecurityUtil;
 import com.ecinema.services.MovieService;
+import com.ecinema.services.PromotionsService;
 import com.ecinema.users.User;
 import com.ecinema.services.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,12 +29,15 @@ public class UserController {
 
     private final MovieService movieService;
 
+    private final PromotionsService promotionsService;
+
     @Autowired
     ApplicationEventPublisher eventPublisher;
 
-    public UserController(UserService userService, MovieService movieService) {
+    public UserController(UserService userService, MovieService movieService, PromotionsService promotionsService) {
         this.userService = userService;
         this.movieService = movieService;
+        this.promotionsService = promotionsService;
     }
 
 
@@ -173,5 +178,96 @@ public class UserController {
         movieService.deleteMovie(id);
         httpResponse.sendRedirect("/admin/manageMovies");
     }
+
+    @GetMapping("/admin/promotions")
+    public String getPromotions(Model model){
+        List<Promotions> promotions = promotionsService.getPromotions();
+        Promotions promo = new Promotions();
+        model.addAttribute("promotions", promotions);
+        model.addAttribute("promo", promo);
+        return "promotions";
+    }
+
+    @PostMapping("/admin/promotions")
+    public String addPromotion(@ModelAttribute("promotion")Promotions promo, HttpServletResponse httpResponse, Model model) throws IOException {
+        String response = promotionsService.savePromotion(promo);
+        if(response.equals("error")){
+            response = "/admin/promotions?error";
+        }
+        httpResponse.sendRedirect(response);
+        return null;
+    }
+
+    @PostMapping("/admin/editPromotion/{id}")
+    public String editMovie(@PathVariable("id") int id,
+                            @ModelAttribute("promotion")Promotions promotion,
+                            HttpServletResponse httpResponse,
+                            Model model) throws IOException {
+        String response = promotionsService.editPromo(id, promotion);
+        if(response.equals("error")){
+            response = "/admin/promotions?error";
+        }
+        httpResponse.sendRedirect(response);
+        return null;
+    }
+
+    @PostMapping("/admin/deletePromotion/{id}")
+    public void deletePromotion(@PathVariable("id") int id,
+                            HttpServletResponse httpResponse,
+                            Model model) throws IOException {
+        promotionsService.deletePromo(id);
+        httpResponse.sendRedirect("/admin/promotions");
+    }
+
+    @GetMapping("/admin/users")
+    public String getUsers(Model model){
+        List<User> users = userService.getUsers();
+        model.addAttribute("users", users);
+        return "userpage";
+    }
+
+    @GetMapping("/admin/editUser/{id}")
+    public String getEditUser(@PathVariable("id") int id, Model model){
+        User user = userService.getUser(id);
+        model.addAttribute("user", user);
+        return "EditUserPage";
+    }
+
+    @PostMapping("/admin/editUser/{id}")
+    public String editUser(@PathVariable("id") int id,
+                            @ModelAttribute("user")User user,
+                            HttpServletResponse httpResponse,
+                            Model model) throws IOException {
+        String response = userService.userUpdateByAdmin(id, user);
+        if(response.equals("error")){
+            response = "/admin/users?error";
+        }
+        httpResponse.sendRedirect(response);
+        return null;
+    }
+
+    @PostMapping("/admin/deleteUser/{id}")
+    public void deleteUser(@PathVariable("id") int id,
+                                HttpServletResponse httpResponse,
+                                Model model) throws IOException {
+        userService.deleteUser(id);
+        httpResponse.sendRedirect("/admin/users");
+    }
+
+    @GetMapping("/admin/addAdmin")
+    public String getAddAdmin(Model model){
+        User user = new User();
+        model.addAttribute("user", user);
+        return "addAdmin";
+    }
+
+    @PostMapping("/admin/addAdmin_attempt")
+    public void createAdmin(@ModelAttribute("user")User user,
+                              HttpServletResponse httpResponse,
+                              Model model) throws IOException {
+        String response = userService.createAdmin(user);
+        httpResponse.sendRedirect(response);
+    }
+
 }
 
