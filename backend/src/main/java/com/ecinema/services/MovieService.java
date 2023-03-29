@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,6 +23,11 @@ public class MovieService {
     public Movie getMovie(int id){
         return movieRepository.getMovieByMovieID(id);
     }
+
+    public Movie getMovieByTitle(String title){
+        return movieRepository.getMovieByTitle(title);
+    }
+
     public List<Movie> getMovies(){
         return movieRepository.findAll();
     }
@@ -32,6 +38,18 @@ public class MovieService {
 
     public List<Movie> getMoviesComingSoon(){
         return movieRepository.findByCategory("Coming-Soon");
+    }
+
+    public List<Movie> getTopMovies(){
+        List<Movie> movies = movieRepository.findByCategory("Now-Showing");
+        if(movies.size() > 4 ){
+            List<Movie> newList = new ArrayList<>();
+            for(int i=0;i<4;i++) {
+                newList.add(movies.get(i));
+            }
+            return newList;
+        }
+        return movies;
     }
 
 

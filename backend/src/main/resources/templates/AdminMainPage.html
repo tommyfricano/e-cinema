@@ -59,7 +59,7 @@
 						<div class = "poster-title" th:text="${movie.title}"></div>
 						<div class="buttonDiv">
 							<button class="trailerbutton posterbutton"><a th:href="${movie.trailerVideo}" target="_blank" style = "text-decoration: none; color:  white;">TRAILER</a></button>
-	<!--						<button class="booknowbutton posterbutton"><a href="../../../../../Deliverable3_Team_B8/CES/descriptions/uncharted_descriptions.html" style = "text-decoration: none; color:  white;">BOOK NOW</a></button>-->
+							<button class="booknowbutton posterbutton" ><b style="color: white;">Rated: </b><b style="color: black;" th:text="${movie.rating}"></b></button>
 						</div>
 					</div>
 				</div>

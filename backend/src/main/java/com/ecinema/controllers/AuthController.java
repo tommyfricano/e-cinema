@@ -1,6 +1,8 @@
 package com.ecinema.controllers;
 
+import com.ecinema.movie.Movie;
 import com.ecinema.payment.PaymentCards;
+import com.ecinema.services.MovieService;
 import com.ecinema.services.UserService;
 import com.ecinema.users.User;
 import com.ecinema.users.confirmation.OnRegistrationCompleteEvent;
@@ -11,7 +13,6 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 
 import java.util.*;
 
@@ -30,7 +30,7 @@ public class AuthController {
     @Autowired
     ApplicationEventPublisher eventPublisher;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, MovieService movieService) {
         this.userService = userService;
     }
 
@@ -45,16 +45,6 @@ public class AuthController {
         return "Customerlogin";
     }
 
-    @GetMapping("/forgotPassword")
-    public String getForgotPassword(Model model){
-        return "ForgotPassword";
-    }
-//    @PostMapping("/forgotPassword")
-//    public String ForgotPassword(@ModelAttribute("user") User user) {
-//        System.out.println(user.getEmail());
-//        userService.sendForgotPassword(user.getEmail());
-//        return"CustomerLogin";
-//    }
 
     @PostMapping("/forgotPassword")
     public String processForgotPassword(HttpServletRequest request, Model model) {
