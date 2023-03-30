@@ -25,7 +25,7 @@ public class MovieService {
     }
 
     public Movie getMovieByTitle(String title){
-        return movieRepository.getMovieByTitle(title);
+        return movieRepository.getMovieByTitleIgnoreCase(title);
     }
 
     public List<Movie> getMovies(){
@@ -38,6 +38,13 @@ public class MovieService {
 
     public List<Movie> getMoviesComingSoon(){
         return movieRepository.findByCategory("Coming-Soon");
+    }
+
+    public List<Movie> getMoviesByGenreOutNow(String genre){
+        return movieRepository.findByGenreIgnoreCaseAndAndCategory(genre, "Now-Showing");
+    }
+    public List<Movie> getMoviesByGenreComing(String genre){
+        return movieRepository.findByGenreIgnoreCaseAndAndCategory(genre, "Coming-Soon");
     }
 
     public List<Movie> getTopMovies(){
@@ -54,7 +61,7 @@ public class MovieService {
 
 
     public String saveMovie(Movie movie){
-        Movie checkMovie = movieRepository.getMovieByTitle(movie.getTitle());
+        Movie checkMovie = movieRepository.getMovieByTitleIgnoreCase(movie.getTitle());
         if(checkMovie != null){
             return "error";
         }

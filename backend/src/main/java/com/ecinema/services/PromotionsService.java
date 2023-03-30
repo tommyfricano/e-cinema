@@ -36,14 +36,18 @@ public class PromotionsService {
     public String savePromotion(Promotions promo, String link) throws MessagingException, UnsupportedEncodingException {
 
         promotionsRepository.save(promo);
+        return "/admin/promotions?success";
+    }
+
+    public String sendPromotion(int id, String link) throws MessagingException, UnsupportedEncodingException {
+        Promotions promo = promotionsRepository.findByPromoID(id);
         List<User> users = userService.getPromoUsers();
 
         for(User user : users){
             System.out.println(user.getEmail());
             userService.sendPromoEmail(user.getEmail(), link, promo.getCode(), promo.getDiscount());
         }
-
-        return "/admin/promotions?success";
+        return "redirect:/admin/promotions?emailSuccess";
     }
 
     public String editPromo(int id, Promotions promo){

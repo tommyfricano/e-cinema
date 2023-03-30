@@ -49,33 +49,6 @@
 		<div th:if="${param.error}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
 			No results from search.
 		</div>
-	<div class="">
-		<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-			<div class="carousel-inner">
-				<div class="carousel-item active" th:object="${mainmovie}">
-					<img class="d-block w-100 img-fluid" th:src="*{movieImage}" th:alt="*{title}">
-				</div>
-				<div class="carousel-item" th:each="movie : ${topmovies}">
-					<img class="d-block w-100 img-fluid" th:src="${movie.movieImage}" th:alt="${movie.title}">
-				</div>
-			</div>
-			<a class="carousel-control-prev pl-5" href="#carouselExampleControls" role="button" data-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="sr-only">Previous</span>
-			</a>
-			<a class="carousel-control-next pr-5" href="#carouselExampleControls" role="button" data-slide="next">
-				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="sr-only">Next</span>
-			</a>
-			<ol class="carousel-indicators">
-				<li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
-				<li data-target="#carouselExampleControls" data-slide-to="1"></li>
-    			<li data-target="#carouselExampleControls" data-slide-to="2"></li>
-				<li data-target="#carouselExampleControls" data-slide-to="3"></li>
-		    </ol>	
-		</div>
-	</div>
-
 		<div class="container-fluid my-container admin">
 			<br><hr><br>
 			<h2 class="header">NOW SHOWING...</h2>

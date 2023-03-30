@@ -13,12 +13,12 @@
 	
 	<body>
 	<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-		<a th:href="@{/user/customerPage}" class="navbar-brand">B8-CINEMA</a>
+		<a th:href="@{/Cinema.html}" class="navbar-brand">B8-CINEMA</a>
 		<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarMenu">
-			<form method="post" class="form-inline ml-lg-5" th:action="@{/user/search}">
+			<form method="post" class="form-inline ml-lg-5" th:action="@{/search}">
 				<input th:field="${searchedmovie.title}" class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
 				<div style="padding: 1rem; align-content: start;">
 					<div class="form-check">
@@ -38,10 +38,10 @@
 			</form>
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<a th:href="@{/user/account}" class="nav-link"><i class="fas fa-user" style="margin-right: 10px"></i>ACCOUNT</a>
+					<a th:href="@{/login}" data-toggle="tooltip" title="Login" class="nav-link"><i class="fas fa-user"></i> <span class="sr-only">LOGIN</span></a>
 				</li>
 				<li class="nav-item">
-					<a th:href="@{/logout}" class="nav-link">LOGOUT</a>
+					<a th:href="@{/registration}" class="nav-link">SIGN UP</a>
 				</li>
 			</ul>
 		</div>

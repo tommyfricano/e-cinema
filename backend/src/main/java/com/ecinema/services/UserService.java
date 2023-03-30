@@ -137,6 +137,17 @@ public class UserService {
         return "/admin/users?success";
     }
 
+    public void suspendUser(int id){
+        User user = userRespository.findOneByUserID(id);
+        if(user.getActivity() == Status.INACTIVE || user.getActivity() == Status.ACTIVE){
+            user.setActivity(Status.SUSPENDED);
+        }
+        else{
+            user.setActivity(Status.ACTIVE);
+        }
+        userRespository.save(user);
+    }
+
 
     /*
     all user activation

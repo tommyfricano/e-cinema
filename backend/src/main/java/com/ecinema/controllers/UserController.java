@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,7 +44,6 @@ public class UserController {
         this.promotionsService = promotionsService;
     }
 
-
     @GetMapping("/user/{id}")
     public User getUser(@PathVariable int id){
         return userService.getUser(id);
@@ -55,8 +55,10 @@ public class UserController {
     }
     @GetMapping("/user/customerPage")
     public String getUserPage(Model model){
+        Movie searchedMovie = new Movie();
         List<Movie> onMovies = movieService.getMoviesOutNow();
         List<Movie> csMovies = movieService.getMoviesComingSoon();
+        model.addAttribute("searchedmovie", searchedMovie);
         model.addAttribute("onmovies", onMovies);
         model.addAttribute("csmovies", csMovies);
         return "customerHomePage";
@@ -65,6 +67,8 @@ public class UserController {
     @GetMapping("/user/descriptions/{id}")
     public String getUserDescription(@PathVariable("id")int id, Model model){
         Movie movie = movieService.getMovie(id);
+        Movie searchedMovie = new Movie();
+        model.addAttribute("searchedmovie", searchedMovie);
         model.addAttribute("movie", movie);
         return "descriptionsUser";
     }
@@ -72,8 +76,40 @@ public class UserController {
     @GetMapping("/user/descriptions/comingSoon/{id}")
     public String getUserDescriptionComingSoon(@PathVariable("id")int id, Model model){
         Movie movie = movieService.getMovie(id);
+        Movie searchedMovie = new Movie();
+        model.addAttribute("searchedmovie", searchedMovie);
         model.addAttribute("movie", movie);
         return "descriptionsUserComing";
+    }
+    @PostMapping("/user/search")
+    public String searchMovie(HttpServletResponse httpResponse, @ModelAttribute("movie")Movie movie, Model model) throws IOException {
+        String redirect = "";
+        if(movie.getCategory().equals("option1")) {
+            Movie searchedMovie = movieService.getMovieByTitle(movie.getTitle());
+            if(searchedMovie == null){
+                model.addAttribute("error", true);
+                return "redirect:/user/customerPage?error";
+            }
+            redirect = "/user/descriptions/" + searchedMovie.getMovieID();
+            if (searchedMovie.getCategory().equals("Coming-Soon")) {
+                redirect = "/user/descriptions/comingSoon/" + searchedMovie.getMovieID();
+            }
+        }
+        else {
+            Movie searchedMovie = new Movie();
+            List<Movie> searchedGenreON = movieService.getMoviesByGenreOutNow(movie.getTitle());
+            List<Movie> searchedGenreCS = movieService.getMoviesByGenreComing(movie.getTitle());
+            if(searchedGenreCS.size() ==0 && searchedGenreON.size() == 0){
+                model.addAttribute("error", true);
+                return "redirect:/user/customerPage?error";
+            }
+            model.addAttribute("onmovies", searchedGenreON);
+            model.addAttribute("csmovies", searchedGenreCS);
+            model.addAttribute("searchedmovie", searchedMovie);
+            return "customerHomePage";
+        }
+        httpResponse.sendRedirect(redirect);
+        return null;
     }
 
     @GetMapping("/user/bookMovie/{id}")
@@ -93,6 +129,8 @@ public class UserController {
     public String getAccount(Model model){
         String username = SecurityUtil.getSessionUser();
         User user = userService.getUserEmail(username);
+        Movie searchedMovie = new Movie();
+        model.addAttribute("searchedmovie", searchedMovie);
         model.addAttribute("user", user);
         return "Useraccount";
     }
@@ -259,6 +297,18 @@ public class UserController {
         return null;
     }
 
+    @PostMapping("/admin/sendPromotion/{id}")
+    public String sendPromotion(@PathVariable("id")int id, HttpServletRequest request, RedirectAttributes redirectAttributes, HttpServletResponse httpResponse, Model model) throws IOException, MessagingException {
+        String link = Utility.getSiteURL(request) + "/login";
+        String response = promotionsService.sendPromotion(id, link);
+        if(response.equals("error")){
+            response = "redirect:/admin/promotions?error";
+        }
+        redirectAttributes.addAttribute("emailSuccess",true);
+//        httpResponse.sendRedirect(response);
+        return response;
+    }
+
     @PostMapping("/admin/editPromotion/{id}")
     public String editMovie(@PathVariable("id") int id,
                             @ModelAttribute("promotion")Promotions promotion,
@@ -305,6 +355,14 @@ public class UserController {
         }
         httpResponse.sendRedirect(response);
         return null;
+    }
+
+    @PostMapping("/admin/suspendUser/{id}")
+    public void suspendUser(@PathVariable("id") int id,
+                           HttpServletResponse httpResponse,
+                           Model model) throws IOException {
+        userService.suspendUser(id);
+        httpResponse.sendRedirect("/admin/users");
     }
 
     @PostMapping("/admin/deleteUser/{id}")

@@ -5,12 +5,12 @@ body{
 .form-control{
 	width: auto;
 }
- .my-row {
-    height: 350px;
-}
-.my-col {
-	margin:auto;
-}
+/* .my-row {*/
+/*    height: 350px;*/
+/*}*/
+/*.my-col {*/
+/*	margin:auto;*/
+/*}*/
 .header{
 	color: white;
 	font-family: impact;
@@ -60,6 +60,8 @@ hr {
 	float: left;
 	border: 0.5px solid #8A2BE2;
 	background: #8A2BE2;
+	width: 45%;
+	height: auto;
 }
 .trailerbutton:hover{
 	border: 0.5px solid #DDA0DD;
@@ -69,10 +71,22 @@ hr {
 	float: right;
 	border: 0.5px solid #008080;
 	background: #008080;
+	width: 48%;
+	font-size: 8px;
 }
 .booknowbutton:hover{
 	border: 0.5px solid #8FBC8F;
 	background: #8FBC8F;	
+}
+.booknowbtn{
+	float: left;
+	margin-left: 40px;
+	border: 0.5px solid #1c9307;
+	background: #1c9307;
+}
+.booknowbtn:hover{
+	border: 0.5px solid #8FBC8F;
+	background: #8FBC8F;
 }
 .buttonDiv{
 	width: 220px;
@@ -100,6 +114,12 @@ hr {
 .w-100 {
 	width: 100% !important;
 	height: 80vh;
+}
+.admin{
+	color:white;
+	font-size: 20px;
+	font-family: verdana;
+	text-align: center;
 }
 .carousel{
 	padding-top: 2%;

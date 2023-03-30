@@ -102,7 +102,7 @@ body {
     font-weight: bold;
   }
 .editbutton{
-	float: left;
+	float: right;
 	border: 0.5px solid #8A2BE2;
 	background: #8A2BE2;
     border-radius: 10px;
