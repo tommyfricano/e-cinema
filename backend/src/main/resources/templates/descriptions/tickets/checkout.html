@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
 		<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-		<link rel="stylesheet" type= "text/css" href="checkout.css">
+		<link rel="stylesheet" type= "text/css" th:href="@{/static/css/ticketstyle.css}">
 		  <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -27,26 +27,26 @@
 	</head>
 	
 	<body>
-		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-			<a href="../../../../../../../Deliverable3_Team_B8/CES/customerHomePage.html" class="navbar-brand">B8-CINEMA</a>
-			<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarMenu">
-				<form class="form-inline ml-lg-5">
-					<input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
-					<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
-				</form>
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-						<a href="Customerlogin.html" data-toggle="tooltip" title="Login" class="nav-link"><i class="fas fa-user"></i> <span class="sr-only">LOGIN</span></a>
-					</li>
-					<li class="nav-item">
-						<a href="Registration.html" class="nav-link">LOGOUT</a>
-					</li>
-				</ul>
-			</div>         
-		</nav>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+      <a th:href="@{/user/customerPage}" class="navbar-brand">B8-CINEMA</a>
+      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarMenu">
+        <form class="form-inline ml-lg-5">
+          <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a th:href="@{/user/account}" class="nav-link"><i class="fas fa-user" style="margin-right: 10px"></i>ACCOUNT</a>
+          </li>
+          <li class="nav-item">
+            <a th:href="@{/logout}" class="nav-link">LOGOUT</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
 <div class="container" style="padding:5px">
   <main>
@@ -265,6 +265,6 @@
 
 
     <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
-      <script src="myScript.js"></script>
+      <script th:src="@{/static/js/myScript.js}"></script>
   </body>
 </html>

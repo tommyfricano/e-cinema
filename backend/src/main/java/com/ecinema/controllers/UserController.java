@@ -54,8 +54,33 @@ public class UserController {
         return "Cinema";
     }
     @GetMapping("/user/customerPage")
-    public String getUserPage(){
+    public String getUserPage(Model model){
+        List<Movie> onMovies = movieService.getMoviesOutNow();
+        List<Movie> csMovies = movieService.getMoviesComingSoon();
+        model.addAttribute("onmovies", onMovies);
+        model.addAttribute("csmovies", csMovies);
         return "customerHomePage";
+    }
+
+    @GetMapping("/user/descriptions/{id}")
+    public String getUserDescription(@PathVariable("id")int id, Model model){
+        Movie movie = movieService.getMovie(id);
+        model.addAttribute("movie", movie);
+        return "descriptionsUser";
+    }
+
+    @GetMapping("/user/descriptions/comingSoon/{id}")
+    public String getUserDescriptionComingSoon(@PathVariable("id")int id, Model model){
+        Movie movie = movieService.getMovie(id);
+        model.addAttribute("movie", movie);
+        return "descriptionsUserComing";
+    }
+
+    @GetMapping("/user/bookMovie/{id}")
+    public String getBookMovie(@PathVariable("id")int id, Model model){
+        Movie movie = movieService.getMovie(id);
+        model.addAttribute("movie", movie);
+        return"/descriptions/tickets/buytickets";
     }
 
     @GetMapping("/user/payments/{id}")       // gets all cards
