@@ -93,6 +93,19 @@ hr {
 	border: 0.5px solid #DDA0DD;
 	background: #DDA0DD;
 }
+/*.carousel-inner {*/
+/*	width:50%;*/
+/*	height:30%;*/
+/*}*/
+.w-100 {
+	width: 100% !important;
+	height: 80vh;
+}
+.carousel{
+	padding-top: 2%;
+	padding-left: 30%;
+	padding-right: 30%;
+}
 /* .bg-modal{
 	width: 100%;
 	height: 100%;

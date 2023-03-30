@@ -32,7 +32,7 @@
 				</ul>
 			</div>         
 		</nav>
-	
+	<div class="">
 		<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
 			<div class="carousel-inner">
 				<div class="carousel-item active" th:object="${mainmovie}">
@@ -42,11 +42,11 @@
 					<img class="d-block w-100 img-fluid" th:src="${movie.movieImage}" th:alt="${movie.title}">
 				</div>
 			</div>
-			<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+			<a class="carousel-control-prev pl-5" href="#carouselExampleControls" role="button" data-slide="prev">
 				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 				<span class="sr-only">Previous</span>
 			</a>
-			<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+			<a class="carousel-control-next pr-5" href="#carouselExampleControls" role="button" data-slide="next">
 				<span class="carousel-control-next-icon" aria-hidden="true"></span>
 				<span class="sr-only">Next</span>
 			</a>
@@ -57,6 +57,7 @@
 				<li data-target="#carouselExampleControls" data-slide-to="3"></li>
 		    </ol>	
 		</div>
+	</div>
 
 		<br><hr><br>
 		<h2 class="header">NOW SHOWING...</h2>
@@ -76,7 +77,7 @@
 						<div class = "poster-title" th:text="${movie.title}"></div>
 						<div class="buttonDiv">
 							<button class="trailerbutton posterbutton"><a th:href="${movie.trailerVideo}" target="_blank" style = "text-decoration: none; color:  white;">TRAILER</a></button>
-							<button class="booknowbutton posterbutton" ><b style="color: white;">Rated: </b><b style="color: black;" th:text="${movie.rating}"></b></button>
+							<button class="booknowbutton posterbutton" ><b style="color: white;">Rated: </b><b style="color: white;" th:text="${movie.rating}"></b></button>
 						</div>
 					</div>
 				</div>
