@@ -49,7 +49,6 @@ public class UserService {
 
     private final EntityManager em;
 
-
     @Autowired
     private JavaMailSender mailSender;  // used for sending confirmation emails
 
