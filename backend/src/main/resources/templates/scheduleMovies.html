@@ -35,7 +35,7 @@
 			</ul>
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<a href="#" class="nav-link">ADMIN ACCOUNT</a>
+<!--					<a href="#" class="nav-link">ADMIN ACCOUNT</a>-->
 				</li>
 				<li class="nav-item">
 					<a th:href="@{/logout}" class="nav-link">LOGOUT</a>
@@ -43,6 +43,9 @@
 			</ul>
 		</div>
 	</nav>
+	<div th:if="${param.error}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
+		A movie is already schedule at that time.
+	</div>
 
 		<div class="container-fluid my-container">
 			<div class="addmovies"><br>SCHEDULE MOVIE</div>
@@ -50,24 +53,31 @@
 		</div>
 		<div class="container my-container">
 <!--			th:action="@{'/admin/scheduleMovie/'+${time.timeID}"-->
-			<form class = "movieForm" method="post" >
+			<form class = "movieForm" method="post" th:action="@{/admin/scheduleMovie_attempt}">
 				<table>
 					<tr>
 						<td><label class ="formLabel" for="selectMovie">Select Movie</label></td>
 						<td>
-							<select id="selectMovie" >
-								<option selected>Select Movie...</option>
-								<option th:each="movie : ${movies}" th:text="${movie.title}"></option>
+							<select id="selectMovie" required th:field="${movieVal.movieID}" th:selected="${movieVal.movieID}">
+<!--								<option selected value="invalid">Select Movie...</option>-->
+								<option th:each="movie : ${movies}" th:value="${movie.movieID}" th:text="${movie.title}"></option>
 							</select>
 						</td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="date">Show Date:</label></td>
-						<td><input type="date" id="date" placeholder= "Enter Show Date" name="date" value=""></td>
+						<td><input type="date" id="date" th:field="${show.date}" placeholder= "Enter Show Date" name="date" value=""></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="time">Show Time:</label></td>
-						<td><input type="time" id="time" placeholder= "Enter Show Time" name="time" value=""></td>
+						<td><select required th:selected="${show.time}" type="drop" id="time" name="time" value="">
+							<option id="select.">select...</option>
+							<option th:value="12" id="12">12:00 pm</option>
+							<option th:value="3" id="3">3:00 pm</option>
+							<option th:value="6" id="6">6:00 pm</option>
+							<option th:value="9" id="9">9:00 pm</option>
+						</select>
+						</td>
 					</tr>
 					
 				</table>

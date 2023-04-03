@@ -30,8 +30,11 @@ public class Webpage {
         List<Movie> onMovies = movieService.getMoviesOutNow();
         List<Movie> csMovies = movieService.getMoviesComingSoon();
         List<Movie> topMovies = movieService.getTopMovies();
-        Movie mainMovie = topMovies.get(0);
-        topMovies.remove(0);
+        Movie mainMovie = new Movie();
+        if(topMovies.size() != 0) {
+            mainMovie = topMovies.get(0);
+            topMovies.remove(0);
+        }
         Movie searchedMovie = new Movie();
         model.addAttribute("searchedmovie", searchedMovie);
         model.addAttribute("mainmovie",mainMovie);

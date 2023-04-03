@@ -2,6 +2,7 @@ package com.ecinema.services;
 
 import com.ecinema.movie.Movie;
 import com.ecinema.repositories.MovieRepository;
+import com.ecinema.show.Show;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

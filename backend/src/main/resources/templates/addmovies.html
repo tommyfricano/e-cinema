@@ -18,10 +18,6 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarMenu">
-				<form class="form-inline ml-lg-5">
-					<input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
-					<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
-				</form>
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
 						<a th:href="@{/admin/users}" class="nav-link" style = "margin-left: 35px">USERS</a>
@@ -35,7 +31,7 @@
 				</ul>
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
-						<a href="#" class="nav-link">ADMIN ACCOUNT</a>
+<!--						<a href="#" class="nav-link">ADMIN ACCOUNT</a>-->
 					</li>
 					<li class="nav-item">
 						<a th:href="@{/logout}" class="nav-link">LOGOUT</a>
@@ -47,6 +43,8 @@
 		<div class="container-fluid my-container">
 			<div class="addmovies"><br>ADD MOVIE</div>
 			<br><hr><br>
+			<div class="addmovies" style="color: lightcoral">ALL FIELDS MUST BE FILLED OUT</div>
+			<br><br>
 		</div>
 		<div class="container my-container">
 			<form method="post" th:action="@{/admin/addMovie}" th:object="${movie}" class = "movieForm" >
@@ -64,7 +62,7 @@
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="cast">Cast:</label></td>
-						<td><input required type="text" th:name="cast" th:field="*{cast}" id="cast" placeholder= "Enter Cast" name="cast" value=""></td>
+						<td><textarea required type="text" th:name="cast" th:field="*{cast}" id="cast" placeholder= "Enter Cast" name="cast" value=""></textarea></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="director">Director:</label></td>
@@ -76,11 +74,11 @@
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="synopsis">Description:</label></td>
-						<td><input required type="text" th:name="synopsis" th:field="*{synopsis}" id="synopsis" placeholder= "Enter Description" name="description" value=""></td>
+						<td><textarea required type="text" th:name="synopsis" th:field="*{synopsis}" id="synopsis" placeholder= "Enter Description" name="description" value=""></textarea></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="review">Review:</label></td>
-						<td><input required type="text" th:field="*{review}" th:name="review" id="review" placeholder= "Add Review" name="review" value=""></td>
+						<td><textarea required type="text" th:field="*{review}" th:name="review" id="review" placeholder= "Add Review" name="review" value=""></textarea></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="rating">Rating:</label></td>

@@ -1,10 +1,14 @@
 package com.ecinema.movie;
 
+import com.ecinema.services.ShowService;
+import com.ecinema.show.Show;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -52,6 +56,8 @@ public class Movie {
     @Column(name = "genre")
     private String genre;
 
+    @OneToMany(mappedBy = "movie")
+    private List<Show> showsTimes;
 
     public Movie(String title,
                  String category,
@@ -76,4 +82,5 @@ public class Movie {
         this.rating = rating;
         this.genre = genre;
     }
+
 }

@@ -6,6 +6,8 @@ import com.ecinema.promotion.Promotions;
 import com.ecinema.security.SecurityUtil;
 import com.ecinema.services.MovieService;
 import com.ecinema.services.PromotionsService;
+import com.ecinema.services.ShowService;
+import com.ecinema.show.Show;
 import com.ecinema.users.User;
 import com.ecinema.services.UserService;
 import com.ecinema.users.confirmation.Utility;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 /*
@@ -35,13 +38,17 @@ public class UserController {
 
     private final PromotionsService promotionsService;
 
+    private final ShowService showService;
+
     @Autowired
     ApplicationEventPublisher eventPublisher;
 
-    public UserController(UserService userService, MovieService movieService, PromotionsService promotionsService) {
+    @Autowired
+    public UserController(UserService userService, MovieService movieService, PromotionsService promotionsService, ShowService showService) {
         this.userService = userService;
         this.movieService = movieService;
         this.promotionsService = promotionsService;
+        this.showService = showService;
     }
 
     @GetMapping("/user/{id}")
@@ -65,9 +72,11 @@ public class UserController {
     }
 
     @GetMapping("/user/descriptions/{id}")
-    public String getUserDescription(@PathVariable("id")int id, Model model){
+    public String getUserDescription(@PathVariable("id")int id, Model model) throws ParseException {
         Movie movie = movieService.getMovie(id);
         Movie searchedMovie = new Movie();
+        List<Show> sortedShows = showService.getSortedShows(movie.getMovieID());
+        model.addAttribute("shows", sortedShows);
         model.addAttribute("searchedmovie", searchedMovie);
         model.addAttribute("movie", movie);
         return "descriptionsUser";
@@ -112,10 +121,12 @@ public class UserController {
         return null;
     }
 
-    @GetMapping("/user/bookMovie/{id}")
-    public String getBookMovie(@PathVariable("id")int id, Model model){
+    @GetMapping("/user/bookMovie/{id}/{sid}")
+    public String getBookMovie(@PathVariable("id")int id, @PathVariable("sid")int sid, Model model) throws ParseException {
         Movie movie = movieService.getMovie(id);
+        Show show = showService.getShowDisplayDate(sid);
         model.addAttribute("movie", movie);
+        model.addAttribute("show", show);
         return"/descriptions/tickets/buytickets";
     }
 
@@ -259,15 +270,25 @@ public class UserController {
 
     @GetMapping("/admin/scheduleMovie")
     public String getScheduleMovie(Model model){
+        Show show = new Show();
+        Movie movie = new Movie();
         List<Movie> movies = movieService.getMovies();
+        model.addAttribute("movieVal", movie);
+        model.addAttribute("show",show);
         model.addAttribute("movies", movies);
         return "scheduleMovies";
     }
 
-    @PostMapping("/admin/scheduleMovie/{id}")
-    public void scheduleMovie(@PathVariable("id") int id, HttpServletResponse httpResponse, Model model) throws IOException {
+    @PostMapping("/admin/scheduleMovie_attempt")
+    public String scheduleMovie(@ModelAttribute("show")Show show, @ModelAttribute("movieVal")Movie movie, HttpServletResponse httpResponse, Model model) throws IOException {
+        show.setMovie(movieService.getMovie(movie.getMovieID()));
+        String response = showService.createShowTime(show);
+        if(response.contains("error")) {
+            model.addAttribute("error", true);
+        }
+        model.addAttribute("scheduleSuccess", true);
 
-        httpResponse.sendRedirect("/admin/manageMovies");
+        return response;
     }
 
     @GetMapping("/admin/promotions")

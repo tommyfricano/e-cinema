@@ -111,16 +111,17 @@
 	<div class="container-fluid my-container">
 		<br><hr class = "mainHR"><br>
 	</div>
-	<div class="container my-container" th:object="${movie}">
+	<div class="container my-container" th:object="${shows}">
 		<section>
 			<div style = "text-align: center;"><button class = "showTimeheader">SHOW TIMES</button></div>
 			<br><br>
-			<div class = "showdate">28TH FEBRUARY 2023</div>
-			<hr class = "showtimeHR">
+<!--			<div class = "showdate">28TH FEBRUARY 2023</div>-->
+<!--			<hr class = "showtimeHR">-->
 			<br>
-			<div class="row justify-content-between">
-				<div class="col-md-2 my-col">
-					<div class = "poster-title"><a th:href ="@{'/user/bookMovie/'+${movie.movieID}}" style = "color: white; background: black; padding: 10px; border-radius: 5px;">1:15PM</a></div>
+			<div class="row justify-content-center flex-lg-wrap">
+				<div class="col-md-2 my-col" th:each="show : ${shows}">
+					<div class = "poster-title" th:text="${show.date}" style="font-size: 20px;"></div>
+					<div class = "poster-title"><a th:href ="@{'/user/bookMovie/'+${movie.movieID}+'/'+${show.showID}}" style = "color: white; background: black; padding: 10px; border-radius: 5px;" th:text="${show.time+':00 pm'}"></a></div>
 				</div>
 			</div>
 			<br><br>

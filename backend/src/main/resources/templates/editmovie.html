@@ -35,7 +35,7 @@
 				</ul>
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
-						<a href="#" class="nav-link">ADMIN ACCOUNT</a>
+<!--						<a href="#" class="nav-link">ADMIN ACCOUNT</a>-->
 					</li>
 					<li class="nav-item">
 						<a th:href="@{/logout}" class="nav-link">LOGOUT</a>
@@ -61,7 +61,7 @@
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="cast">Cast:</label></td>
-						<td><input type="text" th:field="*{cast}" th:value="*{cast}" id="cast"  name="cast" value=""></td>
+						<td><textarea type="text" th:field="*{cast}" th:value="*{cast}" id="cast"  name="cast" value=""></textarea></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="director">Director:</label></td>
@@ -73,11 +73,11 @@
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="description">Description:</label></td>
-						<td><input type="text" th:field="*{synopsis}" th:value="*{synopsis}" id="description" placeholder= "Enter Description" name="description" value=""></td>
+						<td><textarea type="text" th:field="*{synopsis}" th:value="*{synopsis}" id="description" placeholder= "Enter Description" name="description" value=""></textarea></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="review">Review:</label></td>
-						<td><input type="text" th:field="*{review}" th:value="*{review}" id="review" placeholder= "Add Review" name="review" value=""></td>
+						<td><textarea type="text" th:field="*{review}" th:value="*{review}" id="review" placeholder= "Add Review" name="review" value=""></textarea></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="rating">Rating:</label></td>
