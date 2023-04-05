@@ -2,7 +2,7 @@ package com.ecinema.controllers;
 
 import com.ecinema.movie.Movie;
 import com.ecinema.payment.PaymentCards;
-import com.ecinema.services.MovieService;
+import com.ecinema.services.PaymentCardsService;
 import com.ecinema.services.UserService;
 import com.ecinema.users.User;
 import com.ecinema.users.confirmation.OnRegistrationCompleteEvent;
@@ -19,19 +19,28 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.UnsupportedEncodingException;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 @Controller
 public class AuthController {
     private final UserService userService;
 
+    private final PaymentCardsService paymentCardsService;
+
     @Autowired
     ApplicationEventPublisher eventPublisher;
 
-    public AuthController(UserService userService, MovieService movieService) {
+    public AuthController(UserService userService, PaymentCardsService paymentCardsService) {
         this.userService = userService;
+        this.paymentCardsService = paymentCardsService;
     }
 
     @GetMapping("/login")
@@ -120,17 +129,25 @@ public class AuthController {
     @PostMapping("/registration_attempt")
     public String registerUserAccount(
             @Validated @ModelAttribute("user") User userDto, @ModelAttribute("payment") PaymentCards payment,
-            HttpServletRequest request, Model model) throws MessagingException {
+            HttpServletRequest request, Model model) throws MessagingException, InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         try {
-            List<PaymentCards> card = new ArrayList<>();
-            if(payment.getCardNumber() != null || !(payment.getCardNumber().equals(""))) {
+            List<PaymentCards> card = new ArrayList<>(); //string equals ""
+            //if (payment.getCardNumber().)
+            if(payment.getCardNumber() != null && !(payment.getCardNumber().equals(""))) {
+                System.out.println("This is the card number" + payment.getCardNumber());
                 payment.setFirstName(userDto.getFirstName());
                 payment.setLastName(userDto.getLastName());
                 payment.setBillingAddress(userDto.getAddress());
+                paymentCardsService.encrypt(payment);
                 card.add(payment);
                 userDto.setPayments(card);
             }
+
+            System.out.println("error here");
+            System.out.println("user payments here" + userDto.getPayments());
+            //System.out.println("card one" + userDto.getPayments().get(0).getCardNumber());
             User registered = userService.createUser(userDto);
+            System.out.println("user created");
             if(registered.getPassword().equals("error")){
                 System.out.println("here************");
                 return "redirect:/registration-error";
