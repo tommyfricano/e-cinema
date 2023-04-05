@@ -1,112 +1,238 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title>B8-CINEMA</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-		<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-		<link rel="stylesheet" type= "text/css" th:href="@{assets/css/Registration.css}">
-	</head>
-	
-	<body>
-		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-			<a th:href="@{/user/customerPage}" class="navbar-brand">B8-CINEMA</a>
-			<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarMenu">
-				<form class="form-inline ml-lg-5">
-					<input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
-					<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
-				</form>
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-						<a th:href="@{/user/account}" class="nav-link"><i class="fas fa-user" style="margin-right: 10px"></i>ACCOUNT</a>
-					</li>
-					<li class="nav-item">
-						<a th:href="@{/logout}" class="nav-link">LOGOUT</a>
-					</li>
-				</ul>
-			</div>         
-		</nav>
-	<div class="container-fluid my-container">
-			<div class="title"><br>EDIT PROFILE</div>
-			<br><hr><br>
-	</div>
 
-	<form class="col-lg-8 off offset-lg-1 styles" method="post" th:action="@{/user/editInfo}" th:object="${user}">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>B8-CINEMA</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+	<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+	<link rel="stylesheet" type= "text/css" th:href="@{assets/css/Registration.css}">
+</head>
+	
+<body>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+	<a th:href="@{/user/customerPage}" class="navbar-brand">B8-CINEMA</a>
+	<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarMenu">
+		<form class="form-inline ml-lg-5">
+			<input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
+			<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
+		</form>
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item">
+				<a th:href="@{/user/account}" class="nav-link"><i class="fas fa-user" style="margin-right: 10px"></i>ACCOUNT</a>
+			</li>
+			<li class="nav-item">
+				<a th:href="@{/logout}" class="nav-link">LOGOUT</a>
+			</li>
+		</ul>
+	</div>
+</nav>
+<div class="container-fluid my-container">
+	<div class="title"><br>EDIT PROFILE</div>
+	<br><hr><br>
+</div>
+
+<form class="col-lg-8 off offset-lg-1 styles" method="post" th:action="@{/user/editInfo}" th:object="${user}">
 	<div class="form-row required">
-    <div class="form-group required col-md-6">
-      <label class="control-label" for="firstName">FirstName</label>
-      <input th:field="*{firstName}" type="text" required class="form-control" id="firstName" placeholder="FirstName">
-    </div>
-    <div class="form-group required col-md-6">
-      <label class="control-label"    for="lastName">LastName</label>
-      <input th:field="*{lastName}" type="text" required class="form-control" id="lastName" placeholder="LastName">
-    </div>
-<!--    <div class="form-group required col-md-6">-->
-<!--      <label class="control-label"  for="inputLast4">Date of Birth</label>-->
-<!--        <input th:field="*{lastName}" type="text" required class="form-control" id="lastName" value="10-10-1998">-->
-<!--    </div>-->
-  </div>
+		<div class="form-group required col-md-6">
+			<label class="control-label" for="firstName">First name</label>
+			<input th:field="*{firstName}" type="text" required class="form-control" id="firstName" placeholder="FirstName">
+		</div>
+		<div class="form-group required col-md-6">
+			<label class="control-label"    for="lastName">Last name</label>
+			<input th:field="*{lastName}" type="text" required class="form-control" id="lastName" placeholder="LastName">
+		</div>
+  	</div>
  <div class="form-row">
     <div class="form-group  col-md-6">
       <label class="control-label" >Email</label>
       <input th:field="*{email}" class="form-control" type="text" th:value="${user.email}" readonly th:placeholder="*{email}">
     </div>
+ </div>
+	<div class="form-group">
+		<label for="billingAddress">Address</label>
+		<input th:field="*{address}" type="text" class="form-control" id="billingAddress" placeholder=address>
+	</div>
+	<div class="form-group">
+		<label for="phonenumber">Phone number</label>
+		<input th:field="*{phoneNumber}" type="text" class="form-control" id="phonenumber" placeholder=phonenumber>
+	</div>
+	<div>
+		<button id="addCardOneButton">Card One</button>
+
+<!--	<div th:object="${payment1}">-->
+		<fieldset id ="addCardOne" style="display: none;">
+	<!--		<div th:object="${payment1}">-->
+				<div class="form-group">
+					<label class="form-check-label" for="cardholderOne">Cardholder Name</label>
+					<input th:field="*{payments[0].cardholderName}" type="text" class="form-control" id="cardholderOne" placeholder="name">
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label class="form-check-label" th:for="${user.payments[0].cardNumber}">Card Number</label>
+						<input th:field="*{payments[0].cardNumber}" type="text" class="form-control">
+					</div>
+					<div class="form-group col-md-4">
+						<label class="form-check-label" for="expiryOne">Expiration Date</label>
+						<input th:field="*{payments[0].expirationDate}" type="date" class="form-control" id="expiryOne">
+					</div>
+					<div class="form-group col-md-2">
+						<label class="form-check-label" th:for="${user.payments[0].securityCode}">CVV</label>
+						<input th:field="*{payments[0].securityCode}" type="text" class="form-control">
+					</div>
+				</div>
+		</fieldset>
+	<div>
+		<button id="addCardTwoButton">Card Two</button>
+<!--	<div th:object="${payment2}">-->
+		<fieldset id ="addCardTwo" style="display: none;">
+	<!--		<div th:object="${payment2}">-->
+				<div class="form-group">
+					<label class="form-check-label" for="cardholderTwo">Cardholder Name</label>
+					<input th:field="*{payments[1].cardholderName}" type="text" class="form-control" id="cardholderTwo" placeholder="name">
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label class="form-check-label">Card Number</label>
+						<input th:field="*{payments[1].cardNumber}" type="text" class="form-control">
+					</div>
+					<div class="form-group col-md-4">
+						<label class="form-check-label" for="expiryTwo">Expiration Date</label>
+						<input th:field="*{payments[1].expirationDate}" type="date" class="form-control" id="expiryTwo">
+					</div>
+					<div class="form-group col-md-2">
+						<label class="form-check-label">CVV</label>
+						<input th:field="*{payments[1].securityCode}" type="text" class="form-control">
+					</div>
+				</div>
+		</fieldset>
+	</div>
+	<div>
+		<button id="addCardThreeButton">Card Three</button>
+<!--	<div th:object="${payment3}">-->
+		<fieldset id ="addCardThree" style="display: none;">
+	<!--		<div th:object="${payment3}">-->
+				<div class="form-group">
+					<label class="form-check-label" for="cardholderThree">Cardholder Name</label>
+					<input th:field="*{payments[2].cardholderName}" type="text" class="form-control" id="cardholderThree" placeholder="name">
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label class="form-check-label">Card Number</label>
+						<input th:field="*{payments[2].cardNumber}" type="text" class="form-control">
+					</div>
+					<div class="form-group col-md-4">
+						<label class="form-check-label" for="expiryThree">Expiration Date</label>
+						<input th:field="*{payments[2].expirationDate}" type="date" class="form-control" id="expiryThree">
+					</div>
+					<div class="form-group col-md-2">
+						<label class="form-check-label">CVV</label>
+						<input th:field="*{payments[2].securityCode}" type="text" class="form-control">
+					</div>
+				</div>
+		</fieldset>
+	</div>
+	</div>
+
+	<script>
+		const addCardButton = document.getElementById("addCardOneButton");
+		const addCardFieldset = document.getElementById("addCardOne");
+		const addCardInputs = addCardFieldset.getElementsByTagName("input");
+		//let numCards =
+
+		addCardButton.addEventListener("click", function(event) {
+			event.preventDefault();
+			if (addCardFieldset.style.display === "none") {
+				for (let i = 0; i < addCardInputs.length; i++) {
+					addCardInputs[i].setAttribute("required", "required");
+				}
+				addCardFieldset.style.display = "block";
+			} else {
+				addCardFieldset.style.display = "none";
+				for (let i = 0; i < addCardInputs.length; i++) {
+					addCardInputs[i].removeAttribute("required");
+				}
+			}
+		});
+	</script>
+	<script>
+		const addCardTwoButton = document.getElementById("addCardTwoButton");
+		const addCardTwoFieldset = document.getElementById("addCardTwo");
+		const addCardTwoInputs = addCardTwoFieldset.getElementsByTagName("input");
+		//let numCards =
+
+		addCardTwoButton.addEventListener("click", function(event) {
+			event.preventDefault();
+			if (addCardTwoFieldset.style.display === "none") {
+				for (let i = 0; i < addCardTwoInputs.length; i++) {
+					addCardTwoInputs[i].setAttribute("required", "required");
+				}
+				addCardTwoFieldset.style.display = "block";
+			} else {
+				addCardTwoFieldset.style.display = "none";
+				for (let i = 0; i < addCardTwoInputs.length; i++) {
+					addCardTwoInputs[i].removeAttribute("required");
+				}
+			}
+		});
+	</script>
+	<script>
+		const addCardThreeButton = document.getElementById("addCardThreeButton");
+		const addCardThreeFieldset = document.getElementById("addCardThree");
+		const addCardThreeInputs = addCardThreeFieldset.getElementsByTagName("input");
+		//let numCards =
+
+		addCardThreeButton.addEventListener("click", function(event) {
+			event.preventDefault();
+			if (addCardThreeFieldset.style.display === "none") {
+				for (let i = 0; i < addCardThreeInputs.length; i++) {
+					addCardThreeInputs[i].setAttribute("required", "required");
+				}
+				addCardThreeFieldset.style.display = "block";
+			} else {
+				addCardThreeFieldset.style.display = "none";
+				for (let i = 0; i < addCardThreeInputs.length; i++) {
+					addCardThreeInputs[i].removeAttribute("required");
+				}
+			}
+		});
+	</script>
+	<br />
+	<div class="form-group">
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" id="gridCheck">
+			<label class="form-check-label" for="gridCheck">
+				sign me up for news letter.
+			</label>
+		</div>
   </div>
-<!--  <div class="form-group">-->
-<!--    <label for="billingAddress">Address</label>-->
-<!--    <input th:field="*{billingAddress}" type="text" class="form-control" id="billingAddress" placeholder="123 Main St.">-->
-<!--  </div>-->
-<!--  <div class="form-group">-->
-<!--    <label for="billingAddress2">Address 2</label>-->
-<!--    <input type="text" required class="form-control" id="inputAddress2" value="Jackwill Apartment, 255-A">-->
-<!--  </div>-->
-<!--  <div class="form-row">-->
-<!--    <div class="form-group col-md-6">-->
-<!--      <label for="inputCity">City</label>-->
-<!--      <input type="text" class="form-control" id="inputCity" value="Athens">-->
-<!--    </div>-->
-<!--    <div class="form-group col-md-4">-->
-<!--      <label for="inputState">State</label>-->
-<!--      <select id="inputState" class="form-control">-->
-<!--        <option selected>Georgia</option>-->
-<!--        <option>...</option>-->
-<!--      </select>-->
-<!--    </div>-->
-<!--    <div class="form-group col-md-2">-->
-<!--      <label for="inputZip">Zip</label>-->
-<!--      <input type="text" class="form-control" id="inputZip" value="30602">-->
-<!--    </div>-->
-<!--  </div>-->
-  <br />
-  <div class="form-group">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="gridCheck">
-      <label class="form-check-label" for="gridCheck">
-        sign me up for news letter.
-      </label>
-    </div>
-  </div>
-  <button type="submit"  class="btn btn-primary"><a style = "text-decoration:none; color: white;" >Update Details</a></button><br>
-  <button  class="btn btn-primary "><a style = "text-decoration:none; color: white;" th:href="@{/user/editInfo/editPassword}">Change Password</a></button>
+	<button type="submit"  class="btn btn-primary"><a style = "text-decoration:none; color: white;" >Update Details</a></button><br>
+	<button  class="btn btn-primary "><a style = "text-decoration:none; color: white;" th:href="@{/user/editInfo/editPassword}">Change Password</a></button>
+
 </form>
 
 <div class="container-fluid my-container">
 
-			<br><br><hr><br>
-	</div>
+	<br><br><hr><br>
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 			crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
 			crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 			crossorigin="anonymous"></script>
-		<script src="assets/myScript.js"></script>
+<script src="assets/myScript.js"></script>
+
+
+
+
+
 </body>
 </html>

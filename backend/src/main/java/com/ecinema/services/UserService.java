@@ -94,9 +94,6 @@ public class UserService {
             user.setRoles(Arrays.asList(role));
             user.setActivity(Status.INACTIVE);  // set user status to inactive until confirmed
             user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-            if(!(user.getPayments() == null)) {
-                encryptCards(user.getPayments().get(0));
-            }
             userRespository.save(user);     //save user in db
         }
         catch(Exception e){     // throw exception on failure
@@ -152,12 +149,10 @@ public class UserService {
         userToUpdate.setOptInPromo(user.isOptInPromo());
         //if (userToUpdate.getPayments() != null) {
             for (int i = 0; i < userToUpdate.getPayments().size(); i++) {
-                System.out.println(userToUpdate.getPayments().get(i).getPaymentID());
                 paymentCardsRepository.deleteById(userToUpdate.getPayments().get(i).getPaymentID());
             }
 
-            // todo encrypt card info??
-            encryptAllCards(user.getPayments());
+
             userToUpdate.setPayments(user.getPayments());
         //}
         userRespository.save(userToUpdate);
@@ -197,25 +192,6 @@ public class UserService {
         return cards;
     }
 
-    /*
-    encrypt card information
-     */
-    public void encryptCards(PaymentCards card) {
-            card.setCardNumber(new BCryptPasswordEncoder().encode(card.getCardNumber()));
-            card.setExpirationDate(new BCryptPasswordEncoder().encode(card.getExpirationDate()));
-            card.setSecurityCode(new BCryptPasswordEncoder().encode(card.getSecurityCode()));
-    }
-
-    public void encryptAllCards(List<PaymentCards> cards) {
-
-        if(cards != null) {
-            for (int i = 0; i < cards.size(); i++) {
-                cards.get(i).setCardNumber(new BCryptPasswordEncoder().encode(cards.get(i).getCardNumber()));
-                cards.get(i).setExpirationDate(new BCryptPasswordEncoder().encode(cards.get(i).getExpirationDate()));
-                cards.get(i).setSecurityCode(new BCryptPasswordEncoder().encode(cards.get(i).getSecurityCode()));
-            }
-        }
-    }
 
     public void updateResetPasswordToken(String token, String email) throws ResponseStatusException {
         User customer = userRespository.findOneByEmail(email);

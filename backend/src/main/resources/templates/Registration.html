@@ -1,148 +1,156 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title>B8-CINEMA</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-		<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-		<link rel="stylesheet" type= "text/css" th:href="@{Registration.css}">
-	</head>
-	
-	<body>
-		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-			<a href="Cinema.html" class="navbar-brand">B8-CINEMA</a>
-			<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarMenu">
-				<form class="form-inline ml-lg-5">
-					<input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
-					<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
-				</form>
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-						<a th:href="@{/login}" data-toggle="tooltip" title="Login" class="nav-link"><i class="fas fa-user"></i> <span class="sr-only">LOGIN</span></a>
-					</li>
-					<li class="nav-item">
-						<a th:href="@{/registration}" class="nav-link">SIGN UP</a>
-					</li>
-				</ul>
-			</div>         
-		</nav>
-	<div class="container-fluid my-container">
-			<div class="title"><br>REGISTRATION</div>
-			<br><hr><br>
-	</div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>B8-CINEMA</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+    <link rel="stylesheet" type= "text/css" th:href="@{/static/css/Registration.css}">
+</head>
 
-    <form class="col-lg-8 off offset-lg-1 styles" method="post" th:action="@{/registration_attempt}" th:object="${user}">
-        <div th:if="${param.error}" class="alert alert-error">
-            Account with this email already exists
-        </div>
-      <div class="form-row required">
+<body>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a href="Cinema.html" class="navbar-brand">B8-CINEMA</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMenu">
+        <form class="form-inline ml-lg-5">
+            <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a th:href="@{/login}" data-toggle="tooltip" title="Login" class="nav-link"><i class="fas fa-user"></i> <span class="sr-only">LOGIN</span></a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/registration}" class="nav-link">SIGN UP</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container-fluid my-container">
+    <div class="title"><br>REGISTRATION</div>
+    <br><hr><br>
+</div>
+
+<form class="col-lg-8 off offset-lg-1 styles" method="post" th:action="@{/registration_attempt}" th:object="${user}">
+    <div th:if="${param.error}" class="alert alert-error">
+        Account with this email already exists
+    </div>
+    <div class="form-row required">
         <div class="form-group required col-md-6">
-          <label class="form-check-label" for="firstName">First name *</label>
-          <input th:field="*{firstName}" type="text" required class="form-control" id="firstName" placeholder="FirstName">
+            <label class="form-check-label" for="firstName">First name *</label>
+            <input th:field="*{firstName}" type="text" required class="form-control" id="firstName" placeholder="FirstName">
         </div>
         <div class="form-group required col-md-6">
-          <label class="form-check-label" for="lastName">Last name *</label>
-          <input th:field="*{lastName}" type="text" required class="form-control" id="lastName" placeholder="LastName">
+            <label class="form-check-label" for="lastName">Last name *</label>
+            <input th:field="*{lastName}" type="text" required class="form-control" id="lastName" placeholder="LastName">
         </div>
         <div class="form-group required col-md-6">
-          <label class="form-check-label" for="phone-number">Phone number *</label>
-          <input  th:field="*{phoneNumber}" type="number" class="form-control" id="phone-number" placeholder="Phone">
+            <label class="form-check-label" for="phone-number">Phone number *</label>
+            <input  th:field="*{phoneNumber}" type="number" class="form-control" id="phone-number" placeholder="Phone">
         </div>
-      </div>
-	  <div class="form-group">
+    </div>
+    <div class="form-group">
         <label class="form-check-label" for="email">Email *</label>
         <input th:field="*{email}" type="text" class="form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required placeholder="Email">
-      </div>
-      <div class="form-row">
+    </div>
+    <div class="form-row">
         <div class="form-group required col-md-6">
-          <label class="form-check-label" for="password">Password *</label>
-          <input th:field="*{password}" type="password" class="form-control" id="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required placeholder="Password">
+            <label class="form-check-label" for="password">Password *</label>
+            <input th:field="*{password}" type="password" class="form-control" id="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required placeholder="Password">
         </div>
         <div class="form-group required col-md-6">
-          <label class="form-check-label" for="inputPasswordConfirm4">Confirm Password *</label>
-          <input type="password" required class="form-control" id="inputPasswordConfirm4"
-            placeholder="Confirm Password">
+            <label class="form-check-label" for="inputPasswordConfirm4">Confirm Password *</label>
+            <input type="password" required class="form-control" id="inputPasswordConfirm4"
+                   placeholder="Confirm Password">
         </div>
-      </div>
-        <div th:object="${payment}">
-      <div class="form-group">
+    </div>
+    <div class="form-group">
         <label class="form-check-label" for="inputAddress">Address</label>
         <input th:field="${user.address}" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-      </div>
-<!--      <div class="form-group">-->
-<!--        <label class="form-check-label" for="inputAddress2">Address 2</label>-->
-<!--        <input th:field="*{payments}" type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">-->
-<!--      </div>-->
-<!--      <div class="form-row">-->
-<!--        <div class="form-group col-md-6">-->
-<!--          <label class="form-check-label" for="inputCity">City</label>-->
-<!--          <input th:field="*{}" type="text" class="form-control" id="inputCity" placeholder="City">-->
-<!--        </div>-->
-<!--        <div class="form-group col-md-4">-->
-<!--          <label class="form-check-label" for="inputState">State</label>-->
-<!--          <select id="inputState" class="form-control">-->
-<!--            <option selected>Choose...</option>-->
-<!--            <option>...</option>-->
-<!--          </select>-->
-<!--        </div>-->
-<!--        <div class="form-group col-md-2">-->
-<!--          <label class="form-check-label" for="inputZip">Zip</label>-->
-<!--          <input type="text" class="form-control" id="inputZip" placeholder="00000">-->
-<!--        </div>-->
-	  <div class="form-group">
-        <label class="form-check-label" for="card">Cardholder Name</label>
-        <input  type="text" class="form-control" id="card" placeholder="Name on Card">
-      </div>
-		<div class="form-row">
-        <div class="form-group col-md-6">
-          <label class="form-check-label" for="cardNo">Card Number</label>
-          <input th:field="*{cardNumber}" type="text" class="form-control" id="cardNo" placeholder="XXXX XXXX XXXX XXXX">
-        </div>
-        <div class="form-group col-md-4">
-          <label class="form-check-label" for="expiry">Expiration Date</label>
-          <input th:field="*{expirationDate}" type="date" class="form-control" id="expiry">
-        </div>
-        <div class="form-group col-md-2">
-          <label class="form-check-label" for="cvv">CVV</label>
-          <input th:field="*{securityCode}" type="text" class="form-control" id="cvv" placeholder="XXX">
-        </div>
-      </div>
-        </div>
-      <br />
-      <div class="form-group">
-        <div class="form-check">
-          <input th:checked="${user.optInPromo}" th:field="${user.optInPromo}" name="optInPromo" class="form-check-input" type="checkbox" id="optInPromo">
-          <label class="form-check-label" for="optInPromo">
-            sign me up for news letter.
-          </label>
-          
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary">Register</button>
-      <p class="login-link">Already have an account? <a href="login.html">Login</a></p>
+    </div>
 
-    </form>
-	
-	<div class="container-fluid my-container">
-			<br><hr><br>
-	</div>
-	
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-  <script src="assets/myScript.js"></script>
+    <button id="addCardButton">Add Card</button>
+
+    <fieldset id ="addCard" style="display: none;">
+
+        <div th:object="${payment}">
+
+            <div class="form-group">
+                <label class="form-check-label" for="card">Cardholder Name</label>
+                <input th:field="*{cardholderName}" type="text" class="form-control" id="card" placeholder="Name on Card">
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label class="form-check-label" for="cardNo">Card Number</label>
+                    <input th:field="*{cardNumber}" type="text" class="form-control" id="cardNo" placeholder="XXXX XXXX XXXX XXXX">
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-check-label" for="expiry">Expiration Date</label>
+                    <input th:field="*{expirationDate}" type="date" class="form-control" id="expiry">
+                </div>
+                <div class="form-group col-md-2">
+                    <label class="form-check-label" for="cvv">CVV</label>
+                    <input th:field="*{securityCode}" type="text" class="form-control" id="cvv" placeholder="XXX">
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <script>
+        const addCardButton = document.getElementById("addCardButton");
+        const addCardFieldset = document.getElementById("addCard");
+        const addCardInputs = addCardFieldset.getElementsByTagName("input");
+        //let numCards =
+
+        addCardButton.addEventListener("click", function(event) {
+            event.preventDefault();
+            if (addCardFieldset.style.display === "none") {
+                for (let i = 0; i < addCardInputs.length; i++) {
+                    addCardInputs[i].setAttribute("required", "required");
+                }
+                addCardFieldset.style.display = "block";
+            } else {
+                addCardFieldset.style.display = "none";
+                for (let i = 0; i < addCardInputs.length; i++) {
+                    addCardInputs[i].removeAttribute("required");
+                }
+            }
+        });
+    </script>
+    <br />
+    <div class="form-group">
+        <div class="form-check">
+            <input th:checked="${user.optInPromo}" th:field="${user.optInPromo}" name="optInPromo" class="form-check-input" type="checkbox" id="optInPromo">
+            <label class="form-check-label" for="optInPromo">
+                sign me up for news letter.
+            </label>
+
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+    <p class="login-link">Already have an account? <a href="login">Login</a></p>
+
+</form>
+
+<div class="container-fluid my-container">
+    <br><hr><br>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script th:src="@{/static/js/myScript.js}"></script>
 </body>
 
 </html>

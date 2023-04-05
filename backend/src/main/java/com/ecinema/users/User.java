@@ -98,4 +98,10 @@ public class User {
     public void setOptInPromo(boolean optInPromo) {
         this.optInPromo = optInPromo;
     }
+
+    public void addPayment(PaymentCards card) {
+        if (payments.size() < 3) {
+            this.payments.add(card);
+        }
+    }
 }

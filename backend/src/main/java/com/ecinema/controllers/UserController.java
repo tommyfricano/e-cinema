@@ -4,6 +4,7 @@ import com.ecinema.movie.Movie;
 import com.ecinema.payment.PaymentCards;
 import com.ecinema.security.SecurityUtil;
 import com.ecinema.services.MovieService;
+import com.ecinema.services.PaymentCardsService;
 import com.ecinema.users.User;
 import com.ecinema.services.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,7 +15,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -27,12 +35,15 @@ public class UserController {
 
     private final MovieService movieService;
 
+    private final PaymentCardsService paymentCardsService;
+
     @Autowired
     ApplicationEventPublisher eventPublisher;
 
-    public UserController(UserService userService, MovieService movieService) {
+    public UserController(UserService userService, MovieService movieService, PaymentCardsService paymentCardsService) {
         this.userService = userService;
         this.movieService = movieService;
+        this.paymentCardsService = paymentCardsService;
     }
 
 
@@ -68,17 +79,34 @@ public class UserController {
         return "Useraccount";
     }
     @GetMapping("/user/editInfo")
-    public String getEditInfo(Model model){
+    public String getEditInfo(Model model) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         String username = SecurityUtil.getSessionUser();
         User user = userService.getUserEmail(username);
+        for(PaymentCards card: user.getPayments()){
+            card.setCardNumber(card.getDecodedCardNumber().trim());
+            card.setSecurityCode(card.getDecodedSecurityCode().trim());
+        }
         model.addAttribute("user", user);
         return "Editprofile";
     }
 
     @PostMapping("/user/editInfo")
-    public String editInfo(@Validated @ModelAttribute("user") User userDto){
+    public String editInfo(
+            @Validated @ModelAttribute("user") User userDto,
+            Model model) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
         String username = SecurityUtil.getSessionUser();
         System.out.println("This is userDto" + userDto.getFirstName());
+        List<PaymentCards> cardsToAdd = new ArrayList<>(3);
+        List<PaymentCards> cardsFromPost = userDto.getPayments();
+        for (int i = 0; i < 3; i++) {
+            if (cardsFromPost.get(i).getCardNumber() != null && !(cardsFromPost.get(i).getCardNumber().equals(""))) {
+                cardsFromPost.get(i).setLastName(userDto.getLastName());
+                cardsFromPost.get(i).setBillingAddress(userDto.getAddress());
+                paymentCardsService.encrypt(cardsFromPost.get(i));
+                cardsToAdd.add(cardsFromPost.get(i));
+            }
+        }
+        userDto.setPayments(cardsToAdd);
         userService.updateProfile(username, userDto);
         return "Useraccount";
     }
