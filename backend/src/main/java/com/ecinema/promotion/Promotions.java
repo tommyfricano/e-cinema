@@ -26,6 +26,9 @@ public class Promotions {
     @Column(name = "enddate")
     private String endDate;
 
+    @Column(name = "discount")
+    private double discount;
+
     public Promotions(String code, String startDate, String endDate) {
         this.code = code;
         this.startDate = startDate;

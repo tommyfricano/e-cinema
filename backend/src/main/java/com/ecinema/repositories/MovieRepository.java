@@ -9,11 +9,15 @@ import java.util.List;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
-    public Movie getMovieByTitle(String title);
+    public Movie getMovieByTitleIgnoreCase(String title);
 
     public Movie getMovieByMovieID(int id);
 
     public void deleteByMovieID(int id);
 
     public List<Movie> findByCategory(String category);
+
+    public List<Movie> findByGenreIgnoreCaseAndAndCategory(String genre, String category);
+
+
 }

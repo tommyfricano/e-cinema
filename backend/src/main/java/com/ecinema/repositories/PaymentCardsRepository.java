@@ -9,4 +9,5 @@ import java.util.ArrayList;
 @Repository
 public interface PaymentCardsRepository extends JpaRepository<PaymentCards, Integer> {
     public PaymentCards deleteByPaymentID(int id);
+
 }

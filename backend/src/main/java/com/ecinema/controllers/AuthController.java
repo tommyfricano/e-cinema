@@ -1,5 +1,6 @@
 package com.ecinema.controllers;
 
+import com.ecinema.movie.Movie;
 import com.ecinema.payment.PaymentCards;
 import com.ecinema.services.PaymentCardsService;
 import com.ecinema.services.UserService;
@@ -53,16 +54,6 @@ public class AuthController {
         return "Customerlogin";
     }
 
-    @GetMapping("/forgotPassword")
-    public String getForgotPassword(Model model){
-        return "ForgotPassword";
-    }
-//    @PostMapping("/forgotPassword")
-//    public String ForgotPassword(@ModelAttribute("user") User user) {
-//        System.out.println(user.getEmail());
-//        userService.sendForgotPassword(user.getEmail());
-//        return"CustomerLogin";
-//    }
 
     @PostMapping("/forgotPassword")
     public String processForgotPassword(HttpServletRequest request, Model model) {

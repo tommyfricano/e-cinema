@@ -2,10 +2,12 @@ package com.ecinema.services;
 
 import com.ecinema.movie.Movie;
 import com.ecinema.repositories.MovieRepository;
+import com.ecinema.show.Show;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,6 +24,11 @@ public class MovieService {
     public Movie getMovie(int id){
         return movieRepository.getMovieByMovieID(id);
     }
+
+    public Movie getMovieByTitle(String title){
+        return movieRepository.getMovieByTitleIgnoreCase(title);
+    }
+
     public List<Movie> getMovies(){
         return movieRepository.findAll();
     }
@@ -34,9 +41,28 @@ public class MovieService {
         return movieRepository.findByCategory("Coming-Soon");
     }
 
+    public List<Movie> getMoviesByGenreOutNow(String genre){
+        return movieRepository.findByGenreIgnoreCaseAndAndCategory(genre, "Now-Showing");
+    }
+    public List<Movie> getMoviesByGenreComing(String genre){
+        return movieRepository.findByGenreIgnoreCaseAndAndCategory(genre, "Coming-Soon");
+    }
+
+    public List<Movie> getTopMovies(){
+        List<Movie> movies = movieRepository.findByCategory("Now-Showing");
+        if(movies.size() > 4 ){
+            List<Movie> newList = new ArrayList<>();
+            for(int i=0;i<4;i++) {
+                newList.add(movies.get(i));
+            }
+            return newList;
+        }
+        return movies;
+    }
+
 
     public String saveMovie(Movie movie){
-        Movie checkMovie = movieRepository.getMovieByTitle(movie.getTitle());
+        Movie checkMovie = movieRepository.getMovieByTitleIgnoreCase(movie.getTitle());
         if(checkMovie != null){
             return "error";
         }
@@ -55,6 +81,8 @@ public class MovieService {
         movieToUpdate.setRating(movie.getRating());
         movieToUpdate.setReview(movie.getReview());
         movieToUpdate.setSynopsis(movie.getSynopsis());
+        movieToUpdate.setTrailerVideo(movie.getTrailerVideo());
+        movieToUpdate.setGenre(movie.getGenre());
         movieRepository.save(movieToUpdate);
         return "/admin/manageMovies?success";
     }

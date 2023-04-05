@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
 		<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-		<link rel="stylesheet" type= "text/css" href="../static/css/addMovies.css">
+		<link rel="stylesheet" type= "text/css" th:href="@{/static/css/Registration.css}">
 	</head>
 	
 	<body>
@@ -43,62 +43,46 @@
 			</ul>
 		</div>
 	</nav>
-	<div th:if="${param.error}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
-		A movie is already schedule at that time.
+	<div class="container-fluid my-container">
+			<div class="title"><br>EDIT PROMOTION</div>
+			<br><hr><br>
 	</div>
 
-		<div class="container-fluid my-container">
-			<div class="addmovies"><br>SCHEDULE MOVIE</div>
-			<br><hr><br>
+	<form class="col-lg-8 off offset-lg-1 styles" method="post" th:action="@{'/admin/editPromotion/'+${promo.promoID}}" th:object="${promo}">
+	<div class="form-row required">
+    <div class="form-group required col-md-6">
+      <label class="form-check-label" for="code">Promo code</label>
+      <input th:field="*{code}" th:text="*{code}" ype="text" required class="form-control" id="code" placeholder="Enter code">
+    </div>
+    <div class="form-group required col-md-6">
+      <label class="form-check-label"    for="start">Start date</label>
+      <input th:field="*{startDate}" th:text="*{startDate}" type="text" required class="form-control" id="start" placeholder="Enter start date">
+    </div>
+		<div class="form-group required col-md-6">
+			<label class="form-check-label" for="end">End date</label>
+			<input th:field="*{endDate}" th:text="*{endDate}" type="text" required class="form-control" id="end" placeholder="Enter end date">
 		</div>
-		<div class="container my-container">
-<!--			th:action="@{'/admin/scheduleMovie/'+${time.timeID}"-->
-			<form class = "movieForm" method="post" th:action="@{/admin/scheduleMovie_attempt}">
-				<table>
-					<tr>
-						<td><label class ="formLabel" for="selectMovie">Select Movie</label></td>
-						<td>
-							<select id="selectMovie" required th:field="${movieVal.movieID}" th:selected="${movieVal.movieID}">
-<!--								<option selected value="invalid">Select Movie...</option>-->
-								<option th:each="movie : ${movies}" th:value="${movie.movieID}" th:text="${movie.title}"></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td><label class ="formLabel" for="date">Show Date:</label></td>
-						<td><input type="date" id="date" th:field="${show.date}" placeholder= "Enter Show Date" name="date" value=""></td>
-					</tr>
-					<tr>
-						<td><label class ="formLabel" for="time">Show Time:</label></td>
-						<td><select required th:selected="${show.time}" type="drop" id="time" name="time" value="">
-							<option id="select.">select...</option>
-							<option th:value="12" id="12">12:00 pm</option>
-							<option th:value="3" id="3">3:00 pm</option>
-							<option th:value="6" id="6">6:00 pm</option>
-							<option th:value="9" id="9">9:00 pm</option>
-						</select>
-						</td>
-					</tr>
-					
-				</table>
-				<div class="container my-container btn">
-					<a style = "text-decoration: none; color: white; font-size: 13px;" th:href="@{/admin/manageMovies}">Cancel</a>
-					<button type="submit" class = "submitButton">Schedule</button>
-				</div>
-			</form>
-			<br>
+		<div class="form-group required col-md-6">
+			<label class="form-check-label"    for="discount">Discount</label>
+			<input th:field="*{discount}" th:text="*{discount}" type="text" required class="form-control" id="discount" placeholder="Enter discount %">
 		</div>
-		<div class="container-fluid my-container">
-			<br><hr><br>
-		</div>
-		
-		
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+  </div>
+  <br />
+		<a style = "text-decoration: none; color: white;" href="/admin/users" th:href="@{/admin/promotions}">Cancel</a>
+		<button type="submit"  class="btn btn-primary"><a style = "text-decoration:none; color: white;" >Update Details</a></button><br>
+</form>
+
+<div class="container-fluid my-container">
+
+			<br><br><hr><br>
+	</div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 			crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
 			crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 			crossorigin="anonymous"></script>
 		<script th:src="@{/static/js/myScript.js}"></script>
-	</body>
+</body>
 </html>

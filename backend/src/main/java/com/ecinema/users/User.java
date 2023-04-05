@@ -55,11 +55,11 @@ public class User {
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "fk_userID", referencedColumnName = "userID", insertable = true, updatable = true, nullable = true)
     private List<PaymentCards> payments;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER,  cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName ="userID" )},

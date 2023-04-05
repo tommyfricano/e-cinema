@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
 		<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-		<link rel="stylesheet" type= "text/css" href="assets/css/addMovies.css">
+		<link rel="stylesheet" type= "text/css" th:href="@{/static/css/addMovies.css}" href="../static/css/addMovies.css">
 	</head>
 	
 	<body>
@@ -18,27 +18,27 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarMenu">
-				<form class="form-inline ml-lg-5">
-					<input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
-					<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
-				</form>
+<!--				<form class="form-inline ml-lg-5">-->
+<!--					<input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--					<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>-->
+<!--				</form>-->
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
-						<a href="#" class="nav-link" style = "margin-left: 35px">USERS</a>
+						<a th:href="@{/admin/users}" class="nav-link" style = "margin-left: 35px">USERS</a>
 					</li>
 					<li class="nav-item">
 						<a th:href="@{/admin/manageMovies}" class="nav-link">MANAGE MOVIES</a>
 					</li>
 					<li class="nav-item">
-						<a href="../../../../../Deliverable3_Team_B8/CES/promotions.html" class="nav-link">PROMOTIONS</a>
+						<a th:href="@{/admin/promotions}" class="nav-link">PROMOTIONS</a>
 					</li>
 				</ul>
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
-						<a href="#" class="nav-link">ADMIN ACCOUNT</a>
+<!--						<a href="#" class="nav-link">ADMIN ACCOUNT</a>-->
 					</li>
 					<li class="nav-item">
-						<a href="Cinema.html" class="nav-link">LOGOUT</a>
+						<a th:href="@{/logout}" class="nav-link">LOGOUT</a>
 					</li>
 				</ul>
 			</div>         
@@ -56,8 +56,12 @@
 						<td><input type="text" th:field="*{title}" th:value="*{title}" id="title" name="title" value=""></td>
 					</tr>
 					<tr>
+						<td><label class ="formLabel" for="genre">Genre:</label></td>
+						<td><input type="text" th:field="*{genre}" th:value="*{genre}" id="genre"  name="genre" value=""></td>
+					</tr>
+					<tr>
 						<td><label class ="formLabel" for="cast">Cast:</label></td>
-						<td><input type="text" th:field="*{cast}" th:value="*{cast}" id="cast"  name="cast" value=""></td>
+						<td><textarea type="text" th:field="*{cast}" th:value="*{cast}" id="cast"  name="cast" value=""></textarea></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="director">Director:</label></td>
@@ -69,11 +73,11 @@
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="description">Description:</label></td>
-						<td><input type="text" th:field="*{synopsis}" th:value="*{synopsis}" id="description" placeholder= "Enter Description" name="description" value=""></td>
+						<td><textarea type="text" th:field="*{synopsis}" th:value="*{synopsis}" id="description" placeholder= "Enter Description" name="description" value=""></textarea></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="review">Review:</label></td>
-						<td><input type="text" th:field="*{review}" th:value="*{review}" id="review" placeholder= "Add Review" name="review" value=""></td>
+						<td><textarea type="text" th:field="*{review}" th:value="*{review}" id="review" placeholder= "Add Review" name="review" value=""></textarea></td>
 					</tr>
 					<tr>
 						<td><label class ="formLabel" for="rating">Rating:</label></td>
@@ -96,8 +100,8 @@
 					</tr>
 				</table>
 				<div class="container my-container btn">
-					<button class = "submitButton"><a style = "text-decoration: none; color: white;" th:href="@{/admin/manageMovies}">Cancel</a></button>
-					<button type="submit" class = "submitButton"><a style = "text-decoration: none; color: white;" >Save</a></button>
+					<a style = "text-decoration: none; color: white;" th:href="@{/admin/manageMovies}">Cancel</a>
+					<button type="submit" class = "submitButton"><a style = " font-size: 13px; text-decoration: none; color: white;" >Save</a></button>
 				</div>
 			</form>
 			<br>
@@ -113,6 +117,6 @@
 			crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 			crossorigin="anonymous"></script>
-		<script src="../../../../../Deliverable3_Team_B8/CES/myScript.js"></script>
+		<script th:src="@{/static/js/myScript.js}"></script>
 	</body>
 </html>
