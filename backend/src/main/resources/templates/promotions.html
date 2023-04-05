@@ -63,7 +63,9 @@
 					<td th:value="${promotion.code}" th:text="${promotion.code}"></td>
 					<td><button class = "editPromotion" ><a style = "text-decoration: none; color: white;" th:href="@{'/admin/editPromotion/'+${promotion.promoID}}">Edit</a></button></td>
 					<form method="post" th:action="@{'/admin/deletePromotion/'+${promotion.promoID}}">
-						<td><button type="submit" class = "removePromotion" >Remove</button></td>
+						<td th:switch="${promotion.sent}">
+							<button  th:case="false" type="submit" class = "removePromotion"  >Remove</button>
+						</td>
 					</form>
 					<form method="post" th:action="@{'/admin/sendPromotion/'+${promotion.promoID}}">
 						<td><button type="submit" class = "removePromotion" >Send promo</button></td>

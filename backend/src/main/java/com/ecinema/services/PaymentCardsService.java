@@ -9,10 +9,11 @@ import java.security.SecureRandom;
 
 import java.util.Base64;
 
+import com.ecinema.models.payment.PaymentCards;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ecinema.payment.PaymentCards;
+
 
 @Service
 @Transactional

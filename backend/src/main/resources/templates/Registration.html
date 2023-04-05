@@ -38,32 +38,6 @@
 			<br><hr><br>
 	</div>
 
-<body>
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-    <a href="Cinema.html" class="navbar-brand">B8-CINEMA</a>
-    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarMenu">
-        <form class="form-inline ml-lg-5">
-            <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
-        </form>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a th:href="@{/login}" data-toggle="tooltip" title="Login" class="nav-link"><i class="fas fa-user"></i> <span class="sr-only">LOGIN</span></a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/registration}" class="nav-link">SIGN UP</a>
-            </li>
-        </ul>
-    </div>
-</nav>
-<div class="container-fluid my-container">
-    <div class="title"><br>REGISTRATION</div>
-    <br><hr><br>
-</div>
-
 <form class="col-lg-8 off offset-lg-1 styles" method="post" th:action="@{/registration_attempt}" th:object="${user}">
     <div th:if="${param.error}" class="alert alert-error">
         Account with this email already exists

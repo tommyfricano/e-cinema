@@ -1,11 +1,9 @@
 package com.ecinema.repositories;
 
-import com.ecinema.models.show.ShowRoom;
+import com.ecinema.models.booking.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ShowRoomRepository extends JpaRepository<ShowRoom, Integer> {
-
-//    public ShowRoom getShowRoomBy
+public interface BookingRepository extends JpaRepository<Booking, Integer> {
 }

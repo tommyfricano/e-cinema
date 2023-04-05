@@ -1,12 +1,14 @@
-package com.ecinema.show;
+package com.ecinema.models.show;
 
-import com.ecinema.movie.Movie;
+import com.ecinema.models.booking.Booking;
+import com.ecinema.models.movie.Movie;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Entity
 @Table(name = "shows")
@@ -35,4 +37,6 @@ public class Show {
     @JoinColumn(name = "roomID")
     private ShowRoom showRoom;
 
+    @OneToMany(mappedBy = "show")
+    private List<Booking> bookings;
 }

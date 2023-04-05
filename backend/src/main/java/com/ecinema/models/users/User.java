@@ -1,11 +1,10 @@
-package com.ecinema.users;
+package com.ecinema.models.users;
 
-import com.ecinema.payment.PaymentCards;
-import com.ecinema.users.enums.OptInPromo;
-import com.ecinema.users.enums.Status;
-import com.ecinema.users.enums.UserTypes;
+import com.ecinema.models.booking.Booking;
+import com.ecinema.models.payment.PaymentCards;
+import com.ecinema.models.users.enums.Status;
+import com.ecinema.models.users.enums.UserTypes;
 import jakarta.persistence.*;
-import lombok.Cleanup;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -55,7 +54,7 @@ public class User {
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_userID", referencedColumnName = "userID", insertable = true, updatable = true, nullable = true)
     private List<PaymentCards> payments;
 
@@ -67,6 +66,8 @@ public class User {
     )
     private List<Role> roles = new ArrayList<Role>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Booking> bookings;
 
     public User() {
     }

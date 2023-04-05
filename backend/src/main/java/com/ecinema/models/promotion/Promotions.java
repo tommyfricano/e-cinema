@@ -1,9 +1,12 @@
-package com.ecinema.promotion;
+package com.ecinema.models.promotion;
 
+import com.ecinema.models.booking.Booking;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,6 +31,12 @@ public class Promotions {
 
     @Column(name = "discount")
     private double discount;
+
+    @Column(name = "sent")
+    private boolean sent;
+
+    @OneToMany(mappedBy = "promotions")
+    private List<Booking> bookings;
 
     public Promotions(String code, String startDate, String endDate) {
         this.code = code;

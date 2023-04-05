@@ -1,6 +1,6 @@
-package com.ecinema.users.confirmation;
+package com.ecinema.models.users.confirmation;
 
-import com.ecinema.users.User;
+import com.ecinema.models.users.User;
 import org.springframework.context.ApplicationEvent;
 
 import java.util.Locale;

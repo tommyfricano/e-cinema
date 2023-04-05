@@ -10,7 +10,7 @@
         crossorigin="anonymous">
 
 	<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-	<link rel="stylesheet" type= "text/css" th:href="@{assets/css/Registration.css}">
+	<link rel="stylesheet" type= "text/css" th:href="@{/static/css/Registration.css}">
 </head>
 
 	
@@ -208,8 +208,8 @@
 	<br />
 	<div class="form-group">
 		<div class="form-check">
-			<input class="form-check-input" type="checkbox" id="gridCheck">
-			<label class="form-check-label" for="gridCheck">
+			<input th:checked="${user.optInPromo}" th:field="${user.optInPromo}" name="optInPromo" class="form-check-input" type="checkbox" id="optInPromo">
+			<label class="form-check-label" for="optInPromo">
 				sign me up for news letter.
 			</label>
 		</div>
@@ -230,7 +230,7 @@
 			crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 			crossorigin="anonymous"></script>
-<script src="assets/myScript.js"></script>
+<script src="@{/static/js/myScript.js}"></script>
 
 
 

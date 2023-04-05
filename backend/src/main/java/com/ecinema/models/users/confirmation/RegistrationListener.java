@@ -1,6 +1,6 @@
-package com.ecinema.users.confirmation;
+package com.ecinema.models.users.confirmation;
 
-import com.ecinema.users.User;
+import com.ecinema.models.users.User;
 import com.ecinema.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;

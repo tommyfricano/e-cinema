@@ -108,6 +108,30 @@
 			</tr>
 		</table>
 	</div>
+
+	<div class="container-fluid my-container">
+		<br><hr class = "mainHR"><br>
+	</div>
+	<div class="container my-container" th:object="${shows}">
+		<section>
+			<div style = "text-align: center;"><button class = "showTimeheader">SHOW TIMES</button></div>
+			<br><br>
+			<!--			<div class = "showdate">28TH FEBRUARY 2023</div>-->
+			<!--			<hr class = "showtimeHR">-->
+			<br>
+			<div class="row justify-content-center flex-lg-wrap">
+				<div class="col-md-2 my-col" th:each="show : ${shows}">
+					<div class = "poster-title" th:text="${show.date}" style="font-size: 20px;"></div>
+					<div class = "poster-title"><a th:href ="@{'/bookMovie/'+${movie.movieID}+'/'+${show.showID}}" style = "color: white; background: black; padding: 10px; border-radius: 5px;" th:text="${show.time+':00 pm'}"></a></div>
+				</div>
+			</div>
+			<br><br>
+			<br>
+		</section>
+	</div>
+	<div class="container-fluid my-container">
+		<br><hr class = "mainHR"><br>
+	</div>
 	
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 				crossorigin="anonymous"></script>

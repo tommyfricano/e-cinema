@@ -1,4 +1,4 @@
-package com.ecinema.users.confirmation;
+package com.ecinema.models.users.confirmation;
 
 import jakarta.servlet.http.HttpServletRequest;
 

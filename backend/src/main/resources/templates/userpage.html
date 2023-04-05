@@ -88,7 +88,7 @@
 					<button class="editbutton posterbutton"><a th:href="@{'/admin/editUser/'+${user.userID}}">EDIT</a></button>
 					<form method="post" th:action="@{'/admin/suspendUser/'+${user.userID}}">
 						<div th:switch="${user.activity}">
-							<button type="submit" class="deletebutton posterbutton" th:case="${T(com.ecinema.users.enums.Status).SUSPENDED}">UNSUSPEND</button>
+							<button type="submit" class="deletebutton posterbutton" th:case="${T(com.ecinema.models.users.enums.Status).SUSPENDED}">UNSUSPEND</button>
 							<button type="submit" class="deletebutton posterbutton" th:case="*">SUSPEND</button>
 						</div>
 					</form>

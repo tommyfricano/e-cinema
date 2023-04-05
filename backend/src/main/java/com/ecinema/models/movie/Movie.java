@@ -1,7 +1,6 @@
-package com.ecinema.movie;
+package com.ecinema.models.movie;
 
-import com.ecinema.services.ShowService;
-import com.ecinema.show.Show;
+import com.ecinema.models.show.Show;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

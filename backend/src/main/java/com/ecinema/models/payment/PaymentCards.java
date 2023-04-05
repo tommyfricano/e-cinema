@@ -1,6 +1,7 @@
-package com.ecinema.payment;
+package com.ecinema.models.payment;
 
 import com.ecinema.services.PaymentCardsService;
+import com.ecinema.models.booking.Booking;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,8 @@ import javax.crypto.SecretKey;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+
+import java.util.List;
 
 @Entity
 @Setter
@@ -56,6 +59,9 @@ public class PaymentCards {
 
 
 
+
+    @OneToMany(mappedBy = "paymentCards")
+    private List<Booking> bookings;
 
     public PaymentCards(String firstName,
                         String lastName,

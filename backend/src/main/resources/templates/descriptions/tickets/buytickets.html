@@ -19,10 +19,6 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarMenu">
-<!--			<form class="form-inline ml-lg-5">-->
-<!--				<input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">-->
-<!--				<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>-->
-<!--			</form>-->
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
 					<a th:href="@{/user/account}" class="nav-link"><i class="fas fa-user" style="margin-right: 10px"></i>ACCOUNT</a>
@@ -33,9 +29,13 @@
 			</ul>
 		</div>
 	</nav>
+	<div th:if="${param.error}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
+		Number of tickets must match number of selected seats.
+	</div>
 
 	<div class="container my-container">
 	<br><br>
+		<form method="post" th:action="@{'/user/bookMovie_attempt/' +${movie.movieID}+'/'+${show.showID}}">
 		<ul class = "movie-details">
 		  <li class= "list-items"><b>MOVIE:</b> <p th:text="${movie.title}"></p></li>
 		  <li class= "list-items"><b>SHOW DATE:</b> <p th:text="${show.date}"></p></li>
@@ -46,12 +46,12 @@
 			<tr class="tickets">
 				<th colspan="2">ADD TICKETS<hr></th>
 			</tr>
-			<tr>
-				<td class="ageBasedticket">SENIOR TICKET ($10)</td>
+			<tr >
+				<td class="ageBasedticket">SENIOR TICKET ($8)</td>
 				<td>
 <!--					<div class="wrapper">-->
-						<input type="number" placeholder="0" id="Senior" value="0">
-<!--						<span class="minus">-</span>-->
+						<input th:field="${booking.tickets[0].check}" th:id="check" type="number" placeholder="0" >
+					<!--						<span class="minus">-</span>-->
 <!--						<span class="number">00</span>-->
 <!--						<span class="plus">+</span>-->
 <!--					</div>-->
@@ -60,13 +60,13 @@
 			<tr>
 				<td class="ageBasedticket">ADULT TICKET $(12)</td>
 				<td>
-					<input type="number" placeholder="0" id="Adult" value="0">
+					<input th:field="${booking.tickets[1].check}" type="number" placeholder="0" id="Adult" value="0">
 				</td>
 			</tr>
 			<tr>
 				<td class="ageBasedticket">CHILD TICKET $(7)</td>
 				<td>
-					<input type="number" placeholder="0" id="Child" value="0">
+					<input th:field="${booking.tickets[2].check}" type="number" placeholder="0" id="Child" value="0">
 				</td>
 			</tr>
 		</table>
@@ -103,74 +103,75 @@
 		<div class="seatcontainer">
 			<div class="screen"></div>
 
-			<div class="row">
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
+			<div th:each="seat : ${seats}">
+				<div th:switch="${seat.seatID}" >
+					<div th:case="${seat.seatID} % 8 == 0" class="row" >
+						<input type="checkbox" class="seat" th:checked="*{seat.available}" >
+					</div>
+					<div th:case="*" >
+						<input type="checkbox" class="seat" th:checked="*{seat.available}" >
+					</div>
+				</div>
 			</div>
-			<div class="row">
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat occupied"></div>
-				<div class="seat occupied"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-			</div>
-			<div class="row">
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat occupied"></div>
-				<div class="seat occupied"></div>
-			</div>
-			<div class="row">
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-			</div>
-			<div class="row">
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat occupied"></div>
-				<div class="seat occupied"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-			</div>
-			<div class="row">
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat"></div>
-				<div class="seat occupied"></div>
-				<div class="seat occupied"></div>
-				<div class="seat occupied"></div>
-				<div class="seat"></div>
-			</div>
+<!--			<div class="row">-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat occupied"></div>-->
+<!--				<div class="seat occupied"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--			</div>-->
+<!--			<div class="row">-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat occupied"></div>-->
+<!--				<div class="seat occupied"></div>-->
+<!--			</div>-->
+<!--			<div class="row">-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--			</div>-->
+<!--			<div class="row">-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat occupied"></div>-->
+<!--				<div class="seat occupied"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--			</div>-->
+<!--			<div class="row">-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat"></div>-->
+<!--				<div class="seat occupied"></div>-->
+<!--				<div class="seat occupied"></div>-->
+<!--				<div class="seat occupied"></div>-->
+<!--				<div class="seat"></div>-->
+<!--			</div>-->
 		</div>
 
-		<p class="text">
-			You have selected <span id="count">0</span> seats for a price of $<span id="total">0</span>
-		</p>
+<!--		<p class="text">-->
+<!--			You have selected <span id="count">0</span> seats for a price of $<span id="total">0</span>-->
+<!--		</p>-->
 		<br>
 		<div>
-			<button class = "submitButton" style="float:left; margin-right: 3px"><a style = "text-decoration: none; color: white;" href = "checkout.html">CONFIRM</a></button>
+				<button type="submit" class = "submitButton" style="float:left; margin-right: 3px">CONFIRM</button>
+			</form>
 			<button class = "submitButton" style="float:right; margin-left: 3px"><a style = "text-decoration: none; color: white;" th:href="@{'/user/descriptions/'+${movie.movieID}}">BACK</a></button>
 		</div>
 	</div>

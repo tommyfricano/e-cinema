@@ -1,8 +1,8 @@
 package com.ecinema.services;
 
-import com.ecinema.promotion.Promotions;
+import com.ecinema.models.promotion.Promotions;
 import com.ecinema.repositories.PromotionsRepository;
-import com.ecinema.users.User;
+import com.ecinema.models.users.User;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class PromotionsService {
     }
 
     public String savePromotion(Promotions promo, String link) throws MessagingException, UnsupportedEncodingException {
-
+        promo.setSent(false);
         promotionsRepository.save(promo);
         return "/admin/promotions?success";
     }
@@ -47,6 +47,8 @@ public class PromotionsService {
             System.out.println(user.getEmail());
             userService.sendPromoEmail(user.getEmail(), link, promo.getCode(), promo.getDiscount());
         }
+        promo.setSent(true);
+        promotionsRepository.save(promo);
         return "redirect:/admin/promotions?emailSuccess";
     }
 

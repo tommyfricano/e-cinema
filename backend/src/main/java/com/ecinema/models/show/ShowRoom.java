@@ -1,5 +1,6 @@
-package com.ecinema.show;
+package com.ecinema.models.show;
 
+import com.ecinema.models.seat.Seat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,4 +30,7 @@ public class ShowRoom {
 
     @OneToMany(mappedBy = "showRoom")
     private List<Show> showsTimes;
+
+    @OneToMany(mappedBy = "showRoomSeating")
+    private List<Seat> seats;
 }

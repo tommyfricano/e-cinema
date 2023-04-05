@@ -1,18 +1,23 @@
 package com.ecinema.controllers;
 
-import com.ecinema.movie.Movie;
-import com.ecinema.payment.PaymentCards;
-import com.ecinema.promotion.Promotions;
+import com.ecinema.models.booking.Booking;
+import com.ecinema.models.movie.Movie;
+import com.ecinema.models.payment.PaymentCards;
+import com.ecinema.models.promotion.Promotions;
+import com.ecinema.models.seat.Seat;
+import com.ecinema.models.show.ShowRoom;
+import com.ecinema.models.ticket.Ticket;
 import com.ecinema.security.SecurityUtil;
+import com.ecinema.services.*;
+import com.ecinema.models.show.Show;
+import com.ecinema.models.users.User;
+import com.ecinema.models.users.confirmation.Utility;
 import com.ecinema.services.MovieService;
 import com.ecinema.services.PaymentCardsService;
 import com.ecinema.services.PromotionsService;
 import com.ecinema.services.ShowService;
-import com.ecinema.show.Show;
 
-import com.ecinema.users.User;
 import com.ecinema.services.UserService;
-import com.ecinema.users.confirmation.Utility;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,6 +37,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -49,16 +55,19 @@ public class UserController {
 
     private final ShowService showService;
 
+    private final BookingService bookingService;
+
     @Autowired
     ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    public UserController(UserService userService, MovieService movieService, PromotionsService promotionsService, ShowService showService, PaymentCardsService paymentCardsService) {
+    public UserController(UserService userService, MovieService movieService, PromotionsService promotionsService, ShowService showService, BookingService bookingService , PaymentCardsService paymentCardsService) {
         this.userService = userService;
         this.movieService = movieService;
         this.promotionsService = promotionsService;
         this.showService = showService;
-        this.paymenntCardsService = paymentCardsService;
+        this.paymentCardsService = paymentCardsService;
+        this.bookingService = bookingService;
     }
 
     @GetMapping("/user/{id}")
@@ -132,12 +141,61 @@ public class UserController {
     }
 
     @GetMapping("/user/bookMovie/{id}/{sid}")
-    public String getBookMovie(@PathVariable("id")int id, @PathVariable("sid")int sid, Model model) throws ParseException {
+    public String getBookMovie(@PathVariable("id")int id,
+                               @PathVariable("sid")int sid,
+                               Model model)  {
         Movie movie = movieService.getMovie(id);
-        Show show = showService.getShowDisplayDate(sid);
+        Show show = showService.getShow(sid);
+//        ShowRoom showRoom = show.getShowRoom();
+        Booking booking = new Booking();
+        List<Ticket> tickets = new ArrayList<>();
+        List<Seat> seats = show.getShowRoom().getSeats();
+
+
+        for(int i =0; i < 3 ;i++){
+            System.out.println(seats.get(i).getSeatID());
+            Ticket ticket = new Ticket();
+            ticket.setCheck(0);
+            tickets.add(ticket);
+        }
+        booking.setTickets(tickets);
+
+        model.addAttribute("seats", seats);
+        model.addAttribute("booking", booking);
         model.addAttribute("movie", movie);
         model.addAttribute("show", show);
         return"/descriptions/tickets/buytickets";
+    }
+
+    @PostMapping("/user/bookMovie_attempt/{id}/{sid}")
+    public String bookMovie(@ModelAttribute("booking")Booking booking,
+                            @PathVariable("id")int id,
+                            @PathVariable("sid")int sid,
+                            Model model){
+        Movie movie = movieService.getMovie(id);
+        Show show = showService.getShow(sid);
+        String username = SecurityUtil.getSessionUser();
+        User user = userService.getUserEmail(username);
+        Booking newBooking = bookingService.createPartialBooking(show, booking.getTickets(), user, show.getShowRoom()); // todo
+        if(newBooking == null){
+            model.addAttribute("error" , true);
+            return "redirect:/user/bookMovie/"+movie.getMovieID() +"/"+ show.getShowID() +"?error";
+        }
+        model.addAttribute("booking",  newBooking);
+        return "redirect:/user/checkout";
+    }
+
+
+    @GetMapping("/user/checkout")
+    public String getCheckout(@ModelAttribute("booking")Booking booking,
+                              Model model)  {
+        PaymentCards card = new PaymentCards();
+        Promotions promo = new Promotions();
+        //todo add users cards
+        model.addAttribute("booking", booking);
+        model.addAttribute("card", card);
+        model.addAttribute("promo", promo);
+        return"/descriptions/tickets/checkout";
     }
 
     @GetMapping("/user/payments/{id}")       // gets all cards
@@ -307,7 +365,7 @@ public class UserController {
     }
 
     @PostMapping("/admin/scheduleMovie_attempt")
-    public String scheduleMovie(@ModelAttribute("show")Show show, @ModelAttribute("movieVal")Movie movie, HttpServletResponse httpResponse, Model model) throws IOException {
+    public String scheduleMovie(@ModelAttribute("show")Show show, @ModelAttribute("movieVal")Movie movie, HttpServletResponse httpResponse, Model model) throws IOException, ParseException {
         show.setMovie(movieService.getMovie(movie.getMovieID()));
         String response = showService.createShowTime(show);
         if(response.contains("error")) {

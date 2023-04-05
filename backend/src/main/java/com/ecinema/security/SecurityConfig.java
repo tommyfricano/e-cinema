@@ -41,7 +41,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/resources/static/**", "/search", "/descriptions/**", "/static/**","/login", "/forgotPassword", "/Cinema", "/resetPassword**", "/resetPassword?token=", "/confirmRegistration?token=","/confirmRegistration", "/css/**", "/js/**", "/Cinema.html","/registration", "/registration_attempt","/registration-error")
+                .requestMatchers("/resources/static/**", "/bookMovie/**", "/search", "/descriptions/**", "/static/**","/login", "/forgotPassword", "/Cinema", "/resetPassword**", "/resetPassword?token=", "/confirmRegistration?token=","/confirmRegistration", "/css/**", "/js/**", "/Cinema.html","/registration", "/registration_attempt","/registration-error")
                 .permitAll()
                 .requestMatchers("/user/**").hasAuthority("CUSTOMER")
                 .requestMatchers("/**").hasAuthority("ADMIN")

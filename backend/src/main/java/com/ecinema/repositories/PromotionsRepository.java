@@ -1,6 +1,6 @@
 package com.ecinema.repositories;
 
-import com.ecinema.promotion.Promotions;
+import com.ecinema.models.promotion.Promotions;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

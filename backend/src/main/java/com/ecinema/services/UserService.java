@@ -1,18 +1,17 @@
 package com.ecinema.services;
 
-import com.ecinema.payment.PaymentCards;
+import com.ecinema.models.payment.PaymentCards;
 import com.ecinema.repositories.PaymentCardsRepository;
 import com.ecinema.repositories.RoleRepository;
 import com.ecinema.repositories.UserRespository;
-import com.ecinema.users.Role;
-import com.ecinema.users.User;
-import com.ecinema.users.confirmation.VerificationToken;
+import com.ecinema.models.users.Role;
+import com.ecinema.models.users.User;
+import com.ecinema.models.users.confirmation.VerificationToken;
 import com.ecinema.repositories.VerificationTokenRepository;
-import com.ecinema.users.enums.Status;
-import com.ecinema.users.enums.UserTypes;
+import com.ecinema.models.users.enums.Status;
+import com.ecinema.models.users.enums.UserTypes;
 import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,6 +58,7 @@ public class UserService {
         this.paymentCardsRepository = paymentCardsRepository;
         this.tokenRepository = tokenRepository;
         this.roleRepository = roleRepository;
+
         this.em = em;
     }
 

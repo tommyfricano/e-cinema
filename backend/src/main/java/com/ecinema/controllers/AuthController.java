@@ -1,14 +1,13 @@
 package com.ecinema.controllers;
 
-import com.ecinema.movie.Movie;
-import com.ecinema.payment.PaymentCards;
+import com.ecinema.models.payment.PaymentCards;
 import com.ecinema.services.PaymentCardsService;
 import com.ecinema.services.UserService;
-import com.ecinema.users.User;
-import com.ecinema.users.confirmation.OnRegistrationCompleteEvent;
-import com.ecinema.users.confirmation.Utility;
-import com.ecinema.users.confirmation.VerificationToken;
-import com.ecinema.users.enums.Status;
+import com.ecinema.models.users.User;
+import com.ecinema.models.users.confirmation.OnRegistrationCompleteEvent;
+import com.ecinema.models.users.confirmation.Utility;
+import com.ecinema.models.users.confirmation.VerificationToken;
+import com.ecinema.models.users.enums.Status;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +53,10 @@ public class AuthController {
         return "Customerlogin";
     }
 
+    @GetMapping("/forgotPassword")
+    public String forgotPassword(Model model){
+        return "ForgotPassword";
+    }
 
     @PostMapping("/forgotPassword")
     public String processForgotPassword(HttpServletRequest request, Model model) {

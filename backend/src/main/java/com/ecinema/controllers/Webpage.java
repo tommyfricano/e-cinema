@@ -1,7 +1,9 @@
 package com.ecinema.controllers;
 
-import com.ecinema.movie.Movie;
+import com.ecinema.models.movie.Movie;
+import com.ecinema.models.show.Show;
 import com.ecinema.services.MovieService;
+import com.ecinema.services.ShowService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 @Controller
@@ -19,9 +22,12 @@ public class Webpage {
 
     private final MovieService movieService;
 
+    private final ShowService showService;
+
     @Autowired
-    public Webpage(MovieService movieService) {
+    public Webpage(MovieService movieService, ShowService showService) {
         this.movieService = movieService;
+        this.showService = showService;
     }
 
     @GetMapping("/Cinema.html")
@@ -45,12 +51,23 @@ public class Webpage {
     }
 
     @GetMapping("/descriptions/{id}")
-    public String getDescription(@PathVariable("id")int id, Model model){
+    public String getDescription(@PathVariable("id")int id, Model model) throws ParseException {
         Movie movie = movieService.getMovie(id);
         Movie searchedMovie = new Movie();
+        List<Show> sortedShows = showService.getSortedShows(movie.getMovieID());
+        model.addAttribute("shows", sortedShows);
         model.addAttribute("searchedmovie", searchedMovie);
         model.addAttribute("movie", movie);
         return "descriptionsNoAuth";
+    }
+
+    @GetMapping("/bookMovie/{id}/{sid}")
+    public String getBookMovie(@PathVariable("id")int id, @PathVariable("sid")int sid, Model model) throws ParseException {
+        Movie movie = movieService.getMovie(id);
+        Show show = showService.getShow(sid);
+        model.addAttribute("movie", movie);
+        model.addAttribute("show", show);
+        return"/descriptions/tickets/buyticketsNoAuth";
     }
 
     @PostMapping("/search")

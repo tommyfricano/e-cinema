@@ -1,6 +1,6 @@
 package com.ecinema.repositories;
 
-import com.ecinema.users.User;
+import com.ecinema.models.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -48,7 +48,7 @@
 		</div>
 		<div class="container my-container">
 			<form method="post" th:action="@{/admin/addMovie}" th:object="${movie}" class = "movieForm" >
-				<div th:if="${param.error}" class="alert alert-success">
+				<div th:if="${param.error}" class="alert" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
 					Failed to add movie.... Movie already exists.
 				</div>
 				<table>
@@ -98,6 +98,7 @@
 							<option id="select.">select...</option>
 							<option th:value="Now-Showing" id="Now-Showing">Now Showing Movie</option>
 							<option th:value="Coming-Soon" id="Coming-Soon">Coming Soon Movie</option>
+						</select>
 						</td>
 					</tr>
 				</table>
