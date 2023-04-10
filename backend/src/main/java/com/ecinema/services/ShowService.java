@@ -1,5 +1,8 @@
 package com.ecinema.services;
 
+import com.ecinema.models.seat.Seat;
+import com.ecinema.models.seat.Seats;
+import com.ecinema.repositories.SeatRepository;
 import com.ecinema.repositories.ShowRepository;
 import com.ecinema.repositories.ShowRoomRepository;
 import com.ecinema.models.show.Show;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,13 +27,19 @@ public class ShowService {
 
     private final ShowRoomRepository showRoomRepository;
 
+    private final SeatRepository seatRepository;
+
     @Autowired
-    public ShowService(ShowRepository showRepository, MovieService movieService, ShowRoomRepository showRoomRepository) {
+    public ShowService(ShowRepository showRepository, MovieService movieService, ShowRoomRepository showRoomRepository, SeatRepository seatRepository) {
         this.showRepository = showRepository;
         this.movieService = movieService;
         this.showRoomRepository = showRoomRepository;
+        this.seatRepository = seatRepository;
     }
 
+    public List<Seat> getSeatCopy(Show show, String dateTime){
+        return seatRepository.findAllByShowRoomSeatingAndDateTime(show.getShowRoom(), dateTime);
+    }
     public List<Show> getSortedShows(int id) throws ParseException {
         List<Show> shows = showRepository.findAll(Sort.by("date").ascending().and(Sort.by("time").descending()));
         shows.removeIf(show -> show.getMovie().getMovieID() != id);
@@ -69,9 +79,21 @@ public class ShowService {
         if(showRooms.size() == 0){
             return "redirect:/admin/scheduleMovie?error";
         }
-
+        List<Seat> seats = new ArrayList<>();
+        for(int i =0; i < 48;i++){
+            Seat seat = new Seat();
+            seat.setAvailable(false);
+            seat.setShowRoomSeating(showRooms.get(0));
+            seat.setDateTime(strDate+":"+show.getTime());
+            seat.setSeatNO(i+1);
+            seats.add(seat);
+        }
+        showRooms.get(0).setSeats(seats);
+        seatRepository.saveAll(seats);
+        showRoomRepository.save(showRooms.get(0));
         show.setShowRoom(showRooms.get(0));
         show.setMovie(movieService.getMovie(show.getMovie().getMovieID()));
+
         showRepository.save(show);
         return "redirect:/admin/manageMovies?scheduleSuccess";
     }

@@ -5,19 +5,14 @@ import com.ecinema.models.movie.Movie;
 import com.ecinema.models.payment.PaymentCards;
 import com.ecinema.models.promotion.Promotions;
 import com.ecinema.models.seat.Seat;
+import com.ecinema.models.seat.Seats;
+import com.ecinema.models.show.Show;
 import com.ecinema.models.show.ShowRoom;
 import com.ecinema.models.ticket.Ticket;
-import com.ecinema.security.SecurityUtil;
-import com.ecinema.services.*;
-import com.ecinema.models.show.Show;
 import com.ecinema.models.users.User;
 import com.ecinema.models.users.confirmation.Utility;
-import com.ecinema.services.MovieService;
-import com.ecinema.services.PaymentCardsService;
-import com.ecinema.services.PromotionsService;
-import com.ecinema.services.ShowService;
-
-import com.ecinema.services.UserService;
+import com.ecinema.security.SecurityUtil;
+import com.ecinema.services.*;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -35,7 +31,6 @@ import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +40,7 @@ Controller for users
  */
 
 @Controller
+@SessionAttributes("seating")
 public class UserController {
     private final UserService userService;  // business logic object
 
@@ -146,24 +142,34 @@ public class UserController {
                                Model model)  {
         Movie movie = movieService.getMovie(id);
         Show show = showService.getShow(sid);
-//        ShowRoom showRoom = show.getShowRoom();
         Booking booking = new Booking();
         List<Ticket> tickets = new ArrayList<>();
-        List<Seat> seats = show.getShowRoom().getSeats();
+        ShowRoom showRoom = show.getShowRoom();
+        showRoom.setSeats(showService.getSeatCopy(show, show.getDate()+":"+show.getTime()));
+         List<Seat> seats = showService.getSeatCopy(show, show.getDate()+":"+show.getTime());
+         List<Seats> seatsCopy = new ArrayList<>();
+
+         for(int i=0;i<48;i++){
+             Seats copyseats = new Seats(seats.get(i).getSeatID(), seats.get(i).isAvailable(),seats.get(i).getShowRoomSeating(), seats.get(i).getSeatNO());
+             seatsCopy.add(copyseats);
+         }
+        System.out.println(seatsCopy.get(5).getSeatNO());
+
 
 
         for(int i =0; i < 3 ;i++){
-            System.out.println(seats.get(i).getSeatID());
             Ticket ticket = new Ticket();
             ticket.setCheck(0);
             tickets.add(ticket);
         }
         booking.setTickets(tickets);
 
-        model.addAttribute("seats", seats);
+        model.addAttribute("seating", seatsCopy);
+        model.addAttribute("showRoom", showRoom);
         model.addAttribute("booking", booking);
         model.addAttribute("movie", movie);
         model.addAttribute("show", show);
+
         return"/descriptions/tickets/buytickets";
     }
 
@@ -171,31 +177,69 @@ public class UserController {
     public String bookMovie(@ModelAttribute("booking")Booking booking,
                             @PathVariable("id")int id,
                             @PathVariable("sid")int sid,
+                            @ModelAttribute("showRoom") ShowRoom showRoom,
+                            @ModelAttribute("seating")ArrayList<Seats> seats,
+                            RedirectAttributes redirectAttributes,
                             Model model){
         Movie movie = movieService.getMovie(id);
         Show show = showService.getShow(sid);
+        show.setMovie(movie);
         String username = SecurityUtil.getSessionUser();
         User user = userService.getUserEmail(username);
-        Booking newBooking = bookingService.createPartialBooking(show, booking.getTickets(), user, show.getShowRoom()); // todo
+        Booking newBooking = bookingService.createPartialBooking(show, booking.getTickets(), user, showRoom, seats); // todo
         if(newBooking == null){
             model.addAttribute("error" , true);
             return "redirect:/user/bookMovie/"+movie.getMovieID() +"/"+ show.getShowID() +"?error";
         }
-        model.addAttribute("booking",  newBooking);
+        redirectAttributes.addFlashAttribute("booking",  newBooking);
         return "redirect:/user/checkout";
     }
 
 
     @GetMapping("/user/checkout")
-    public String getCheckout(@ModelAttribute("booking")Booking booking,
+    public String getCheckout( @ModelAttribute("booking") Booking booking,
+                              @ModelAttribute("promotion") Promotions promotion,
                               Model model)  {
-        PaymentCards card = new PaymentCards();
+
+        String username = SecurityUtil.getSessionUser();
+        User user = userService.getUserEmail(username);
+        List<PaymentCards> cards = userService.getPaymentCards(user.getUserID());
         Promotions promo = new Promotions();
-        //todo add users cards
+
+        if(promotion.getDiscount() != 0){
+            double total =booking.getTotal() - (booking.getTotal() * (promotion.getDiscount()/100));
+            booking.setTotal(total);
+        }
+        model.addAttribute("promotion", promotion);
         model.addAttribute("booking", booking);
-        model.addAttribute("card", card);
+        model.addAttribute("cards", cards);
         model.addAttribute("promo", promo);
         return"/descriptions/tickets/checkout";
+    }
+
+    @PostMapping("/user/checkoutWithPromo")
+    public String applyPromo(@ModelAttribute("promo")Promotions promotion,
+                             @ModelAttribute("booking") Booking booking,
+                             RedirectAttributes redirectAttributes,
+                              Model model)  {
+         promotion = promotionsService.applyPromoCode(promotion.getCode());
+        if(promotion == null){
+            redirectAttributes.addFlashAttribute("booking", booking);
+            redirectAttributes.addAttribute("promoError", true);
+            return "redirect:/user/checkout?promoError";
+        }
+        booking.setPromotions(promotion);
+        redirectAttributes.addFlashAttribute("booking", booking);
+        redirectAttributes.addFlashAttribute("promotion", promotion);
+        return"redirect:/user/checkout";
+    }
+
+    @PostMapping("/user/checkout_attempt")
+    public String checkout(@ModelAttribute("booking")Booking booking,
+                           Model model){
+
+        model.addAttribute("booking", booking);
+        return "/descriptions/tickets/Orderconfirmation";
     }
 
     @GetMapping("/user/payments/{id}")       // gets all cards

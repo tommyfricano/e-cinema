@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface PromotionsRepository extends JpaRepository<Promotions, Integer> {
 
     public Promotions findByPromoID(int id);
+
+    public Promotions findByCode(String code);
 }

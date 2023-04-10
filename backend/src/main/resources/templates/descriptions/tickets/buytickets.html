@@ -35,7 +35,7 @@
 
 	<div class="container my-container">
 	<br><br>
-		<form method="post" th:action="@{'/user/bookMovie_attempt/' +${movie.movieID}+'/'+${show.showID}}">
+		<form method="post" th:action="@{'/user/bookMovie_attempt/' +${movie.movieID}+'/'+${show.showID}}" th:object="${showRoom}">
 		<ul class = "movie-details">
 		  <li class= "list-items"><b>MOVIE:</b> <p th:text="${movie.title}"></p></li>
 		  <li class= "list-items"><b>SHOW DATE:</b> <p th:text="${show.date}"></p></li>
@@ -100,76 +100,27 @@
 			</li>
 		</ul>
 
+<!--		<div th:each="seat, stat : ${seating}">-->
+<!--				<input type ="hidden"  id="available" name="available" th:value="${seat.available}" th:field="${seating[__${stat.index}__].available}" />-->
+<!--				<input type ="hidden"  id="showRoomSeating" name="showRoomSeating" th:value="${seat.showRoomSeating}" />-->
+<!--				<input type ="hidden"  id="seatID" name="seatID" th:value="${seat.seatID}" />-->
+<!--			</div>-->
+
+
+
 		<div class="seatcontainer">
 			<div class="screen"></div>
 
-			<div th:each="seat : ${seats}">
-				<div th:switch="${seat.seatID}" >
-					<div th:case="${seat.seatID} % 8 == 0" class="row" >
-						<input type="checkbox" class="seat" th:checked="*{seat.available}" >
-					</div>
-					<div th:case="*" >
-						<input type="checkbox" class="seat" th:checked="*{seat.available}" >
-					</div>
+			<div class="grid-container" th:object="${showRoom}" >
+				<div th:each="seat, stat : ${showRoom.seats}">
+					<div  th:switch="${seat.available}" >
+						<input type="checkbox" th:case="false" class="grid-item"  th:field="*{seats[__${stat.index}__].available}"  >
+						<input type="checkbox" th:case="true" class="grid-item" style="pointer-events: none; background-color: #fff" th:field="*{seats[__${stat.index}__].available}">
 				</div>
 			</div>
-<!--			<div class="row">-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat occupied"></div>-->
-<!--				<div class="seat occupied"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--			</div>-->
-<!--			<div class="row">-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat occupied"></div>-->
-<!--				<div class="seat occupied"></div>-->
-<!--			</div>-->
-<!--			<div class="row">-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--			</div>-->
-<!--			<div class="row">-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat occupied"></div>-->
-<!--				<div class="seat occupied"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--			</div>-->
-<!--			<div class="row">-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat"></div>-->
-<!--				<div class="seat occupied"></div>-->
-<!--				<div class="seat occupied"></div>-->
-<!--				<div class="seat occupied"></div>-->
-<!--				<div class="seat"></div>-->
-<!--			</div>-->
 		</div>
 
-<!--		<p class="text">-->
-<!--			You have selected <span id="count">0</span> seats for a price of $<span id="total">0</span>-->
-<!--		</p>-->
 		<br>
-		<div>
 				<button type="submit" class = "submitButton" style="float:left; margin-right: 3px">CONFIRM</button>
 			</form>
 			<button class = "submitButton" style="float:right; margin-left: 3px"><a style = "text-decoration: none; color: white;" th:href="@{'/user/descriptions/'+${movie.movieID}}">BACK</a></button>
@@ -189,25 +140,6 @@
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin="anonymous"></script>
 	 <script th:src="@{/static/js/myScript.js}"></script>
-	<!-- <script>
-			const plus = document.querySelector(".plus"),
-			minus = document.querySelector(".minus"),
-			num = document.querySelector(".num"),
-			let a = 1;
-			plus.addEventListener("click", ()function{
-				a++;
-				a = (a<10)?"0"+a:a;
-				num.innerText = a;
-			});
-			
-			minus.addEventListener("click", ()function{
-				if(a>1){
-					a--;
-					a = (a<10)?"0"+a:a;
-					num.innerText = a;
-				}
-			});
-		</script> -->
 
 </body>
 

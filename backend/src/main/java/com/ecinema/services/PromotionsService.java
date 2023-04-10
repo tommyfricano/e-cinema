@@ -33,6 +33,13 @@ public class PromotionsService {
         return promotionsRepository.findByPromoID(id);
     }
 
+
+    public Promotions applyPromoCode(String code){
+        return promotionsRepository.findByCode(code);
+        // todo check end date validity
+    }
+
+
     public String savePromotion(Promotions promo, String link) throws MessagingException, UnsupportedEncodingException {
         promo.setSent(false);
         promotionsRepository.save(promo);

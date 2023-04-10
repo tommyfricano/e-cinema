@@ -2,10 +2,12 @@ package com.ecinema.models.show;
 
 import com.ecinema.models.seat.Seat;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class ShowRoom {
 
     @OneToMany(mappedBy = "showRoom")
     private List<Show> showsTimes;
+
 
     @OneToMany(mappedBy = "showRoomSeating")
     private List<Seat> seats;

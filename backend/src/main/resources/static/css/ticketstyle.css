@@ -107,6 +107,55 @@ th, td{
   box-sizing: border-box;
 }
 
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-gap: 5px;
+}
+
+.grid-item {
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #444451;
+    height: 12px;
+    width: 15px;
+    margin: 3px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.grid-item-occupied {
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    height: 12px;
+    width: 15px;
+    margin: 3px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+input[type=checkbox] {
+    appearance: none;
+    border: 2px solid gray;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type=checkbox]:checked {
+    background-color: #6feaf6;
+}
+
+.grid-item-occupied input[type=checkbox]:checked {
+    background-color: #fff;
+}
+
 .seatSection {
   background-color: #242333;
   color: #fff;

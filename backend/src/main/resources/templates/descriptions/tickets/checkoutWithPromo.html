@@ -65,7 +65,7 @@
               <h6 class="my-0" >Movie Name</h6>
               <small class="text-muted" th:text="*{show.movie.title}">Uncharted</small>
             </div>
-            <span class="text-muted" th:text="*{'$'+total}"></span>
+            <span class="text-muted" th:text="*{total}"></span>
           </li>
            <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
@@ -77,59 +77,45 @@
            <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
               <h6 class="my-0">Number of Tickets</h6>
+              <small class="text-muted" th:text="*{tickets.size()}"></small>
             </div>
-               <span class="number" th:text="*{tickets.size()}"></span>
+<!--            <span class="minus">-</span>-->
+<!--						<span class="number">1</span>-->
+<!--						<span class="plus">+</span>-->
           </li>
           <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
               <h6 class="my-0">Show Time</h6>
-              <small class="text-muted" ></small>
+              <small class="text-muted" th:text="*{show.time}"></small>
             </div>
-            <span class="text-muted" th:text="*{show.time +':00pm'}"></span>
+<!--            <span class="text-muted">5pm UTC-5</span>-->
           </li>
           <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div th:switch="*{tickets.size() > 1}">
-              <h6 class="my-0" th:case="true">Seat Numbers</h6>
-              <h6 class="my-0" th:case="false">Seat Number</h6>
+            <div>
+              <h6 class="my-0">Seat Number</h6>
+<!--              <small class="text-muted" th:each="seat : *{tickets}" th:text="${seat.seatNO}"></small>-->
             </div>
             <div th:each="ticket : *{tickets}">
-              <span class="text-muted" th:text="${ticket.seat.seatNO}"></span>
+              <small class="text-muted"  th:text="${ticket.seat.seatNO}"></small>
             </div>
+<!--            <span class="text-muted">30</span>-->
           </li>
           <li class="list-group-item d-flex justify-content-between bg-light">
-            <div >
+            <div class="text-success">
               <h6 class="my-0">Promo code</h6>
-<!--              <small th:text="${}" ></small>-->
+              <small th:text="*{promotions.code}" ></small>
             </div>
-            <div th:switch="${promotion.sent}">
-              <div th:case="false">
-                <span class="text-success" >Enter a code below</span>
-              </div>
-              <div th:case="true">
-                <span class="text-success" th:text="${'-'+#numbers.formatCurrency((promotion.discount/100) * booking.total)}" ></span>
-              </div>
-            </div>
-
+            <span class="text-success" th:text="*{'-'+promotions.discount * total}"></span>
           </li>
           <li class="list-group-item d-flex justify-content-between">
             <span>Total (USD)</span>
-              <strong th:text="*{'$'+ total}"></strong>
+            <strong th:text="*{'$'+total}"></strong>
           </li>
         </ul>
 
         <form class="card p-2" method="post" th:action="@{/user/checkoutWithPromo}">
           <div class="input-group">
             <input type="text" class="form-control" th:field="${promo.code}" placeholder="Promo code">
-            <div th:each="ticket, stat : *{tickets}">
-             <input type="hidden" th:field="*{tickets[__${stat.index}__].seat}">
-              <input type="hidden" th:field="*{tickets[__${stat.index}__].price}">
-              <input type="hidden" th:field="*{tickets[__${stat.index}__].type}">
-              <input type="hidden" th:field="*{tickets[__${stat.index}__].booking}">
-              <input type="hidden" th:field="*{tickets[__${stat.index}__].ticketID}">
-            </div>
-            <input type="hidden" th:field="*{user}">
-            <input type="hidden" th:field="*{total}">
-            <input type="hidden" th:field="*{show}">
             <button type="submit" class="btn btn-secondary">Redeem</button>
           </div>
         </form>

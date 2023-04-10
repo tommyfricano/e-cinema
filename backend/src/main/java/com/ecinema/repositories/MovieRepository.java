@@ -16,6 +16,8 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
     public void deleteByMovieID(int id);
 
     public List<Movie> findByCategory(String category);
+//    public List<Movie> findByGenreIgnoreCaseOrTitleAndCategory(String str, String category);
+
 
     public List<Movie> findByGenreIgnoreCaseAndAndCategory(String genre, String category);
 
