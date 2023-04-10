@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -35,8 +38,22 @@ public class PromotionsService {
 
 
     public Promotions applyPromoCode(String code){
-        return promotionsRepository.findByCode(code);
-        // todo check end date validity
+        Promotions promo = promotionsRepository.findByCode(code);
+        if(promo == null){
+            return null;
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/dd/uuuu");
+        LocalDate currentDate = java.time.LocalDate.now();
+        LocalDate endDate = LocalDate.parse(promo.getEndDate(), formatter);
+
+        System.out.println("Current " + currentDate + " end "+ endDate+ " " + endDate.isBefore(currentDate));
+        boolean valid = endDate.isBefore(currentDate);
+        System.out.println(valid);
+        if(valid){
+            promo.setCode("expired");
+            return promo;
+        }
+        return promo;
     }
 
 

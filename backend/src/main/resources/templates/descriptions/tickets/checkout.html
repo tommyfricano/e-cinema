@@ -49,6 +49,9 @@
     <div th:if="${param.promoError}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
       Invalid promotion code.
     </div>
+    <div th:if="${param.expiredError}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
+      Promotion code has expired.
+    </div>
    <div class="container-fluid my-container">
 			<div class="title"><br>CHECK OUT</div>
 			<br><hr class = "line"><br>

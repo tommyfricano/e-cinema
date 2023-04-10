@@ -206,7 +206,7 @@ public class UserController {
         List<PaymentCards> cards = userService.getPaymentCards(user.getUserID());
         Promotions promo = new Promotions();
 
-        if(promotion.getDiscount() != 0){
+        if(promotion.getDiscount() != 0 && !promotion.getEndDate().equals("expired")){
             double total =booking.getTotal() - (booking.getTotal() * (promotion.getDiscount()/100));
             booking.setTotal(total);
         }
@@ -227,6 +227,11 @@ public class UserController {
             redirectAttributes.addFlashAttribute("booking", booking);
             redirectAttributes.addAttribute("promoError", true);
             return "redirect:/user/checkout?promoError";
+        }
+        else if(promotion.getCode().equals("expired")){
+            redirectAttributes.addFlashAttribute("booking", booking);
+            redirectAttributes.addAttribute("expiredError", true);
+            return "redirect:/user/checkout?expiredError";
         }
         booking.setPromotions(promotion);
         redirectAttributes.addFlashAttribute("booking", booking);
