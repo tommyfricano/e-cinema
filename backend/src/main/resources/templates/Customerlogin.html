@@ -48,13 +48,17 @@
       <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
         <form method="post" th:action="@{/login}" >
 			<div th:if="${param.error}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
-				Invalid email or password.
+				Invalid email or password.<br>
+				(Ensure your account has been verified via email)
 			</div>
 			<div th:if="${param.logout}" class="alert alert-success">
 				You have been logged out.
 			</div>
 			<div th:if="${param.success}" class="alert alert-success">
 				Register successful!
+			</div>
+			<div th:if="${param.verified}" class="alert alert-success">
+				Account verified!
 			</div>
           <!-- Email input -->
           <div class="form-group required mb-4">

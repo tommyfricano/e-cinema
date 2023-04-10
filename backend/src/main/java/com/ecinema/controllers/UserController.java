@@ -108,19 +108,44 @@ public class UserController {
     @PostMapping("/user/search")
     public String searchMovie(HttpServletResponse httpResponse, @ModelAttribute("movie")Movie movie, Model model) throws IOException {
         String redirect = "";
+        Movie searchedMovie = new Movie();
         if(movie.getCategory().equals("option1")) {
-            Movie searchedMovie = movieService.getMovieByTitle(movie.getTitle());
-            if(searchedMovie == null){
-                model.addAttribute("error", true);
-                return "redirect:/user/customerPage?error";
+            List<Movie> searchedMovies = movieService.moviesByTitle(movie.getTitle());
+            if(searchedMovies.size() == 1) {
+                if (searchedMovies.get(0) == null) {
+                    model.addAttribute("error", true);
+                    return "redirect:/user/customerPage?error";
+                }
+                redirect = "/user/descriptions/" + searchedMovies.get(0).getMovieID();
+                if (searchedMovies.get(0).getCategory().equals("Coming-Soon")) {
+                    redirect = "/user/descriptions/comingSoon/" + searchedMovies.get(0).getMovieID();
+                }
             }
-            redirect = "/user/descriptions/" + searchedMovie.getMovieID();
-            if (searchedMovie.getCategory().equals("Coming-Soon")) {
-                redirect = "/user/descriptions/comingSoon/" + searchedMovie.getMovieID();
+            else{
+                if(searchedMovies.size() == 0){
+                    model.addAttribute("error", true);
+                    return "redirect:/user/customerPage?error";
+                }
+                List<Movie> searchedGenreON = new ArrayList<>();
+                List<Movie> searchedGenreCS = new ArrayList<>();
+
+                for(Movie m : searchedMovies){
+                    if (m.getCategory().equals("Coming-Soon")){
+                        searchedGenreCS.add(m);
+                    }
+                    else {
+                        searchedGenreON.add(m);
+                    }
+                }
+
+                model.addAttribute("onmovies", searchedGenreON);
+                model.addAttribute("csmovies", searchedGenreCS);
+                model.addAttribute("searchedmovie", searchedMovie);
+                return "customerHomePage";
             }
         }
         else {
-            Movie searchedMovie = new Movie();
+//            Movie searchedMovie = new Movie();
             List<Movie> searchedGenreON = movieService.getMoviesByGenreOutNow(movie.getTitle());
             List<Movie> searchedGenreCS = movieService.getMoviesByGenreComing(movie.getTitle());
             if(searchedGenreCS.size() ==0 && searchedGenreON.size() == 0){
