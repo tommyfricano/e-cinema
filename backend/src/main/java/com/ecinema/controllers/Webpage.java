@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -72,20 +73,46 @@ public class Webpage {
 
     @PostMapping("/search")
     public String searchMovieNoAuth(HttpServletResponse httpResponse, @ModelAttribute("movie")Movie movie, Model model) throws IOException {
+
         String redirect = "";
+        Movie searchedMovie = new Movie();
         if(movie.getCategory().equals("option1")) {
-            Movie searchedMovie = movieService.getMovieByTitle(movie.getTitle());
-            if(searchedMovie == null){
-                model.addAttribute("error", true);
-                return "redirect:/Cinema.html?error";
+            List<Movie> searchedMovies = movieService.moviesByTitle(movie.getTitle());
+            if(searchedMovies.size() == 1) {
+                if (searchedMovies.get(0) == null) {
+                    model.addAttribute("error", true);
+                    return "redirect:/Cinema.html?error";
+                }
+                redirect = "/descriptions/" + searchedMovies.get(0).getMovieID();
+                if (searchedMovies.get(0).getCategory().equals("Coming-Soon")) {
+                    redirect = "/descriptions/" + searchedMovies.get(0).getMovieID();
+                }
             }
-            redirect = "/descriptions/" + searchedMovie.getMovieID();
-            if (searchedMovie.getCategory().equals("Coming-Soon")) {
-                redirect = "/descriptions/" + searchedMovie.getMovieID();
+            else{
+                if(searchedMovies.size() == 0){
+                    model.addAttribute("error", true);
+                    return "redirect:/Cinema.html?error";
+                }
+                List<Movie> searchedGenreON = new ArrayList<>();
+                List<Movie> searchedGenreCS = new ArrayList<>();
+
+                for(Movie m : searchedMovies){
+                    if (m.getCategory().equals("Coming-Soon")){
+                        searchedGenreCS.add(m);
+                    }
+                    else {
+                        searchedGenreON.add(m);
+                    }
+                }
+
+                model.addAttribute("onmovies", searchedGenreON);
+                model.addAttribute("csmovies", searchedGenreCS);
+                model.addAttribute("searchedmovie", searchedMovie);
+                return "CinemaGenre";
             }
         }
         else {
-            Movie searchedMovie = new Movie();
+//            Movie searchedMovie = new Movie();
             List<Movie> searchedGenreON = movieService.getMoviesByGenreOutNow(movie.getTitle());
             List<Movie> searchedGenreCS = movieService.getMoviesByGenreComing(movie.getTitle());
             if(searchedGenreCS.size() ==0 && searchedGenreON.size() == 0){

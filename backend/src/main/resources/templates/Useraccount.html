@@ -18,8 +18,22 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarMenu">
-				<form class="form-inline ml-lg-5">
-					<input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
+				<form method="post" class="form-inline ml-lg-5" th:action="@{/user/search}">
+					<input th:field="${searchedmovie.title}" class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
+					<div style="padding: 1rem; align-content: start;">
+						<div class="form-check">
+							<input required th:field="${searchedmovie.category}" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" >
+							<label class="form-check-label" for="exampleRadios1" style="color: whitesmoke;">
+								Title
+							</label>
+						</div>
+						<div class="form-check">
+							<input th:field="${searchedmovie.category}" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+							<label class="form-check-label" for="exampleRadios2" style="color: whitesmoke;">
+								Genre
+							</label>
+						</div>
+					</div>
 					<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
 				</form>
 				<ul class="navbar-nav ml-auto">
