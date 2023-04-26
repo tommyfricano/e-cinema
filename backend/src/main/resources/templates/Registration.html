@@ -39,7 +39,7 @@
 	</div>
 
 <form class="col-lg-8 off offset-lg-1 styles" method="post" th:action="@{/registration_attempt}" th:object="${user}">
-    <div th:if="${param.error}" class="alert alert-error">
+    <div th:if="${param.error}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
         Account with this email already exists
     </div>
     <div class="form-row required">

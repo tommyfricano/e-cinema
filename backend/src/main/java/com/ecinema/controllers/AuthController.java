@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -146,13 +147,11 @@ public class AuthController {
                 userDto.setPayments(card);
             }
 
-            System.out.println("error here");
             System.out.println("user payments here" + userDto.getPayments());
             //System.out.println("card one" + userDto.getPayments().get(0).getCardNumber());
             User registered = userService.createUser(userDto);
             System.out.println("user created");
             if(registered.getPassword().equals("error")){
-                System.out.println("here************");
                 return "redirect:/registration-error";
             }
             String appUrl = request.getContextPath();
@@ -168,7 +167,7 @@ public class AuthController {
 
     @GetMapping("/confirmRegistration")
     public String confirmRegistration
-            ( @RequestParam("token") String token) {
+            (@RequestParam("token") String token, RedirectAttributes redirectAttributes) {
         VerificationToken verificationToken = userService.getVerificationToken(token);
         if (verificationToken == null) {
             return "token does not exist";
@@ -179,8 +178,9 @@ public class AuthController {
             return "token expired";
         }
         user.setActivity(Status.ACTIVE);
+        redirectAttributes.addAttribute("verified",true);
         userService.confirmUser(user, verificationToken);
-        return "User is now Active";
+        return "redirect:/login";
     }
 
     static String usingRandomUUID() {

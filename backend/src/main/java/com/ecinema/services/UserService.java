@@ -153,7 +153,7 @@ public class UserService {
      */
     public void confirmUser(User user, VerificationToken token) {     // confirm user-> change status to active
         userRespository.save(user);
-        tokenRepository.deleteById(token.getId());
+//        tokenRepository.deleteById(token.getId());
     }
     public User getUser(String verificationToken) {
         User user = tokenRepository.findByToken(verificationToken).getUser();

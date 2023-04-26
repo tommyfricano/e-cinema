@@ -47,6 +47,19 @@ public class MovieService {
         return movieRepository.findByGenreIgnoreCaseAndAndCategory(genre, "Coming-Soon");
     }
 
+    public List<Movie> moviesByTitle(String title){
+        List<Movie> movies = movieRepository.findAll();
+        List<Movie> finalMovies = new ArrayList<>();
+
+        for(Movie movie : movies){
+            if(movie.getTitle().toLowerCase().contains(title.toLowerCase())){
+                finalMovies.add(movie);
+            }
+        }
+
+        return finalMovies;
+    }
+
     public List<Movie> getTopMovies(){
         List<Movie> movies = movieRepository.findByCategory("Now-Showing");
         if(movies.size() > 4 ){

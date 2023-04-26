@@ -1,5 +1,6 @@
 package com.ecinema.security;
 
+import com.ecinema.models.users.enums.Status;
 import com.ecinema.repositories.UserRespository;
 import com.ecinema.models.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
          User user = userRespository.findOneByEmail(email);
-         if(user != null){
+
+         if(user != null && user.getActivity() == Status.ACTIVE){
              return new org.springframework.security.core.userdetails.User(
                  user.getEmail(),
                  user.getPassword(),
