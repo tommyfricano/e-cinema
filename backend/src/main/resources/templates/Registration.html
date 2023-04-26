@@ -89,7 +89,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label class="form-check-label" for="cardNo">Card Number</label>
-                    <input th:field="*{cardNumber}" type="text" class="form-control" id="cardNo" placeholder="XXXX XXXX XXXX XXXX">
+                    <input th:field="*{cardNumber}" type="text" class="form-control" id="cardNo" placeholder="XXXX XXXX XXXX XXXX" pattern="[0-9]{16}">
                 </div>
                 <div class="form-group col-md-4">
                     <label class="form-check-label" for="expiry">Expiration Date</label>

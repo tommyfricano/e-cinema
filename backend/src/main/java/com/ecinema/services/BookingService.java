@@ -10,6 +10,7 @@ import com.ecinema.models.show.ShowRoom;
 import com.ecinema.models.ticket.Ticket;
 import com.ecinema.models.users.User;
 import com.ecinema.repositories.BookingRepository;
+import com.ecinema.repositories.PromotionsRepository;
 import com.ecinema.repositories.SeatRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +29,15 @@ public class BookingService {
 
     private final SeatRepository seatRepository;
 
+    private final PromotionsRepository promotionsRepository;
+
 
     @Autowired
-    public BookingService(BookingRepository bookingRepository, TicketService ticketService, SeatRepository seatRepository) {
+    public BookingService(BookingRepository bookingRepository, TicketService ticketService, SeatRepository seatRepository, PromotionsRepository promotionsRepository) {
         this.bookingRepository = bookingRepository;
         this.ticketService = ticketService;
         this.seatRepository = seatRepository;
+        this.promotionsRepository = promotionsRepository;
     }
 
     public Booking createPartialBooking(Show show, List<Ticket> tickets, User user, ShowRoom showRoom, ArrayList<Seats> seats){
@@ -111,14 +115,33 @@ public class BookingService {
         booking.setTotal(bookingTotal);
         booking.setTickets(completeTickets);
 
+
         return booking;
     }
 
-    public void completeBooking(Booking booking, PaymentCards paymentCard, Promotions promo){
+    public void completeBooking(Booking booking, PaymentCards paymentCard){
         booking.setPaymentCards(paymentCard);
-        //todo check promo
-
+        if (booking.getPromotions() == null) {
+            Promotions promo = new Promotions("0","0","0");
+            promotionsRepository.save(promo);
+            booking.setPromotions(promo);
+            booking.setFinalTotal(booking.getTotal());
+        } else {
+            double discount = (booking.getPromotions().getDiscount()/100) * (booking.getTotal());
+            double finalTotal = booking.getTotal() - discount;
+            booking.setFinalTotal(finalTotal);
+        }
         bookingRepository.save(booking);
+    }
+
+    public void deleteBookingsByPaymentCardId(int id) {
+        bookingRepository.deleteByPaymentCards(id);
+
+
+    }
+
+    public Booking findByPaymentCards(PaymentCards cards) {
+        return bookingRepository.findByPaymentCards(cards);
     }
 
 }

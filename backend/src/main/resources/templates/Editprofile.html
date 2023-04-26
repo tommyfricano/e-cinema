@@ -66,6 +66,7 @@
 		<input th:field="*{phoneNumber}" type="text" class="form-control" id="phonenumber" placeholder=phonenumber>
 	</div>
 	<div>
+
 		<button id="addCardOneButton">Card One</button>
 
 <!--	<div th:object="${payment1}">-->
@@ -78,7 +79,7 @@
 				<div class="form-row">
 					<div class="form-group col-md-6">
 						<label class="form-check-label" th:for="${user.payments[0].cardNumber}">Card Number</label>
-						<input th:field="*{payments[0].cardNumber}" type="text" class="form-control">
+						<input th:field="*{payments[0].cardNumber}" type="text" class="form-control" pattern="[0-9]{16}">
 					</div>
 					<div class="form-group col-md-4">
 						<label class="form-check-label" for="expiryOne">Expiration Date</label>
@@ -102,7 +103,7 @@
 				<div class="form-row">
 					<div class="form-group col-md-6">
 						<label class="form-check-label">Card Number</label>
-						<input th:field="*{payments[1].cardNumber}" type="text" class="form-control">
+						<input th:field="*{payments[1].cardNumber}" type="text" class="form-control" pattern="[0-9]{16}">
 					</div>
 					<div class="form-group col-md-4">
 						<label class="form-check-label" for="expiryTwo">Expiration Date</label>
@@ -127,7 +128,7 @@
 				<div class="form-row">
 					<div class="form-group col-md-6">
 						<label class="form-check-label">Card Number</label>
-						<input th:field="*{payments[2].cardNumber}" type="text" class="form-control">
+						<input th:field="*{payments[2].cardNumber}" type="text" class="form-control" pattern="[0-9]{16}">
 					</div>
 					<div class="form-group col-md-4">
 						<label class="form-check-label" for="expiryThree">Expiration Date</label>
