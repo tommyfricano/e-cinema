@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, Integer> {
 
+    public Seat getSeatBySeatID(int seatID);
+
     public List<Seat> findAllByShowRoomSeating(ShowRoom showRoom);
     public List<Seat> findAllByShowRoomSeatingAndDateTime(ShowRoom showRoom, String dateTime);
 

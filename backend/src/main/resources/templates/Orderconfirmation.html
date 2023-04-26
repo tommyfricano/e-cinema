@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
 		<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-		<link rel="stylesheet" type= "text/css"  th:href="@{/css/checkout.css}">
+		<link rel="stylesheet" type= "text/css"  th:href="@{/static/css/checkout.css}">
 		  <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -111,7 +111,7 @@
                         <span class="text-success" >No Promo Code Entered</span>
                     </div>
                     <div th:case="true">
-                        <span class="text-success"  th:text="*{'-'+#numbers.formatCurrency((promotions.discount/100)* ${booking.total})}" ></span>
+                        <span class="text-success"  th:text="${'-'+#numbers.formatCurrency((booking.promotions.discount/100)* booking.total)}" ></span>
                     </div>
                 </div>
 

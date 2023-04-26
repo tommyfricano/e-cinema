@@ -41,7 +41,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/resources/static/**", "/bookMovie/**", "/search", "/descriptions/**", "/static/**","/login", "/forgotPassword", "/Cinema", "/resetPassword**", "/resetPassword?token=", "/confirmRegistration?token=","/confirmRegistration", "/css/**", "/js/**", "/Cinema.html","/registration", "/registration_attempt","/registration-error")
+                .requestMatchers("/resources/static/**",
+                        "/bookMovie/**", "/search", "/descriptions/**", "/static/**",
+                        "/login", "/forgotPassword", "/Cinema", "/resetPassword**",
+                        "/resetPassword?token=", "/confirmRegistration?token=",
+                        "/confirmRegistration", "/css/**", "/js/**", "/Cinema.html",
+                        "/registration", "/registration_attempt","/registration-error")
                 .permitAll()
                 .requestMatchers("/user/**").hasAuthority("CUSTOMER")
                 .requestMatchers("/**").hasAuthority("ADMIN")
@@ -61,20 +66,4 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    public InMemoryUserDetailsManager userDetailsService() {
-//        UserDetails user1 = User.withUsername("user1")
-//                .password(passwordEncoder().encode("user1Pass"))
-//                .roles("USER")
-//                .build();
-//        UserDetails user2 = User.withUsername("user2")
-//                .password(passwordEncoder().encode("user2Pass"))
-//                .roles("USER")
-//                .build();
-//        UserDetails admin = User.withUsername("admin")
-//                .password(passwordEncoder().encode("adminPass"))
-//                .roles("ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(user1, user2, admin);
-//    }
 }

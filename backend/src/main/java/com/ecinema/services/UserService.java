@@ -101,41 +101,6 @@ public class UserService {
         }
     }
 
-
-    public User createUser(User user) throws MessagingException {   // create and save a new user in db
-        if(!(userRespository.findOneByEmail(user.getEmail()) == null)){  // check for duplicates
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists");
-            user.setPassword("error");
-            return user;
-        }
-
-        try {
-            user.setUserType(UserTypes.CUSTOMER);
-            Role role = roleRepository.findByName("CUSTOMER");
-            user.setRoles(Arrays.asList(role));
-            user.setActivity(Status.INACTIVE);  // set user status to inactive until confirmed
-            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-            userRespository.save(user);     //save user in db
-        }
-        catch(Exception e){     // throw exception on failure
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error creating new user.");
-        }
-        return user;
-    }
-
-    public String createAdmin(User user){
-        if(!(userRespository.findOneByEmail(user.getEmail()) == null)){  // check for duplicates
-            return "/admin/users?error";
-        }
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        user.setActivity(Status.ACTIVE);
-        user.setUserType(UserTypes.ADMIN);
-        Role role = roleRepository.findByName("ADMIN");
-        user.setRoles(Arrays.asList(role));
-        userRespository.save(user);
-        return "/admin/users?success";
-    }
-
     public void suspendUser(int id){
         User user = userRespository.findOneByUserID(id);
         if(user.getActivity() == Status.INACTIVE || user.getActivity() == Status.ACTIVE){
@@ -190,6 +155,8 @@ public class UserService {
         userToUpdate.setFirstName(user.getFirstName());
         userToUpdate.setLastName(user.getLastName());
         userToUpdate.setOptInPromo(user.isOptInPromo());
+        userToUpdate.setPhoneNumber(user.getPhoneNumber());
+
 
         userToUpdate.setPayments(user.getPayments());
         //}
@@ -227,16 +194,22 @@ public class UserService {
     /*
     update user password
      */
-    public void updatePassword(String email, String oldPassword, String newPassword) {
+    public String updatePassword(String email, String oldPassword, String newPassword) {
         User userToUpdate = userRespository.findOneByEmail(email);
         System.out.println(oldPassword);
         if(!(new BCryptPasswordEncoder().matches(oldPassword, userToUpdate.getPassword()))){
-            throw new ResponseStatusException(BAD_REQUEST, "current password does not match");
+            return "error";
         }
         else{
             userToUpdate.setPassword(new BCryptPasswordEncoder().encode(newPassword));
         }
         userRespository.save(userToUpdate);
+        SimpleMailMessage emailer = new SimpleMailMessage();
+        emailer.setTo(userToUpdate.getEmail());
+        emailer.setSubject("Your account password has been changed!");     //todo update this link when connected
+        emailer.setText("Follow this link to view changes" + "\r\n" + "http://localhost:8080/login");
+        mailSender.send(emailer);
+        return "success";
     }
 
     /*

@@ -19,23 +19,23 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarMenu">
 				<form method="post" class="form-inline ml-lg-5" th:action="@{/user/search}">
-					<input th:field="${searchedmovie.title}" class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
-					<div style="padding: 1rem; align-content: start;">
-						<div class="form-check">
-							<input required th:field="${searchedmovie.category}" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" >
-							<label class="form-check-label" for="exampleRadios1" style="color: whitesmoke;">
-								Title
-							</label>
-						</div>
-						<div class="form-check">
-							<input th:field="${searchedmovie.category}" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-							<label class="form-check-label" for="exampleRadios2" style="color: whitesmoke;">
-								Genre
-							</label>
-						</div>
+				<input th:field="${searchedmovie.title}" class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
+				<div style="padding: 1rem; align-content: start;">
+					<div class="form-check">
+						<input required th:field="${searchedmovie.category}" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" >
+						<label class="form-check-label" for="exampleRadios1" style="color: whitesmoke;">
+							Title
+						</label>
 					</div>
-					<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
-				</form>
+					<div class="form-check">
+						<input th:field="${searchedmovie.category}" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+						<label class="form-check-label" for="exampleRadios2" style="color: whitesmoke;">
+							Genre
+						</label>
+					</div>
+				</div>
+				<button class="btn btn-outline-light my-2" type="submit"><i class="fas fa-search"></i></button>
+			</form>
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
 						<a th:href="@{/user/account}" class="nav-link"><i class="fas fa-user" style="margin-right: 10px"></i>ACCOUNT</a>
@@ -46,6 +46,9 @@
 				</ul>
 			</div>         
 		</nav>
+		<div th:if="${param.success}" class="alert alert-success" style="margin: auto; font-size: 1.5rem; color: white; background: darkseagreen; border-radius: 30px; text-align: center; width: fit-content; ">
+			Information saved successfully!
+		</div>
 	<div class="container-fluid my-container">
 			<div class="title"><br>USER ACCOUNT DETAILS</div>
 			<br><hr><br>
@@ -89,7 +92,7 @@
 
 
           <button type="submit" class="btn btn-primary btn-lg btn-block "><a style="text-decoration: none; color:white;"  th:href="@{/user/editInfo}">Edit profile</a></button>
-
+			<button type="submit" class="btn btn-primary btn-lg btn-block "><a style="text-decoration: none; color:white;"  th:href="@{'/user/orderHistory/' +${user.userID}}">View past orders</a></button>
 
         </form>
       </div>

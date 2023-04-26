@@ -2,6 +2,7 @@ package com.ecinema.controllers;
 
 import com.ecinema.models.payment.PaymentCards;
 import com.ecinema.services.PaymentCardsService;
+import com.ecinema.services.UserFactory;
 import com.ecinema.services.UserService;
 import com.ecinema.models.users.User;
 import com.ecinema.models.users.confirmation.OnRegistrationCompleteEvent;
@@ -149,7 +150,8 @@ public class AuthController {
 
             System.out.println("user payments here" + userDto.getPayments());
             //System.out.println("card one" + userDto.getPayments().get(0).getCardNumber());
-            User registered = userService.createUser(userDto);
+//            User registered = userService.createUser(userDto);
+            User registered = UserFactory.create("customer", userDto);
             System.out.println("user created");
             if(registered.getPassword().equals("error")){
                 return "redirect:/registration-error";

@@ -12,6 +12,7 @@ import com.ecinema.models.users.User;
 import com.ecinema.repositories.BookingRepository;
 import com.ecinema.repositories.PromotionsRepository;
 import com.ecinema.repositories.SeatRepository;
+import com.ecinema.repositories.UserRespository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class BookingService {
     private final BookingRepository bookingRepository;
 
     private final TicketService ticketService;
+    private final UserRespository userRespository;
 
     private final SeatRepository seatRepository;
 
@@ -33,11 +35,17 @@ public class BookingService {
 
 
     @Autowired
-    public BookingService(BookingRepository bookingRepository, TicketService ticketService, SeatRepository seatRepository, PromotionsRepository promotionsRepository) {
+    public BookingService(BookingRepository bookingRepository, TicketService ticketService, SeatRepository seatRepository, PromotionsRepository promotionsRepository, UserRespository userRespository) {
         this.bookingRepository = bookingRepository;
         this.ticketService = ticketService;
+        this.userRespository = userRespository;
         this.seatRepository = seatRepository;
         this.promotionsRepository = promotionsRepository;
+    }
+
+    public List<Booking> getBookingsById(int id){
+        User user = userRespository.findOneByUserID(id);
+        return bookingRepository.findAllByUser(user);
     }
 
     public Booking createPartialBooking(Show show, List<Ticket> tickets, User user, ShowRoom showRoom, ArrayList<Seats> seats){
@@ -79,6 +87,8 @@ public class BookingService {
 
                 ticket.setSeat(selectedSeats.get(i));
 
+                ticket.setBooking(booking);
+
                 bookingTotal += 8;
                 completeTickets.add(ticket);
             }
@@ -90,6 +100,7 @@ public class BookingService {
                 ticket.setPrice(12);
 
                 ticket.setSeat(selectedSeats.get(i));
+                ticket.setBooking(booking);
 
 
                 bookingTotal += 12;
@@ -103,6 +114,7 @@ public class BookingService {
                 ticket.setPrice(7);
 
                 ticket.setSeat(selectedSeats.get(i));
+                ticket.setBooking(booking);
 
                 bookingTotal += 7;
                 completeTickets.add(ticket);
@@ -122,7 +134,7 @@ public class BookingService {
     public void completeBooking(Booking booking, PaymentCards paymentCard){
         booking.setPaymentCards(paymentCard);
         if (booking.getPromotions() == null) {
-            Promotions promo = new Promotions("0","0","0");
+            Promotions promo = new Promotions("No promo","0","0");
             promotionsRepository.save(promo);
             booking.setPromotions(promo);
             booking.setFinalTotal(booking.getTotal());
@@ -132,6 +144,19 @@ public class BookingService {
             booking.setFinalTotal(finalTotal);
         }
         bookingRepository.save(booking);
+        for(int i=0;i<booking.getTickets().size();i++){
+            Ticket ticket = new Ticket();
+            ticket.setBooking(booking);
+            ticket.setCheck(0);
+            ticket.setType(booking.getTickets().get(i).getType());
+            ticket.setSeat(booking.getTickets().get(i).getSeat());
+            ticket.setPrice(booking.getTickets().get(i).getPrice());
+            Seat seat = seatRepository.getSeatBySeatID(ticket.getSeat().getSeatID());
+            seat.setAvailable(true);
+            ticketService.saveTicket(ticket);
+            seatRepository.save(seat);
+
+        }
     }
 
     public void deleteBookingsByPaymentCardId(int id) {

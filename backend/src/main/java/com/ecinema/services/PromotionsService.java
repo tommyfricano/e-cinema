@@ -53,6 +53,10 @@ public class PromotionsService {
             promo.setCode("expired");
             return promo;
         }
+        if(!promo.isSent()){
+            promo.setCode("DNE");
+            return promo;
+        }
         return promo;
     }
 

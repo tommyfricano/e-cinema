@@ -5,12 +5,14 @@ import com.ecinema.models.seat.Seat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@NonNull
 @Table(name ="tickets")
 public class Ticket {
     @Id
@@ -33,5 +35,6 @@ public class Ticket {
     @Column(name = "price")
     private double price;
 
+    @Column(name= "checked", nullable = false)
     private int check;
 }

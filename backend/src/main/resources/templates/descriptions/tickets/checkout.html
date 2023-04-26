@@ -44,18 +44,8 @@
   </div>
 </nav>
 
-<!--<div th:if="${param.error}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">-->
-<!--  Please select a valid payment option.-->
-<!--</div>-->
-
 <div class="container" style="padding:5px" th:object="${booking}">
   <main>
-    <div th:if="${param.promoError}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
-      Invalid promotion code.
-    </div>
-    <div th:if="${param.expiredError}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
-      Promotion code has expired.
-    </div>
 
     <div class="container-fluid my-container">
       <div class="title"><br>CHECK OUT</div>
@@ -63,6 +53,15 @@
     </div>
     <div th:if="${param.error}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
       Please select a valid payment option.
+    </div>
+    <div th:if="${param.promoError}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
+      Invalid promotion code.
+    </div>
+    <div th:if="${param.expiredError}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
+      Promotion code has expired.
+    </div>
+    <div th:if="${param.dneError}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
+      Promotion code is invalid.
     </div>
 
 
@@ -340,7 +339,7 @@
 
           <hr class="my-4">
           <br>
-          <button class="w-100 btn btn-primary btn-lg" type="submit"><a style = "text-decoration: none; color:white;" href = "buytickets.html">CANCEL ORDER</a></button><br><br>
+          <button class="w-100 btn btn-primary btn-lg"><a style = "text-decoration: none; color:white;" th:href="@{/user/customerPages}">CANCEL ORDER</a></button><br><br>
           <button class="w-100 btn btn-primary btn-lg" type="submit">PROCEED PAYMENT</button>
         </form>
 

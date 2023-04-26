@@ -43,6 +43,7 @@ Controller for users
 @Controller
 @SessionAttributes("seating")
 public class UserController {
+
     private final UserService userService;  // business logic object
 
     private final MovieService movieService;
@@ -79,6 +80,22 @@ public class UserController {
     @GetMapping("/user/customerPage")
     public String getUserPage(Model model){
         Movie searchedMovie = new Movie();
+        List<Movie> onMovies = movieService.getMoviesOutNow();
+        List<Movie> csMovies = movieService.getMoviesComingSoon();
+        model.addAttribute("searchedmovie", searchedMovie);
+        model.addAttribute("onmovies", onMovies);
+        model.addAttribute("csmovies", csMovies);
+        return "customerHomePage";
+    }
+
+    @GetMapping("/user/customerPages")
+    public String getUserPageNew(Model model) throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        Movie searchedMovie = new Movie();
+        String username = SecurityUtil.getSessionUser();
+        User user = userService.getUserEmail(username);
+        for(PaymentCards card: user.getPayments()){
+            paymentCardsService.encrypt(card);
+        }
         List<Movie> onMovies = movieService.getMoviesOutNow();
         List<Movie> csMovies = movieService.getMoviesComingSoon();
         model.addAttribute("searchedmovie", searchedMovie);
@@ -165,7 +182,7 @@ public class UserController {
     @GetMapping("/user/bookMovie/{id}/{sid}")
     public String getBookMovie(@PathVariable("id")int id,
                                @PathVariable("sid")int sid,
-                               Model model)  {
+                               Model model) throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         Movie movie = movieService.getMovie(id);
         Show show = showService.getShow(sid);
         Booking booking = new Booking();
@@ -247,7 +264,7 @@ public class UserController {
 
         Seat seat1 = new Seat();
         seat1.setSeatNO(-1);
-
+        Promotions promo = new Promotions();
         session.setAttribute("booking", booking);
 
         model.addAttribute("promotion", promotion);
@@ -331,8 +348,47 @@ public class UserController {
     @PostMapping("/user/checkoutWithPromo")
     public String applyPromo(@ModelAttribute("promo")Promotions promotion,
                              @ModelAttribute("booking") Booking booking,
+                             @ModelAttribute("user") User userDTO,
                              RedirectAttributes redirectAttributes,
-                              Model model)  {
+                              Model model) throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+
+        String username = SecurityUtil.getSessionUser();
+        User user = userService.getUserEmail(username);
+        List<PaymentCards> prevCards = user.getPayments();
+        List<PaymentCards> cardsToAdd = new ArrayList<>();
+        List<PaymentCards> cardsFromPost = userDTO.getPayments();
+
+        int i = 0;
+        while (i < 3) {
+            if (prevCards.size() > i) {
+                if (paymentCardsService.equals(cardsFromPost.get(i), prevCards.get(i))) {
+                    System.out.println("First condition was true  " + i);
+                    paymentCardsService.encrypt(prevCards.get(i));
+                    prevCards.get(i).setLastName(userDTO.getLastName());
+                    prevCards.get(i).setBillingAddress(userDTO.getAddress());
+                    cardsToAdd.add(prevCards.get(i));
+                    i++;
+                    continue;
+                }
+                System.out.println("previous card    " + prevCards.get(i).getCardNumber());
+                paymentCardsService.encrypt(prevCards.get(i));
+                cardsToAdd.add(prevCards.get(i));
+                i++;
+                continue;
+//            }   else if (cardsFromPost.get(i).getCardNumber() != null && !(cardsFromPost.get(i).getCardNumber().equals(""))) {
+//                cardsFromPost.get(i).setLastName(userDTO.getLastName());
+//                cardsFromPost.get(i).setBillingAddress(userDTO.getAddress());
+//                paymentCardsService.encrypt(cardsFromPost.get(i));
+//                cardsToAdd.add(cardsFromPost.get(i));
+//                i++;
+//                continue;
+            }
+            i++;
+        }
+
+        userDTO.setPayments(cardsToAdd);
+        userService.updateCards(username, userDTO);
+
          promotion = promotionsService.applyPromoCode(promotion.getCode());
         if(promotion == null){
             redirectAttributes.addFlashAttribute("booking", booking);
@@ -343,6 +399,11 @@ public class UserController {
             redirectAttributes.addFlashAttribute("booking", booking);
             redirectAttributes.addAttribute("expiredError", true);
             return "redirect:/user/checkout?expiredError";
+        }
+        else if(promotion.getCode().equals("DNE")){
+            redirectAttributes.addFlashAttribute("booking", booking);
+            redirectAttributes.addAttribute("dneError", true);
+            return "redirect:/user/checkout?dneError";
         }
         booking.setPromotions(promotion);
         redirectAttributes.addFlashAttribute("booking", booking);
@@ -389,6 +450,7 @@ public class UserController {
     @PostMapping("/user/editInfo")
     public String editInfo(
             @Validated @ModelAttribute("user") User userDto,
+            RedirectAttributes redirectAttributes,
             Model model) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
         String username = SecurityUtil.getSessionUser();
         User user = userService.getUserEmail(username);
@@ -424,26 +486,46 @@ public class UserController {
         }
         userDto.setPayments(cardsToAdd);
         userService.updateProfile(username, userDto);
-        return "Useraccount";
+        Movie searchedMovie = new Movie();
+        model.addAttribute("searchedmovie", searchedMovie);
+        redirectAttributes.addAttribute("success", true);
+        return "redirect:/user/account?success";
     }
 
 
-
-
     @GetMapping("/user/editInfo/editPassword")
-    public String getEditPassword(Model model) {
-        User user = new User();
+    public String getEditPassword(Model model) throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        String username = SecurityUtil.getSessionUser();
+        User user = userService.getUserEmail(username);
+        for(PaymentCards card: user.getPayments()){
+            paymentCardsService.encrypt(card);
+        }
         model.addAttribute("user", user);
         return "changepassword";
     }
     @PostMapping("/user/editInfo/editPassword")
-    public String editPassword(@ModelAttribute("user")User user, HttpServletResponse httpResponse) throws IOException {
+    public String editPassword(@ModelAttribute("user")User user, RedirectAttributes redirectAttributes, HttpServletResponse httpResponse, Model model) throws IOException {
         String username = SecurityUtil.getSessionUser();
         User currentUser = userService.getUserEmail(username);
         System.out.println("here " +currentUser.getEmail());
-        userService.updatePassword(currentUser.getEmail(), user.getPassword(), user.getFirstName());
-        httpResponse.sendRedirect("/user/account");
-        return null;
+        String response = userService.updatePassword(currentUser.getEmail(), user.getPassword(), user.getFirstName());
+        if(response.equals("error")){
+            model.addAttribute("error",true);
+            return "redirect:/user/editInfo/editPassword?error";
+        }
+        Movie searchedMovie = new Movie();
+        model.addAttribute("searchedmovie", searchedMovie);
+        redirectAttributes.addAttribute("success", true);
+        return "redirect:/user/account?success";
+    }
+
+    @GetMapping("/user/orderHistory/{id}")
+    public String getOrderHistory(@PathVariable("id") int id, Model model){
+        Movie searchedMovie = new Movie();
+        List<Booking> bookings = bookingService.getBookingsById(id);
+        model.addAttribute("bookings", bookings);
+        model.addAttribute("searchedmovie", searchedMovie);
+        return "orderHistory";
     }
 
 
@@ -468,7 +550,6 @@ public class UserController {
     }
     @GetMapping("/admin/manageMovies")
     public String getManageMovies(Model model){
-//        List<Movie> movies = movieService.getMovies();
         List<Movie> outNow = movieService.getMoviesOutNow();
         List<Movie> comingSoon = movieService.getMoviesComingSoon();
         model.addAttribute("outNow", outNow);
@@ -671,8 +752,14 @@ public class UserController {
     public void createAdmin(@ModelAttribute("user")User user,
                               HttpServletResponse httpResponse,
                               Model model) throws IOException {
-        String response = userService.createAdmin(user);
-        httpResponse.sendRedirect(response);
+//        String response = userService.createAdmin(user);
+        User response = UserFactory.create("admin", user);
+        if(response == null ){
+            httpResponse.sendRedirect( "/admin/users?error");
+        }
+        else{
+            httpResponse.sendRedirect("/admin/users?success");
+        }
     }
 
 }
