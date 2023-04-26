@@ -1,7 +1,5 @@
 package com.ecinema.models.payment;
 
-import com.ecinema.repositories.PaymentCardsRepository;
-import com.ecinema.services.PaymentCardsService;
 import com.ecinema.models.booking.Booking;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,13 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 import java.util.List;
 

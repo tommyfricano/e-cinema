@@ -1,9 +1,9 @@
 package com.ecinema.controllers;
 
 import com.ecinema.models.payment.PaymentCards;
-import com.ecinema.services.PaymentCardsService;
-import com.ecinema.services.UserFactory;
-import com.ecinema.services.UserService;
+import com.ecinema.models.businesslogic.services.PaymentCardsService;
+import com.ecinema.models.businesslogic.services.UserFactory;
+import com.ecinema.models.businesslogic.services.UserService;
 import com.ecinema.models.users.User;
 import com.ecinema.models.users.confirmation.OnRegistrationCompleteEvent;
 import com.ecinema.models.users.confirmation.Utility;
