@@ -1,5 +1,6 @@
 package com.ecinema.models.payment;
 
+import com.ecinema.repositories.PaymentCardsRepository;
 import com.ecinema.services.PaymentCardsService;
 import com.ecinema.models.booking.Booking;
 import jakarta.persistence.*;
@@ -77,34 +78,5 @@ public class PaymentCards {
         this.billingAddress = address;
     }
 
-    public String getDecodedCardNumber() throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException {
-        PaymentCardsService service = new PaymentCardsService();
-        if (this.secretKey == null) {
-            return "";
-        }
-        SecretKey secretKey1 = this.getSecretKey();
-        String decodedNumber = service.decryptCardNumber(getCardNumber(), secretKey1, this.initializationVector);
-
-        System.out.println("This is in Payment card class j make sure not null" + decodedNumber);
-
-        return decodedNumber;
-
-    }
-
-    public String getDecodedSecurityCode() throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
-        PaymentCardsService service = new PaymentCardsService();
-
-        if (this.secretKey == null) {
-            return "";
-        }
-        SecretKey secretKey1 = this.getSecretKey();
-
-        String decodedCode = service.decryptSecurityCode(getSecurityCode(), secretKey1, this.initializationVector);
-
-
-        return decodedCode;
-
-
-    }
 
 }

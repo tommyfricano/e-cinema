@@ -10,6 +10,8 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 import com.ecinema.models.payment.PaymentCards;
+import com.ecinema.repositories.BookingRepository;
+import com.ecinema.repositories.PaymentCardsRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +21,15 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class PaymentCardsService {
 
+    private final PaymentCardsRepository paymentCardsRepository;
+    private final BookingRepository bookingRepository;
+
 
 
     @Autowired
-    public PaymentCardsService() {
+    public PaymentCardsService(PaymentCardsRepository paymentCardsRepository, BookingRepository bookingRepository) {
+        this.paymentCardsRepository = paymentCardsRepository;
+        this.bookingRepository = bookingRepository;
     }
 
 
@@ -32,7 +39,6 @@ public class PaymentCardsService {
         String number = card.getCardNumber();
         String securityCode = card.getSecurityCode();
 
-        System.out.println("Card number before encryption befings" + number);
 
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
         keyGen.init(128);
@@ -56,8 +62,10 @@ public class PaymentCardsService {
         byte[] encodedNumber = Base64.getEncoder().encode(numberByte);
         byte[] encodedCode = Base64.getEncoder().encode(securityCodeByte);
 
+
         card.setCardNumber(new String(encodedNumber));
         card.setSecurityCode(new String(encodedCode));
+        paymentCardsRepository.save(card);
 
     }
 
@@ -65,7 +73,6 @@ public class PaymentCardsService {
         Cipher decryptCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         decryptCipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(iv));
         String decryptedCardNumberString = new String(decryptCipher.doFinal(Base64.getDecoder().decode(cardNumber)));
-        System.out.println("Card number after decode in decrypted" + decryptedCardNumberString);
 
         return decryptedCardNumberString;
     }
@@ -89,5 +96,51 @@ public class PaymentCardsService {
         return paddedInput;
 
     }
+
+    public void setDecodedCardNumber(PaymentCards card) throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException {
+        //PaymentCardsService service = new PaymentCardsService(paymentCardsRepository);
+        if (card.getSecretKey() == null) {
+            //return "";
+        }
+        SecretKey secretKey1 = card.getSecretKey();
+        String decodedNumber = this.decryptCardNumber(card.getCardNumber(), secretKey1, card.getInitializationVector());
+
+        card.setCardNumber(decodedNumber.trim());
+        //return decodedNumber;
+
+    }
+
+    public void setDecodedSecurityCode(PaymentCards card) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+        //PaymentCardsService service = new PaymentCardsService(paymentCardsRepository);
+
+        if (card.getSecretKey() == null) {
+            //return "";
+        }
+        SecretKey secretKey1 = card.getSecretKey();
+
+        String decodedCode = this.decryptSecurityCode(card.getSecurityCode(), secretKey1, card.getInitializationVector());
+
+
+        card.setSecurityCode(decodedCode.trim());
+        //return decodedCode;
+
+
+    }
+
+    public void remove(PaymentCards cards) {
+        paymentCardsRepository.delete(cards);
+    }
+
+    public boolean equals(PaymentCards cardOne, PaymentCards cardTwo) {
+        if (cardOne.getCardNumber().trim().equals(cardTwo.getCardNumber().trim())
+                && cardOne.getExpirationDate().equals(cardTwo.getExpirationDate())) {
+            return true;
+        }
+
+        return false;
+    }
+
+
 }
+
 

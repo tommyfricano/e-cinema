@@ -44,8 +44,11 @@ public class Booking {
     @Column(name = "total")
     private double total;
 
+    private double finalTotal;;
+
     @OneToMany(mappedBy = "booking")
     private List<Ticket> tickets;
+
 
     public List<Ticket> getTickets() {
         return tickets;

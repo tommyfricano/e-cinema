@@ -1,6 +1,9 @@
 package com.ecinema.services;
 
+import com.ecinema.models.booking.Booking;
 import com.ecinema.models.payment.PaymentCards;
+import com.ecinema.models.show.Show;
+import com.ecinema.models.ticket.Ticket;
 import com.ecinema.repositories.PaymentCardsRepository;
 import com.ecinema.repositories.RoleRepository;
 import com.ecinema.repositories.UserRespository;
@@ -181,19 +184,14 @@ public class UserService {
     /*
     update user info
      */
-    public void updateProfile(String username, User user){ //username is email
+    public void updateProfile(String username, User user){
         User userToUpdate = userRespository.findOneByEmail(username);
         System.out.println(userToUpdate.getFirstName());
         userToUpdate.setFirstName(user.getFirstName());
         userToUpdate.setLastName(user.getLastName());
         userToUpdate.setOptInPromo(user.isOptInPromo());
-        //if (userToUpdate.getPayments() != null) {
-            for (int i = 0; i < userToUpdate.getPayments().size(); i++) {
-                paymentCardsRepository.deleteById(userToUpdate.getPayments().get(i).getPaymentID());
-            }
 
-
-            userToUpdate.setPayments(user.getPayments());
+        userToUpdate.setPayments(user.getPayments());
         //}
         userRespository.save(userToUpdate);
 
@@ -202,6 +200,16 @@ public class UserService {
         email.setSubject("Your account information has been updated!");     //todo update this link when connected
         email.setText("Follow this link to view changes" + "\r\n" + "http://localhost:8080/user/"+userToUpdate.getUserID());
         mailSender.send(email);
+    }
+
+    public void updateCards(String username, User user) {
+        User userToUpdate = userRespository.findOneByEmail(username);
+        System.out.println(userToUpdate.getFirstName());
+        userToUpdate.setFirstName(user.getFirstName());
+        userToUpdate.setLastName(user.getLastName());
+        userToUpdate.setOptInPromo(user.isOptInPromo());
+
+        userToUpdate.setPayments(user.getPayments());
     }
 
     public String userUpdateByAdmin(int id, User user){
@@ -286,6 +294,16 @@ public class UserService {
         email.setTo(recipientEmail);
         email.setSubject("Movie discount!");
         email.setText("User promo code: " +promo +" for "+ discount+ "% off!" +"\r\n" + link);
+        mailSender.send(email);
+
+    }
+
+    public void sendBookingInformation(String recipientEmail, Booking booking) {
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(recipientEmail);
+        email.setSubject("Booking Complete!");
+        email.setText("Booking Informaion: " + booking.getShow().getMovie().getTitle() + " at " + booking.getShow().getTime() + " for " + booking.getTickets().size() + " ticket(s)!" +
+                "  The total is " + booking.getTotal() + " dollars.");
         mailSender.send(email);
 
     }

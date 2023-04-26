@@ -1,48 +1,52 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title>B8-CINEMA</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>B8-CINEMA</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
-		<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-		<link rel="stylesheet" type= "text/css" th:href="@{/static/css/ticketstyle.css}">
-		  <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
+  <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+  <link rel="stylesheet" type= "text/css" th:href="@{/static/css/ticketstyle.css}">
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
 
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
       }
-    </style>
-	</head>
-	
-	<body>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-      <a th:href="@{/user/customerPage}" class="navbar-brand">B8-CINEMA</a>
-      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarMenu">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a th:href="@{/user/account}" class="nav-link"><i class="fas fa-user" style="margin-right: 10px"></i>ACCOUNT</a>
-          </li>
-          <li class="nav-item">
-            <a th:href="@{/logout}" class="nav-link">LOGOUT</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    }
+  </style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <a th:href="@{/user/customerPage}" class="navbar-brand">B8-CINEMA</a>
+  <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarMenu">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a th:href="@{/user/account}" class="nav-link"><i class="fas fa-user" style="margin-right: 10px"></i>ACCOUNT</a>
+      </li>
+      <li class="nav-item">
+        <a th:href="@{/logout}" class="nav-link">LOGOUT</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!--<div th:if="${param.error}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">-->
+<!--  Please select a valid payment option.-->
+<!--</div>-->
 
 <div class="container" style="padding:5px" th:object="${booking}">
   <main>
@@ -52,10 +56,15 @@
     <div th:if="${param.expiredError}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
       Promotion code has expired.
     </div>
-   <div class="container-fluid my-container">
-			<div class="title"><br>CHECK OUT</div>
-			<br><hr class = "line"><br>
-	</div>
+
+    <div class="container-fluid my-container">
+      <div class="title"><br>CHECK OUT</div>
+      <br><hr class = "line"><br>
+    </div>
+    <div th:if="${param.error}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
+      Please select a valid payment option.
+    </div>
+
 
     <div class="row g-5">
       <div class="col-md-5 col-lg-4 order-md-last">
@@ -70,18 +79,18 @@
             </div>
             <span class="text-muted" th:text="*{'$'+total}"></span>
           </li>
-           <li class="list-group-item d-flex justify-content-between lh-sm">
+          <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
               <h6 class="my-0">Show Date</h6>
-<!--              <small class="text-muted">Weekend</small>-->
+              <!--              <small class="text-muted">Weekend</small>-->
             </div>
             <span class="text-muted" th:text="*{show.date}"></span>
           </li>
-           <li class="list-group-item d-flex justify-content-between lh-sm">
+          <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
               <h6 class="my-0">Number of Tickets</h6>
             </div>
-               <span class="number" th:text="*{tickets.size()}"></span>
+            <span class="number" th:text="*{tickets.size()}"></span>
           </li>
           <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
@@ -102,7 +111,7 @@
           <li class="list-group-item d-flex justify-content-between bg-light">
             <div >
               <h6 class="my-0">Promo code</h6>
-<!--              <small th:text="${}" ></small>-->
+              <!--              <small th:text="${}" ></small>-->
             </div>
             <div th:switch="${promotion.sent}">
               <div th:case="false">
@@ -116,7 +125,7 @@
           </li>
           <li class="list-group-item d-flex justify-content-between">
             <span>Total (USD)</span>
-              <strong th:text="*{'$'+ total}"></strong>
+            <strong th:text="*{'$'+ total}"></strong>
           </li>
         </ul>
 
@@ -124,7 +133,7 @@
           <div class="input-group">
             <input type="text" class="form-control" th:field="${promo.code}" placeholder="Promo code">
             <div th:each="ticket, stat : *{tickets}">
-             <input type="hidden" th:field="*{tickets[__${stat.index}__].seat}">
+              <input type="hidden" th:field="*{tickets[__${stat.index}__].seat}">
               <input type="hidden" th:field="*{tickets[__${stat.index}__].price}">
               <input type="hidden" th:field="*{tickets[__${stat.index}__].type}">
               <input type="hidden" th:field="*{tickets[__${stat.index}__].booking}">
@@ -139,151 +148,213 @@
       </div>
       <div class="col-md-7 col-lg-8">
         <h4 class="mb-3 form-check-label">Billing address</h4>
-        <form class="needs-validation" novalidate>
-          <div class="row g-3">
-            <div class="col-sm-6">
-              <label for="firstName" class="form-label form-check-label">First name</label>
-              <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
-              <div class="invalid-feedback">
-                Valid first name is required.
-              </div>
-            </div>
+        <form class="card p-3" method="post" th:action="@{/user/checkout}" th:object="${user}">
 
-            <div class="col-sm-6">
-              <label for="lastName" class="form-label form-check-label">Last name</label>
-              <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
-              <div class="invalid-feedback">
-                Valid last name is required.
-              </div>
+          <div class="form-row required">
+            <div class="form-group required col-md-6">
+              <label class="control-label" for="firstName">First name</label>
+              <input th:field="*{firstName}" type="text" required class="form-control" id="firstName" readonly>
             </div>
-
-            <div class="col-12">
-              <label for="email" class="form-label form-check-label">Email <span class="text-muted">(Optional)</span></label>
-              <input type="email" class="form-control" id="email" placeholder="Email">
-              <div class="invalid-feedback">
-                Please enter a valid email address for shipping updates.
-              </div>
-            </div>
-
-            <div class="col-12">
-              <label for="address" class="form-label form-check-label">Address</label>
-              <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
-              <div class="invalid-feedback">
-                Please enter your shipping address.
-              </div>
-            </div>
-
-            <div class="col-12">
-              <label for="address2" class="form-label form-check-label">Address 2 <span class="text-muted">(Optional)</span></label>
-              <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
-            </div>
-
-            <div class="col-md-5">
-              <label for="zip" class="form-label form-check-label">Country</label>
-              <input type="text" class="form-control" id="zip" placeholder="" required>
-              <div class="invalid-feedback">
-                Country required.
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <label for="zip" class="form-label form-check-label">State</label>
-              <input type="text" class="form-control" id="zip" placeholder="" required>
-              <div class="invalid-feedback">
-                State required.
-              </div>
-            </div>
-
-            <div class="col-md-3">
-              <label for="zip" class="form-label form-check-label">Zip</label>
-              <input type="text" class="form-control" id="zip" placeholder="" required>
-              <div class="invalid-feedback">
-                Zip code required.
-              </div>
+            <div class="form-group required col-md-6">
+              <label class="control-label"    for="lastName">Last name</label>
+              <input th:field="*{lastName}" type="text" required class="form-control" id="lastName"  readonly>
             </div>
           </div>
+
+          <div class="form-group">
+            <label for="billingAddress">Address</label>
+            <input th:field="*{address}" type="text" class="form-control" id="billingAddress" placeholder=address required>
+          </div>
+
 
           <hr class="my-4">
 
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="same-address">
-            <label class="form-check-label" for="same-address">Shipping address is the same as my billing address</label>
-          </div>
-
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="save-info">
-            <label class="form-check-label" for="save-info">Save this information for next time</label>
-          </div>
-
-          <hr class="my-4">
 
           <h4 class="mb-3 form-check-label">Payment</h4>
 
-          <div class="my-3">
-            <div class="form-check">
-              <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
-              <label class="form-check-label" for="credit">Credit card</label>
-            </div>
-            <div class="form-check">
-              <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
-              <label class="form-check-label" for="debit">Debit card</label>
-            </div>
-            <div class="form-check">
-              <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
-              <label class="form-check-label" for="paypal">PayPal</label>
+
+          <div>
+            <!--        <input th:field="${selectedCard}" id="selectedCard" name="selectedCard">-->
+            <div class="my-3" >
+              <div class="form-check">
+                <input id="cardOne" th:field="${seat1.seatNO}" th:checked="${seat1.seatNO}" value="0" name="paymentMethod" type="radio" class="form-check-input" checked required>
+                <label class="form-check-label" for="cardOne">First Card</label>
+                <div>
+                  <button id="addCardOneButton">Card One</button>
+
+
+                  <!--   <div th:object="${payment1}">-->
+                  <fieldset id ="addCardOne" style="display: none;">
+                    <!--    <div th:object="${payment1}">-->
+                    <div class="form-group">
+                      <label class="form-check-label" for="cardholderOne">Cardholder Name</label>
+                      <input th:field="*{payments[0].cardholderName}" type="text" class="form-control" id="cardholderOne" placeholder="name" th:readonly="${user.getPayments.size() > 0}" >
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label class="form-check-label" th:for="${user.payments[0].cardNumber}">Card Number</label >
+                        <input th:field="*{payments[0].cardNumber}" type="text" class="form-control" th:readonly="${user.payments[0].cardNumber != null}" pattern="[0-9]{16}">
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label class="form-check-label" for="expiryOne">Expiration Date</label>
+                        <input th:field="*{payments[0].expirationDate}" type="date" class="form-control" id="expiryOne" th:readonly="${user.payments[0].expirationDate != null}">
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label class="form-check-label" th:for="${user.payments[0].securityCode}">CVV</label>
+                        <input th:field="*{payments[0].securityCode}" type="text" class="form-control" th:readonly="${user.payments[0].securityCode != null}">
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="form-check">
+                <input id="cardTwo"  th:field="${seat1.seatNO}" th:checked="${seat1.seatNO}" value="1" name="paymentMethod" type="radio" class="form-check-input" required>
+                <label class="form-check-label" for="cardTwo">Second Card</label>
+                <div>
+                  <button id="addCardTwoButton">Card Two</button>
+                  <!--   <div th:object="${payment2}">-->
+                  <fieldset id ="addCardTwo" style="display: none;">
+                    <!--    <div th:object="${payment2}">-->
+                    <div class="form-group">
+                      <label class="form-check-label" for="cardholderTwo">Cardholder Name</label>
+                      <input th:field="*{payments[1].cardholderName}" type="text" class="form-control" id="cardholderTwo" placeholder="name" th:readonly="${user.getPayments.size() > 1}">
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label class="form-check-label">Card Number</label>
+                        <input th:field="*{payments[1].cardNumber}" type="text" class="form-control" th:readonly="${user.payments[1].cardNumber != null}" pattern="[0-9]{16}">
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label class="form-check-label" for="expiryTwo">Expiration Date</label>
+                        <input th:field="*{payments[1].expirationDate}" type="date" class="form-control" id="expiryTwo" th:readonly="${user.payments[1].expirationDate != null}">
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label class="form-check-label">CVV</label>
+                        <input th:field="*{payments[1].securityCode}" type="text" class="form-control" th:readonly="${user.payments[1].securityCode != null}">
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="form-check">
+                <input id="cardThree" th:field="${seat1.seatNO}" th:checked="${seat1.seatNO}" value="2" name="paymentMethod" type="radio" class="form-check-input" required>
+                <label class="form-check-label" for="cardThree">Third Card</label>
+                <div>
+                  <button id="addCardThreeButton">Card Three</button>
+                  <!--   <div th:object="${payment3}">-->
+                  <fieldset id ="addCardThree" style="display: none;">
+                    <!--    <div th:object="${payment3}">-->
+                    <div class="form-group">
+                      <label class="form-check-label" for="cardholderThree">Cardholder Name</label>
+                      <input th:field="*{payments[2].cardholderName}" type="text" class="form-control" id="cardholderThree" placeholder="name" th:readonly="${user.getPayments.size() > 2}">
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label class="form-check-label">Card Number</label>
+                        <input th:field="*{payments[2].cardNumber}" type="text" class="form-control" th:readonly="${user.payments[2].cardNumber != null}" pattern="[0-9]{16}">
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label class="form-check-label" for="expiryThree">Expiration Date</label>
+                        <input th:field="*{payments[2].expirationDate}" type="date" class="form-control" id="expiryThree" th:readonly="${user.payments[2].expirationDate != null}">
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label class="form-check-label">CVV</label>
+                        <input th:field="*{payments[2].securityCode}" type="text" class="form-control" th:readonly="${user.payments[2].securityCode != null}">
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="row gy-3">
-            <div class="col-md-6">
-              <label for="cc-name" class="form-label form-check-label">Name on card</label>
-              <input type="text" class="form-control" id="cc-name" placeholder="" required>
-              <small class="text-muted form-check-label">Full name as displayed on card</small>
-              <div class="invalid-feedback form-check-label">
-                Name on card is required
-              </div>
-            </div>
 
-            <div class="col-md-6">
-              <label for="cc-number" class="form-label form-check-label">Credit card number</label>
-              <input type="text" class="form-control" id="cc-number" placeholder="" required>
-              <div class="invalid-feedback form-check-label">
-                Credit card number is required
-              </div>
-            </div>
+          <script>
+            const addCardButton = document.getElementById("addCardOneButton");
+            const addCardFieldset = document.getElementById("addCardOne");
+            const addCardInputs = addCardFieldset.getElementsByTagName("input");
+            //let numCards =
 
-            <div class="col-md-3">
-              <label for="cc-expiration" class="form-label form-check-label">Expiration</label>
-              <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
-              <div class="invalid-feedback form-check-label">
-                Expiration date required
-              </div>
-            </div>
 
-            <div class="col-md-3">
-              <label for="cc-cvv" class="form-label form-check-label">CVV</label>
-              <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
-              <div class="invalid-feedback form-check-label">
-                Security code required
-              </div>
-            </div>
-          </div>
-		  
-		  <hr class="my-4">
-<br>
+            addCardButton.addEventListener("click", function(event) {
+              event.preventDefault();
+              if (addCardFieldset.style.display === "none") {
+                for (let i = 0; i < addCardInputs.length; i++) {
+                  addCardInputs[i].setAttribute("required", "required");
+                }
+                addCardFieldset.style.display = "block";
+              } else {
+                addCardFieldset.style.display = "none";
+                for (let i = 0; i < addCardInputs.length; i++) {
+                  addCardInputs[i].removeAttribute("required");
+                }
+              }
+            });
+          </script>
+
+
+          <script>
+            const addCardTwoButton = document.getElementById("addCardTwoButton");
+            const addCardTwoFieldset = document.getElementById("addCardTwo");
+            const addCardTwoInputs = addCardTwoFieldset.getElementsByTagName("input");
+            //let numCards =
+
+
+            addCardTwoButton.addEventListener("click", function(event) {
+              event.preventDefault();
+              if (addCardTwoFieldset.style.display === "none") {
+                for (let i = 0; i < addCardTwoInputs.length; i++) {
+                  addCardTwoInputs[i].setAttribute("required", "required");
+                }
+                addCardTwoFieldset.style.display = "block";
+              } else {
+                addCardTwoFieldset.style.display = "none";
+                for (let i = 0; i < addCardTwoInputs.length; i++) {
+                  addCardTwoInputs[i].removeAttribute("required");
+                }
+              }
+            });
+          </script>
+          <script>
+            const addCardThreeButton = document.getElementById("addCardThreeButton");
+            const addCardThreeFieldset = document.getElementById("addCardThree");
+            const addCardThreeInputs = addCardThreeFieldset.getElementsByTagName("input");
+            //let numCards =
+
+
+            addCardThreeButton.addEventListener("click", function(event) {
+              event.preventDefault();
+              if (addCardThreeFieldset.style.display === "none") {
+                for (let i = 0; i < addCardThreeInputs.length; i++) {
+                  addCardThreeInputs[i].setAttribute("required", "required");
+                }
+                addCardThreeFieldset.style.display = "block";
+              } else {
+                addCardThreeFieldset.style.display = "none";
+                for (let i = 0; i < addCardThreeInputs.length; i++) {
+                  addCardThreeInputs[i].removeAttribute("required");
+                }
+              }
+            });
+          </script>
+
+          <hr class="my-4">
+          <br>
           <button class="w-100 btn btn-primary btn-lg" type="submit"><a style = "text-decoration: none; color:white;" href = "buytickets.html">CANCEL ORDER</a></button><br><br>
-          <button class="w-100 btn btn-primary btn-lg" type="submit"><a style = "text-decoration: none; color:white;" href = "Orderconfirmation.html">PROCEED PAYMENT</a></button>
+          <button class="w-100 btn btn-primary btn-lg" type="submit">PROCEED PAYMENT</button>
         </form>
+
       </div>
     </div>
   </main>
   <div class="container-fluid my-container">
-			<br><hr class = "line"><br>
-	</div>
+    <br><hr class = "line"><br>
+  </div>
 </div>
 
 
-    <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
-      <script th:src="@{/static/js/myScript.js}"></script>
-  </body>
+<script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/static/js/myScript.js}"></script>
+</body>
 </html>
+

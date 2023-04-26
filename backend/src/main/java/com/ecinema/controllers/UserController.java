@@ -16,6 +16,7 @@ import com.ecinema.services.*;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
@@ -216,31 +217,116 @@ public class UserController {
             model.addAttribute("error" , true);
             return "redirect:/user/bookMovie/"+movie.getMovieID() +"/"+ show.getShowID() +"?error";
         }
+        System.out.println("in book moovie post mapping, value of show " + newBooking.getShow().getMovie().getTitle());
         redirectAttributes.addFlashAttribute("booking",  newBooking);
         return "redirect:/user/checkout";
     }
 
 
     @GetMapping("/user/checkout")
-    public String getCheckout( @ModelAttribute("booking") Booking booking,
+    public String getCheckout(@ModelAttribute("booking") Booking booking,
                               @ModelAttribute("promotion") Promotions promotion,
-                              Model model)  {
+                               RedirectAttributes redirectAttributes,
+                              HttpSession session,
+                              Model model) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
 
         String username = SecurityUtil.getSessionUser();
         User user = userService.getUserEmail(username);
-        List<PaymentCards> cards = userService.getPaymentCards(user.getUserID());
-        Promotions promo = new Promotions();
+
 
         if(promotion.getDiscount() != 0 && !promotion.getEndDate().equals("expired")){
+
             double total =booking.getTotal() - (booking.getTotal() * (promotion.getDiscount()/100));
             booking.setTotal(total);
         }
+
+        for(PaymentCards card: user.getPayments()){
+            paymentCardsService.setDecodedCardNumber(card);
+            paymentCardsService.setDecodedSecurityCode(card);
+        }
+
+        Seat seat1 = new Seat();
+        seat1.setSeatNO(-1);
+
+        session.setAttribute("booking", booking);
+
         model.addAttribute("promotion", promotion);
-        model.addAttribute("booking", booking);
-        model.addAttribute("cards", cards);
+        model.addAttribute("user", user);
+        session.setAttribute("user", user);
         model.addAttribute("promo", promo);
+        model.addAttribute("seat1", seat1);
+
         return"/descriptions/tickets/checkout";
     }
+
+    @PostMapping("/user/checkout")
+    public String checkout(@ModelAttribute("seat1") Seat seat1,
+                           @ModelAttribute("user") User userDTO,
+                           @ModelAttribute("promo") Promotions promo,
+                           RedirectAttributes redirectAttributes,
+                           HttpSession session,
+                           Model model) throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+
+        String username = SecurityUtil.getSessionUser();
+        User user = userService.getUserEmail(username);
+        List<PaymentCards> prevCards = user.getPayments();
+        List<PaymentCards> cardsToAdd = new ArrayList<>();
+        List<PaymentCards> cardsFromPost = userDTO.getPayments();
+
+        int i = 0;
+        while (i < 3) {
+            if (prevCards.size() > i) {
+                if (paymentCardsService.equals(cardsFromPost.get(i), prevCards.get(i))) {
+                    System.out.println("First condition was true  " + i);
+                    paymentCardsService.encrypt(prevCards.get(i));
+                    prevCards.get(i).setLastName(userDTO.getLastName());
+                    prevCards.get(i).setBillingAddress(userDTO.getAddress());
+                    cardsToAdd.add(prevCards.get(i));
+                    i++;
+                    continue;
+                }
+                System.out.println("previous card    " + prevCards.get(i).getCardNumber());
+                paymentCardsService.encrypt(prevCards.get(i));
+                cardsToAdd.add(prevCards.get(i));
+                i++;
+                continue;
+            }   else if (cardsFromPost.get(i).getCardNumber() != null && !(cardsFromPost.get(i).getCardNumber().equals(""))) {
+                cardsFromPost.get(i).setLastName(userDTO.getLastName());
+                cardsFromPost.get(i).setBillingAddress(userDTO.getAddress());
+                paymentCardsService.encrypt(cardsFromPost.get(i));
+                cardsToAdd.add(cardsFromPost.get(i));
+                i++;
+                continue;
+                }
+            i++;
+            }
+
+        userDTO.setPayments(cardsToAdd);
+        userService.updateCards(username, userDTO);
+
+        Booking booking = (Booking)session.getAttribute("booking");
+
+        if(seat1.getSeatNO() == -1 || seat1.getSeatNO() >= cardsToAdd.size()) {
+            redirectAttributes.addFlashAttribute("booking", booking);
+            redirectAttributes.addAttribute("error",  true);
+            return "redirect:/user/checkout?error";
+        }
+
+        bookingService.completeBooking(booking, userDTO.getPayments().get(seat1.getSeatNO()));
+        userService.sendBookingInformation(username, booking);
+
+        redirectAttributes.addFlashAttribute("booking", booking);
+        model.addAttribute("booking", booking);
+
+        return "redirect:/user/Orderconfirmation";
+    }
+
+    @GetMapping("/user/Orderconfirmation")
+    public String confirmOrder(@ModelAttribute("booking") Booking booking) {
+        return "Orderconfirmation";
+    }
+
+    //@PostMapping("/")
 
     @PostMapping("/user/checkoutWithPromo")
     public String applyPromo(@ModelAttribute("promo")Promotions promotion,
@@ -292,8 +378,9 @@ public class UserController {
         String username = SecurityUtil.getSessionUser();
         User user = userService.getUserEmail(username);
         for(PaymentCards card: user.getPayments()){
-            card.setCardNumber(card.getDecodedCardNumber().trim());
-            card.setSecurityCode(card.getDecodedSecurityCode().trim());
+            paymentCardsService.setDecodedCardNumber(card);
+            paymentCardsService.setDecodedSecurityCode(card);
+
         }
         model.addAttribute("user", user);
         return "Editprofile";
@@ -304,16 +391,36 @@ public class UserController {
             @Validated @ModelAttribute("user") User userDto,
             Model model) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
         String username = SecurityUtil.getSessionUser();
+        User user = userService.getUserEmail(username);
+        List<PaymentCards> prevCards = user.getPayments();
         System.out.println("This is userDto" + userDto.getFirstName());
-        List<PaymentCards> cardsToAdd = new ArrayList<>(3);
+        List<PaymentCards> cardsToAdd = new ArrayList<>();
         List<PaymentCards> cardsFromPost = userDto.getPayments();
-        for (int i = 0; i < 3; i++) {
-            if (cardsFromPost.get(i).getCardNumber() != null && !(cardsFromPost.get(i).getCardNumber().equals(""))) {
+        int i = 0;
+        while (i < 3) {
+            if (prevCards.size() > i) {
+                if (paymentCardsService.equals(cardsFromPost.get(i), prevCards.get(i))) {
+                    paymentCardsService.encrypt(prevCards.get(i));
+                    cardsToAdd.add(prevCards.get(i));
+                    i++;
+                    continue;
+                } else {
+                    int id = prevCards.get(i).getPaymentID();
+                    if (bookingService.findByPaymentCards(prevCards.get(i)) != null) {
+                        bookingService.deleteBookingsByPaymentCardId(id);
+                    }
+                    paymentCardsService.remove(prevCards.get(i));
+
+                }
+            } else if (cardsFromPost.get(i).getCardNumber() != null && !(cardsFromPost.get(i).getCardNumber().equals(""))) {
                 cardsFromPost.get(i).setLastName(userDto.getLastName());
                 cardsFromPost.get(i).setBillingAddress(userDto.getAddress());
                 paymentCardsService.encrypt(cardsFromPost.get(i));
                 cardsToAdd.add(cardsFromPost.get(i));
+                i++;
+                continue;
             }
+            i++;
         }
         userDto.setPayments(cardsToAdd);
         userService.updateProfile(username, userDto);
