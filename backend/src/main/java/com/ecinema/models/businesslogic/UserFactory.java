@@ -1,11 +1,11 @@
-package com.ecinema.models.businesslogic.services;
+package com.ecinema.models.businesslogic;
 
 import com.ecinema.models.users.Role;
 import com.ecinema.models.users.User;
 import com.ecinema.models.users.enums.Status;
 import com.ecinema.models.users.enums.UserTypes;
-import com.ecinema.models.businesslogic.repositories.RoleRepository;
-import com.ecinema.models.businesslogic.repositories.UserRespository;
+import com.ecinema.models.dataaccess.RoleRepository;
+import com.ecinema.models.dataaccess.UserRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -2,8 +2,8 @@ package com.ecinema.controllers;
 
 import com.ecinema.models.movie.Movie;
 import com.ecinema.models.show.Show;
-import com.ecinema.models.businesslogic.services.MovieService;
-import com.ecinema.models.businesslogic.services.ShowService;
+import com.ecinema.models.businesslogic.MovieService;
+import com.ecinema.models.businesslogic.ShowService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

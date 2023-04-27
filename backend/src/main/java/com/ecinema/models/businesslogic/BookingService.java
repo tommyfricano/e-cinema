@@ -1,4 +1,4 @@
-package com.ecinema.models.businesslogic.services;
+package com.ecinema.models.businesslogic;
 
 import com.ecinema.models.booking.Booking;
 import com.ecinema.models.payment.PaymentCards;
@@ -9,10 +9,10 @@ import com.ecinema.models.show.Show;
 import com.ecinema.models.show.ShowRoom;
 import com.ecinema.models.ticket.Ticket;
 import com.ecinema.models.users.User;
-import com.ecinema.models.businesslogic.repositories.BookingRepository;
-import com.ecinema.models.businesslogic.repositories.PromotionsRepository;
-import com.ecinema.models.businesslogic.repositories.SeatRepository;
-import com.ecinema.models.businesslogic.repositories.UserRespository;
+import com.ecinema.models.dataaccess.BookingRepository;
+import com.ecinema.models.dataaccess.PromotionsRepository;
+import com.ecinema.models.dataaccess.SeatRepository;
+import com.ecinema.models.dataaccess.UserRespository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
-package com.ecinema.models.businesslogic.services;
+package com.ecinema.models.businesslogic;
 
 import com.ecinema.models.promotion.Promotions;
-import com.ecinema.models.businesslogic.repositories.PromotionsRepository;
+import com.ecinema.models.dataaccess.PromotionsRepository;
 import com.ecinema.models.users.User;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;

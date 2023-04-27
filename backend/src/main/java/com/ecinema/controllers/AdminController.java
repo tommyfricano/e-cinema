@@ -1,6 +1,6 @@
 package com.ecinema.controllers;
 
-import com.ecinema.models.businesslogic.services.*;
+import com.ecinema.models.businesslogic.*;
 import com.ecinema.models.movie.Movie;
 import com.ecinema.models.promotion.Promotions;
 import com.ecinema.models.show.Show;
@@ -21,7 +21,7 @@ import java.text.ParseException;
 import java.util.List;
 
 /*
-Controller for users
+Controller for admins
  */
 
 @Controller

@@ -1,13 +1,13 @@
-package com.ecinema.models.businesslogic.services;
+package com.ecinema.models.businesslogic;
 
 import com.ecinema.models.booking.Booking;
 import com.ecinema.models.payment.PaymentCards;
-import com.ecinema.models.businesslogic.repositories.PaymentCardsRepository;
-import com.ecinema.models.businesslogic.repositories.RoleRepository;
-import com.ecinema.models.businesslogic.repositories.UserRespository;
+import com.ecinema.models.dataaccess.PaymentCardsRepository;
+import com.ecinema.models.dataaccess.RoleRepository;
+import com.ecinema.models.dataaccess.UserRespository;
 import com.ecinema.models.users.User;
 import com.ecinema.models.users.confirmation.VerificationToken;
-import com.ecinema.models.businesslogic.repositories.VerificationTokenRepository;
+import com.ecinema.models.dataaccess.VerificationTokenRepository;
 import com.ecinema.models.users.enums.Status;
 import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityManager;

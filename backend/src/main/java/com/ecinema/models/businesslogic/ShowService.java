@@ -1,9 +1,9 @@
-package com.ecinema.models.businesslogic.services;
+package com.ecinema.models.businesslogic;
 
 import com.ecinema.models.seat.Seat;
-import com.ecinema.models.businesslogic.repositories.SeatRepository;
-import com.ecinema.models.businesslogic.repositories.ShowRepository;
-import com.ecinema.models.businesslogic.repositories.ShowRoomRepository;
+import com.ecinema.models.dataaccess.SeatRepository;
+import com.ecinema.models.dataaccess.ShowRepository;
+import com.ecinema.models.dataaccess.ShowRoomRepository;
 import com.ecinema.models.show.Show;
 import com.ecinema.models.show.ShowRoom;
 import jakarta.transaction.Transactional;

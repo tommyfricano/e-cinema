@@ -1,9 +1,9 @@
-package com.ecinema.models.businesslogic.services;
+package com.ecinema.models.businesslogic;
 
 import com.ecinema.models.ticket.Ticket;
 import com.ecinema.models.ticket.TicketType;
-import com.ecinema.models.businesslogic.repositories.TicketRepository;
-import com.ecinema.models.businesslogic.repositories.TicketTypeRepository;
+import com.ecinema.models.dataaccess.TicketRepository;
+import com.ecinema.models.dataaccess.TicketTypeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

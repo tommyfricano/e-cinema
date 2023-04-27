@@ -113,7 +113,7 @@ hr {
 /*}*/
 .w-100 {
 	width: 100% !important;
-	height: 80vh;
+	height: 78vh;
 }
 .admin{
 	color:white;
@@ -123,8 +123,9 @@ hr {
 }
 .carousel{
 	padding-top: 2%;
-	padding-left: 30%;
-	padding-right: 30%;
+	padding-left: 35%;
+	padding-right: 35%;
+
 }
 /* .bg-modal{
 	width: 100%;

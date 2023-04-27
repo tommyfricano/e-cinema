@@ -1,4 +1,4 @@
-package com.ecinema.models.businesslogic.repositories;
+package com.ecinema.models.dataaccess;
 
 import com.ecinema.models.booking.Booking;
 import com.ecinema.models.users.User;

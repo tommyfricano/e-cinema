@@ -1,7 +1,7 @@
 package com.ecinema.controllers.security;
 
 import com.ecinema.models.users.enums.Status;
-import com.ecinema.models.businesslogic.repositories.UserRespository;
+import com.ecinema.models.dataaccess.UserRespository;
 import com.ecinema.models.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

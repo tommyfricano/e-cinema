@@ -2,7 +2,7 @@ package com.ecinema.controllers;
 
 import com.ecinema.controllers.security.SecurityUtil;
 import com.ecinema.models.booking.Booking;
-import com.ecinema.models.businesslogic.services.*;
+import com.ecinema.models.businesslogic.*;
 import com.ecinema.models.movie.Movie;
 import com.ecinema.models.payment.PaymentCards;
 import com.ecinema.models.promotion.Promotions;

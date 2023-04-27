@@ -1,4 +1,4 @@
-package com.ecinema.models.businesslogic.repositories;
+package com.ecinema.models.dataaccess;
 
 import com.ecinema.models.movie.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -54,7 +54,7 @@
 	<title>Manage Users | Admin Panel</title>
 </head>
 <body>
-	<div th:if="${param.error}" class="alert alert-success">
+	<div th:if="${param.error}" class="alert alert-error" style="margin: auto; font-size: 1.5rem; color: white; background: indianred; border-radius: 30px; text-align: center; width: fit-content; ">
 		Failed to save user.
 	</div>
 	<div th:if="${param.success}" class="alert alert-success">

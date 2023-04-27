@@ -1,4 +1,4 @@
-package com.ecinema.models.businesslogic.services;
+package com.ecinema.models.businesslogic;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -10,8 +10,8 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 import com.ecinema.models.payment.PaymentCards;
-import com.ecinema.models.businesslogic.repositories.BookingRepository;
-import com.ecinema.models.businesslogic.repositories.PaymentCardsRepository;
+import com.ecinema.models.dataaccess.BookingRepository;
+import com.ecinema.models.dataaccess.PaymentCardsRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
-package com.ecinema.models.businesslogic.services;
+package com.ecinema.models.businesslogic;
 
 import com.ecinema.models.movie.Movie;
-import com.ecinema.models.businesslogic.repositories.MovieRepository;
+import com.ecinema.models.dataaccess.MovieRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
